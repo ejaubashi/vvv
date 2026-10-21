@@ -1,6 +1,6 @@
 # A room inside the lens
 
-Now expanded into [Living Rooms](LIVING-ROOMS.md), with three authored spaces and optional finite playback.
+Now expanded into [Living Rooms](LIVING-ROOMS.md), with three authored spaces and optional finite playback. [Enter the lens](ENTER-THE-LENS.md) adds an expanded architectural view, rectangular rendering and direct exploration.
 
 An architectural prototype built on Three.js **r186**, WebGPURenderer, and TSL node materials. It extends the immersive-art branch; the other environments remain available.
 
@@ -39,11 +39,11 @@ Diagnostics in **Details** identify the room backend, the active edition’s mes
 - Browser tests verify WebGL and WebGPU room rendering, changing views, unchanged pixels outside the portal, settled rendering, environment switching, mobile inspection, reduced motion, initialization cancellation and fallback behavior.
 - The full existing studio suite remains part of the regression run.
 
-Run `npm test` (14 focused tests), `npm run test:browser` (32 browser tests), and `npm run build` from the repository root. Browser tests use system Chromium and software graphics; physical-device performance and Safari/Firefox rendering remain unverified.
+Run `npm test` (17 focused tests), `npm run test:browser` (39 browser tests), and `npm run build` from the repository root. Browser tests use system Chromium and software graphics; physical-device performance and Safari/Firefox rendering remain unverified.
 
 ## Delivery tradeoff
 
-Three.js is a new, concrete runtime dependency for geometry, camera/depth rendering, lights and cross-backend node materials. The prototype currently ships one JavaScript bundle of approximately **986 KB minified / 277 KB gzip**, compared with the earlier small optical-only bundle. Graphics initialization is on demand, but the library bytes are included in the initial bundle. This keeps the single-file CDN preview self-contained. A later production pass should split the room engine for normal hosting while retaining a separate bundled single-file export.
+Three.js is a new, concrete runtime dependency for geometry, camera/depth rendering, lights and cross-backend node materials. The prototype currently ships one JavaScript bundle of approximately **992 KB minified / 279 KB gzip**, compared with the earlier small optical-only bundle. Graphics initialization is on demand, but the library bytes are included in the initial bundle. This keeps the single-file CDN preview self-contained. A later production pass should split the room engine for normal hosting while retaining a separate bundled single-file export.
 
 ## Reproducible room benchmark
 

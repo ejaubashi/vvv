@@ -41,6 +41,7 @@ function values(
   target[16] = s.depth;
   target[17] = s.lightAngle;
   target[18] = s.room ?? 0;
+  target[19] = s.immersion ?? 0;
   return target;
 }
 /** Expensive optics only cover the object plus a 96 CSS-pixel light/shadow halo. */
@@ -250,6 +251,7 @@ export class WebGPURenderer extends Base implements Renderer {
   portalTexture: GPUTexture | null = null;
   portalVersion = -1;
   portalWidth = 0;
+  portalHeight = 0;
   bind: GPUBindGroup | null = null;
   tw = 0;
   th = 0;
@@ -346,13 +348,19 @@ export class WebGPURenderer extends Base implements Renderer {
     portal?: PortalFrame,
   ) {
     const d = this.device;
-    const portalSize = portal?.canvas.width ?? 1;
-    if (!this.portalTexture || this.portalWidth !== portalSize) {
+    const portalWidth = portal?.canvas.width ?? 1,
+      portalHeight = portal?.canvas.height ?? 1;
+    if (
+      !this.portalTexture ||
+      this.portalWidth !== portalWidth ||
+      this.portalHeight !== portalHeight
+    ) {
       this.portalTexture?.destroy();
-      this.portalWidth = portalSize;
+      this.portalWidth = portalWidth;
+      this.portalHeight = portalHeight;
       this.portalVersion = -1;
       this.portalTexture = d.createTexture({
-        size: [portalSize, portalSize],
+        size: [portalWidth, portalHeight],
         format: "rgba8unorm",
         usage:
           GPUTextureUsage.TEXTURE_BINDING |
@@ -372,7 +380,7 @@ export class WebGPURenderer extends Base implements Renderer {
       d.queue.copyExternalImageToTexture(
         { source: portal.canvas },
         { texture: this.portalTexture },
-        { width: portalSize, height: portalSize },
+        { width: portalWidth, height: portalHeight },
       );
       this.portalVersion = portal.version;
     }
@@ -487,9 +495,14 @@ export class CanvasRenderer extends Base implements Renderer {
       c.filter = `blur(${s.compare ? 0 : s.roughness * 5}px)`;
       c.drawImage(scene, 0, 0, this.canvas.width / r, this.canvas.height / r);
       if (portal && s.room > 0) {
-        const side = Math.max(s.width, s.height);
+        const cover = Math.max(
+          s.width / portal.canvas.width,
+          s.height / portal.canvas.height,
+        );
+        const pw = portal.canvas.width * cover,
+          ph = portal.canvas.height * cover;
         c.globalAlpha = s.room;
-        c.drawImage(portal.canvas, s.x - side / 2, s.y - side / 2, side, side);
+        c.drawImage(portal.canvas, s.x - pw / 2, s.y - ph / 2, pw, ph);
       }
     }
     c.restore();

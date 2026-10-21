@@ -230,6 +230,25 @@ test("WebGPU renders the architectural scene through the WebGPU lens", async ({
       "1",
     );
   }
+  await page
+    .getByRole("button", { name: "Enter the lens", exact: true })
+    .click();
+  await expect(page.locator("#scene canvas")).toHaveAttribute(
+    "data-immersion",
+    "1",
+    { timeout: 30000 },
+  );
+  await page.setViewportSize({ width: 1000, height: 600 });
+  await expect(page.locator("#room-view")).toBeVisible();
+  await page.screenshot({ path: "/tmp/form-room-webgpu-entered.png" });
+  await page
+    .getByRole("button", { name: "Return to lens", exact: true })
+    .click();
+  await expect(page.locator("#scene canvas")).toHaveAttribute(
+    "data-immersion",
+    "0",
+    { timeout: 20000 },
+  );
   await page.screenshot({ path: "/tmp/form-room-webgpu-test.png" });
   expect(errors).toEqual([]);
   await browser.close();

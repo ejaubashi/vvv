@@ -9,7 +9,7 @@ uniform sampler2D room;
 uniform vec4 a; uniform vec4 b; uniform vec4 c; uniform vec4 d; uniform vec4 e;
 out vec4 color;
 vec3 sampleScene(vec2 p){return texture(scene,clamp(p/a.xy,vec2(.001),vec2(.999))).rgb;}
-vec3 sampleGlass(vec2 p){if(e.z<.001)return sampleScene(p);vec2 uv=(p-a.zw)/(2.*max(b.x,b.y))+vec2(.5);return mix(sampleScene(p),texture(room,clamp(uv,vec2(.001),vec2(.999))).rgb,e.z);}
+vec3 sampleGlass(vec2 p){if(e.z<.001)return sampleScene(p);vec2 pixels=vec2(textureSize(room,0));vec2 cover=pixels*max(2.*b.x/pixels.x,2.*b.y/pixels.y);vec2 uv=(p-a.zw)/cover+vec2(.5);return mix(sampleScene(p),texture(room,clamp(uv,vec2(.001),vec2(.999))).rgb,e.z);}
 void main(){
 vec2 p=vec2(gl_FragCoord.x,a.y-gl_FragCoord.y),local=p-a.zw;
 local/=1.-c.z*.06;
@@ -22,7 +22,7 @@ float wake=exp(-pow((length((p-wakeCenter)/vec2(1.25,.62))-b.x*.95)/(18.*ratio),
 base=base*(1.-shadow)+vec3(wake);
 if(sdf<1.5*ratio){
 vec2 n=local/max(b.xy,vec2(1.));float r=clamp(length(n),0.,1.);
-vec2 slope=n*.78/max(1.,length(n));float z=sqrt(max(.06,1.-dot(slope,slope)));
+vec2 slope=n*.78*mix(1.,.2,e.w)/max(1.,length(n));float z=sqrt(max(.06,1.-dot(slope,slope)));
 vec3 normal=normalize(vec3(slope,z));vec3 ray=refract(vec3(0.,0.,-1.),normal,1./b.w);
 vec2 offset=clamp(ray.xy/max(.2,-ray.z)*c.w*ratio*e.x*.72,vec2(-c.w*ratio*.5),vec2(c.w*ratio*.5));
 float portalBend=mix(1.,.3+.7*smoothstep(.6,1.,r),e.z);
@@ -51,7 +51,7 @@ struct Uniforms { a:vec4f,b:vec4f,c:vec4f,d:vec4f,e:vec4f };
 var verts=array<vec2f,3>(vec2f(-1.,-1.),vec2f(3.,-1.),vec2f(-1.,3.));return vec4f(verts[index],0.,1.);
 }
 fn sampleScene(p:vec2f)->vec3f{return textureSampleLevel(scene,smp,clamp(p/u.a.xy,vec2f(.001),vec2f(.999)),0.).rgb;}
-fn sampleGlass(p:vec2f)->vec3f{if(u.e.z<.001){return sampleScene(p);}let uv=(p-u.a.zw)/(2.*max(u.b.x,u.b.y))+vec2f(.5);return mix(sampleScene(p),textureSampleLevel(room,smp,clamp(uv,vec2f(.001),vec2f(.999)),0.).rgb,u.e.z);}
+fn sampleGlass(p:vec2f)->vec3f{if(u.e.z<.001){return sampleScene(p);}let pixels=vec2f(textureDimensions(room));let cover=pixels*max(2.*u.b.x/pixels.x,2.*u.b.y/pixels.y);let uv=(p-u.a.zw)/cover+vec2f(.5);return mix(sampleScene(p),textureSampleLevel(room,smp,clamp(uv,vec2f(.001),vec2f(.999)),0.).rgb,u.e.z);}
 @fragment fn fsBackground(@builtin(position) pos:vec4f)->@location(0) vec4f {return vec4f(sampleScene(pos.xy),1.);}
 @fragment fn fs(@builtin(position) pos:vec4f)->@location(0) vec4f {
 let p=pos.xy;var local=(p-u.a.zw)/(1.-u.c.z*.06);
@@ -62,7 +62,7 @@ let shadow=exp(-max(sdf,0.)/(18.*ratio))*.065*smoothstep(-2.*ratio,2.*ratio,sdf)
 let wakeCenter=u.a.zw+vec2f(cos(u.e.y),sin(u.e.y))*u.b.x*.2+u.c.xy*8.*ratio;
 let wake=exp(-pow((length((p-wakeCenter)/vec2f(1.25,.62))-u.b.x*.95)/(18.*ratio),2.))*.055*(.2+u.c.z+u.d.z);
 base=base*(1.-shadow)+vec3f(wake);
-if(sdf<1.5*ratio){let n=local/max(u.b.xy,vec2f(1.));let r=clamp(length(n),0.,1.);let slope=n*.78/max(1.,length(n));
+if(sdf<1.5*ratio){let n=local/max(u.b.xy,vec2f(1.));let r=clamp(length(n),0.,1.);let slope=n*.78*mix(1.,.2,u.e.w)/max(1.,length(n));
 let z=sqrt(max(.06,1.-dot(slope,slope)));let normal=normalize(vec3f(slope,z));let ray=refract(vec3f(0.,0.,-1.),normal,1./u.b.w);
 let offset=clamp(ray.xy/max(.2,-ray.z)*u.c.w*ratio*u.e.x*.72,vec2f(-u.c.w*ratio*.5),vec2f(u.c.w*ratio*.5));
 let portalBend=mix(1.,.3+.7*smoothstep(.6,1.,r),u.e.z);
