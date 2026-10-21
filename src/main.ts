@@ -210,7 +210,7 @@ function tick(now: number) {
       (motion.y.x / height - 0.46) * 2,
       motion.reduced ? 0 : motion.intensity.x,
       depth,
-      radius * 2 * Math.min(devicePixelRatio || 1, 1.5) * monitor.scale,
+      radius * 3.2 * Math.min(devicePixelRatio || 1, 1.75) * monitor.scale,
     );
   scene.draw(optical, media.source, media.decodedFrame);
   let rendered = true;

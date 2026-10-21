@@ -6,23 +6,23 @@
   "results": [
     {
       "backend": "Three.js / WebGL 2",
-      "resolution": 384,
+      "resolution": 512,
       "meshes": 12,
-      "initializationMs": 211.7,
+      "initializationMs": 933,
       "samples": 30,
-      "meanMs": 0.71,
-      "p50Ms": 0.5,
-      "p95Ms": 3.1
+      "meanMs": 1.23,
+      "p50Ms": 0.7,
+      "p95Ms": 1.6
     },
     {
       "backend": "Three.js / WebGPU",
-      "resolution": 384,
+      "resolution": 512,
       "meshes": 12,
-      "initializationMs": 164.3,
+      "initializationMs": 946,
       "samples": 30,
-      "meanMs": 47.17,
-      "p50Ms": 42.2,
-      "p95Ms": 60
+      "meanMs": 656.43,
+      "p50Ms": 594.8,
+      "p95Ms": 1157.4
     }
   ]
 }

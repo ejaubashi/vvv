@@ -1,11 +1,10 @@
 import {
   WebGPURenderer,
-  MeshStandardNodeMaterial,
   ACESFilmicToneMapping,
   SRGBColorSpace,
 } from "three/webgpu";
-import { color, positionWorld, float } from "three/tsl";
 import { createArchitecture, disposeArchitecture } from "./architecture";
+import { createRoomSurfaces } from "./materials";
 import { roomPose, type RoomPose } from "./pose";
 import type { PortalFrame } from "../render/portal-frame";
 
@@ -18,6 +17,7 @@ export class PortalRoom {
   submitMs = 0;
   private engine: WebGPURenderer | null = null;
   private model: ReturnType<typeof createArchitecture> | null = null;
+  private surfaces: ReturnType<typeof createRoomSurfaces> | null = null;
   private pending: Promise<void> | null = null;
   private cleanup: Promise<void> = Promise.resolve();
   private pose: RoomPose = { x: 0, y: 1.55, z: 6.2 };
@@ -38,31 +38,22 @@ export class PortalRoom {
     try {
       if (new URLSearchParams(location.search).get("roomRenderer") === "none")
         throw Error("Room fallback requested");
-      const stone = new MeshStandardNodeMaterial({ roughness: 0.84 });
-      stone.colorNode = color(0xc4c4c4).mul(
-        positionWorld.y.mul(0.045).add(0.76).clamp(0.65, 1),
-      );
-      const floor = new MeshStandardNodeMaterial({
-        color: 0x929292,
-        roughness: 0.48,
-      });
-      const sculpture = new MeshStandardNodeMaterial({
-        color: 0xdadada,
-        roughness: 0.2,
-        metalness: 0.25,
-      });
-      sculpture.roughnessNode = float(0.2);
-      this.model = createArchitecture({ stone, floor, sculpture });
+      this.surfaces = createRoomSurfaces();
+      this.model = createArchitecture(this.surfaces.materials);
+      this.model.scene.environment = this.surfaces.environment;
+      this.model.scene.environmentIntensity = 0.35;
+      this.model.scene.add(this.surfaces.reflection.target);
       const engine = new WebGPURenderer({
         canvas: document.createElement("canvas"),
-        antialias: false,
+        antialias: true,
+        samples: 4,
         alpha: false,
         forceWebGL,
         powerPreference: "low-power",
       });
       this.engine = engine;
       engine.setPixelRatio(1);
-      engine.setSize(384, 384, false);
+      engine.setSize(512, 512, false);
       engine.outputColorSpace = SRGBColorSpace;
       engine.toneMapping = ACESFilmicToneMapping;
       engine.toneMappingExposure = 0.95;
@@ -129,6 +120,8 @@ export class PortalRoom {
       this.model = null;
       disposeArchitecture(model);
     }
+    this.surfaces?.dispose();
+    this.surfaces = null;
     return this.cleanup;
   }
   private useFallback() {
@@ -153,7 +146,7 @@ export class PortalRoom {
     size: number,
   ) {
     if (this.status !== "ready" && this.status !== "fallback") return;
-    size = Math.max(384, Math.min(640, Math.round(size / 64) * 64));
+    size = Math.max(512, Math.min(1024, Math.round(size / 64) * 64));
     const changedSize = this.resolution !== size;
     roomPose(this.pose, lookX, lookY, lensX, lensY, pressure, depth);
     if (

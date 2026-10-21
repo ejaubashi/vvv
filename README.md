@@ -34,24 +34,24 @@ A single-file edition can be generated after building with `node scripts/export-
 
 ## Architecture
 
-| Module                                                 | Responsibility                                                                             |
-| ------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
-| `src/main.ts`, `state.ts`                              | Application/workspace state, controls, on-demand orchestration                             |
-| `gestures.ts`                                          | Pointer capture, pressure where available, drag selection, inspection                      |
-| `motion.ts`                                            | Shared damped springs, bounded time steps, exact settling                                  |
-| `transitions.ts`                                       | Native modal lifecycle, optical morph coordination, inert controls, focus restoration      |
-| `render/renderer.ts`                                   | Typed renderer contract, WebGPU, WebGL 2, Canvas fallback, disposal                        |
-| `optics.ts`, `export.ts`                               | Reference transmission/reflection math and local PNG download lifecycle                    |
-| `render/shaders.ts`                                    | WGSL/GLSL analytical optics consuming the same uniforms                                    |
-| `room/architecture.ts`, `room/pose.ts`, `room/room.ts` | Actual architectural geometry, bounded camera, Three.js WebGPU/TSL rendering and lifecycle |
-| `render/scene.ts`                                      | Shared backdrop texture, interrupted radial reveals, grayscale media cover crop            |
-| `media.ts`                                             | Local URLs, cancelable replacement, playback, Web Audio analysis and cleanup               |
-| `ui.ts`, `style.css`                                   | Accessible controls, minimal composition, responsive presentation                          |
-| `performance.ts`                                       | Active-frame measurements and adaptive resolution with hysteresis                          |
+| Module                                                                      | Responsibility                                                                             |
+| --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `src/main.ts`, `state.ts`                                                   | Application/workspace state, controls, on-demand orchestration                             |
+| `gestures.ts`                                                               | Pointer capture, pressure where available, drag selection, inspection                      |
+| `motion.ts`                                                                 | Shared damped springs, bounded time steps, exact settling                                  |
+| `transitions.ts`                                                            | Native modal lifecycle, optical morph coordination, inert controls, focus restoration      |
+| `render/renderer.ts`                                                        | Typed renderer contract, WebGPU, WebGL 2, Canvas fallback, disposal                        |
+| `optics.ts`, `export.ts`                                                    | Reference transmission/reflection math and local PNG download lifecycle                    |
+| `render/shaders.ts`                                                         | WGSL/GLSL analytical optics consuming the same uniforms                                    |
+| `room/architecture.ts`, `room/materials.ts`, `room/pose.ts`, `room/room.ts` | Actual architectural geometry, bounded camera, Three.js WebGPU/TSL rendering and lifecycle |
+| `render/scene.ts`                                                           | Shared backdrop texture, interrupted radial reveals, grayscale media cover crop            |
+| `media.ts`                                                                  | Local URLs, cancelable replacement, playback, Web Audio analysis and cleanup               |
+| `ui.ts`, `style.css`                                                        | Accessible controls, minimal composition, responsive presentation                          |
+| `performance.ts`                                                            | Active-frame measurements and adaptive resolution with hysteresis                          |
 
 The lens bends samples from the **actual displayed backdrop**, using a convex surface profile, Snell refraction, optical depth and refractive index. Schlick’s approximation links Fresnel reflection to the material and viewing angle; neighboring samples approximate roughness. Position, deformation, compression, wake, and workspace morph use the same motion state. This is **analytical screen-space optics**, not physical ray tracing; caustics and thickness are approximate. Text fades into the expanded surface without being stretched.
 
-The room engine uses Three.js r186 WebGPURenderer and TSL node materials. Its actual meshes render with a depth buffer; lens refraction remains a screen-space approximation. The room frame is sampled only inside the lens.
+The room engine uses Three.js r186 WebGPURenderer and TSL node materials. Its actual meshes render with a depth buffer, antialiasing, procedural stone surfaces, environment lighting and a bounded floor reflection; lens refraction remains a screen-space approximation. The room frame is sampled only inside the lens.
 
 Renderer selection is WebGPU → WebGL 2 → Canvas 2D. Initialization failures are caught; graphics loss switches to Canvas while navigation and controls remain usable. For diagnosis, append `?renderer=webgl` or `?renderer=canvas`. WebGPU requires a secure context and a supported adapter. The Canvas renderer uses clipped magnification and blur rather than the GPU surface model.
 

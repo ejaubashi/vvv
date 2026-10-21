@@ -15,6 +15,7 @@ import {
   Fog,
   PCFShadowMap,
 } from "three/webgpu";
+import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
 
 export interface RoomMaterials {
   stone: Material;
@@ -34,7 +35,7 @@ export function createArchitecture(
 ) {
   const scene = new Scene();
   scene.background = new Color(0x282828);
-  scene.fog = new Fog(0x282828, 12, 30);
+  scene.fog = new Fog(0x5d5a55, 18, 45);
   const camera = new PerspectiveCamera(53, 1, 0.1, 45);
   camera.position.set(0, 1.55, 6.2);
   camera.lookAt(0, 1.65, -5.5);
@@ -72,19 +73,19 @@ export function createArchitecture(
   outline.lineTo(-1.52, 0);
   outline.closePath();
   const archGeometry = new ExtrudeGeometry(outline, {
-    depth: 0.32,
+    depth: 0.46,
     bevelEnabled: true,
-    bevelSegments: 2,
+    bevelSegments: 3,
     steps: 1,
     bevelSize: 0.045,
     bevelThickness: 0.035,
-    curveSegments: 32,
+    curveSegments: 64,
   });
   for (const [i, z] of [1, -2, -5, -8].entries())
     add(`arch-${i}`, archGeometry, materials.stone, 0, 0, z);
   const occluder = add(
     "foreground-column",
-    new BoxGeometry(0.45, 2.8, 0.45),
+    new RoundedBoxGeometry(0.45, 2.8, 0.45, 3, 0.035),
     materials.stone,
     -0.38,
     1.4,
@@ -106,11 +107,12 @@ export function createArchitecture(
     1.35,
     -10.5,
   );
-  const sun = new DirectionalLight(0xffffff, 3.8);
+  const sun = new DirectionalLight(0xfff5e5, 3.2);
   sun.position.set(3.2, 4.65, 4);
   sun.target.position.set(-0.5, 0.5, -7);
   sun.castShadow = true;
-  sun.shadow.mapSize.set(512, 512);
+  sun.shadow.mapSize.set(1024, 1024);
+  sun.shadow.radius = 2.5;
   sun.shadow.camera.left = -7;
   sun.shadow.camera.right = 7;
   sun.shadow.camera.top = 8;
@@ -118,8 +120,8 @@ export function createArchitecture(
   sun.shadow.camera.near = 0.3;
   sun.shadow.camera.far = 32;
   sun.shadow.bias = -0.001;
-  sun.shadow.normalBias = 0.025;
-  scene.add(sun, sun.target, new HemisphereLight(0xffffff, 0x333333, 1.35));
+  sun.shadow.normalBias = 0.014;
+  scene.add(sun, sun.target, new HemisphereLight(0xe8efff, 0x4c443a, 0.55));
   return {
     scene,
     camera,

@@ -38,7 +38,7 @@ try {
           0,
           0,
           0.85,
-          384,
+          512,
         );
         const backend = room.engine.backend;
         if (backend.device) await backend.device.queue.onSubmittedWorkDone();
