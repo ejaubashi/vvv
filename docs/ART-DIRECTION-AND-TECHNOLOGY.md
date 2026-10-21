@@ -60,4 +60,4 @@ Before the bounded pass, one richer-shader cloud sample measured about 15 fps; a
 4. [Three.js r186](https://github.com/mrdoob/three.js/releases/tag/r186) and [official WebGPURenderer documentation](https://github.com/mrdoob/three.js/blob/r186/docs/pages/WebGPURenderer.html).
 5. [MDN WebCodecs overview](https://developer.mozilla.org/en-US/docs/Web/API/WebCodecs_API), including processing queues, codec support, and container limitations.
 
-No paid services, remote assets, new application runtime dependencies, generative-model endpoints, camera access, or microphone access were added.
+That art-environment iteration added no paid services, remote assets, application runtime dependencies, generative-model endpoints, camera access, or microphone access. The subsequent [room prototype](ROOM-PROTOTYPE.md) adds Three.js r186 for actual geometry, depth-buffered rendering and TSL materials.

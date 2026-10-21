@@ -918,3 +918,33 @@ body.reduced *:after {
   letter-spacing: 1px;
   opacity: 0.6;
 }
+.stage-3 {
+  background: linear-gradient(135deg, #bdbdbd, #333);
+}
+.stage-3:before {
+  content: "";
+  position: absolute;
+  inset: 10px 26%;
+  border: 7px solid #dededb;
+  border-bottom: 0;
+  border-radius: 50% 50% 0 0;
+  box-shadow:
+    0 0 0 7px #6b6b68,
+    inset 0 0 0 7px #7b7b78;
+}
+.room-note {
+  margin: 16px 0 4px;
+}
+.room-note p {
+  font-size: 10px;
+  line-height: 1.7;
+  color: var(--muted);
+  margin: 9px 0 15px;
+}
+.stage-preset > span:last-child {
+  padding-left: 9px;
+  padding-right: 9px;
+}
+.stage-gallery {
+  gap: 7px;
+}

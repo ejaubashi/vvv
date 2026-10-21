@@ -13,6 +13,7 @@ import { Gestures } from "./gestures";
 import { WorkspaceTransition } from "./transitions";
 import { MediaManager } from "./media";
 import { PerformanceMonitor } from "./performance";
+import { PortalRoom } from "./room/room";
 import { FrameExport } from "./export";
 import { SceneTexture } from "./render/scene";
 import {
@@ -32,7 +33,8 @@ const workspace = new WorkspaceState(),
   media = new MediaManager(),
   monitor = new PerformanceMonitor(),
   scene = new SceneTexture(),
-  frameExport = new FrameExport();
+  frameExport = new FrameExport(),
+  room = new PortalRoom(wake);
 let width = innerWidth,
   height = innerHeight,
   radius = Math.min(128, width * 0.27, height * 0.18),
@@ -57,7 +59,9 @@ let ior = defaults.ior,
   lightAngle = defaults.lightAngle,
   composition: 0 | 1 | 2 = 0,
   ambientTime = 0,
-  pendingExport = false;
+  pendingExport = false,
+  roomEnabled = new URLSearchParams(location.search).get("room") === "1",
+  roomLook = true;
 const systemReduced = matchMedia("(prefers-reduced-motion: reduce)");
 let saved = { x: width * 0.5, y: height * 0.46 },
   target = { x: width * 0.5, y: height * 0.5, w: 480, h: 500 };
@@ -89,6 +93,7 @@ const optical: OpticalState = {
   revealX: 0.5,
   revealY: 0.5,
   energy: 0,
+  room: 0,
 };
 function toast(message: string) {
   const el = $("#toast");
@@ -109,7 +114,11 @@ function reduced() {
 function resize() {
   width = innerWidth;
   height = innerHeight;
-  radius = Math.min(128, width * 0.27, height * 0.18);
+  radius = Math.min(
+    roomEnabled ? 180 : 128,
+    width * (roomEnabled ? 0.34 : 0.27),
+    height * (roomEnabled ? 0.24 : 0.18),
+  );
   const ratio =
     Math.min(
       devicePixelRatio || 1,
@@ -163,6 +172,10 @@ function tick(now: number) {
     (lightAngle * Math.PI) / 180 +
     (living ? Math.sin(ambientTime * 0.22) * 0.55 : 0);
   motion.audio.target = media.playing || media.demo ? media.energy() : 0;
+  motion.portal.target =
+    roomEnabled && (room.status === "ready" || room.status === "fallback")
+      ? 1
+      : 0;
   motion.step(dt);
   if (reveal < 1) reveal = motion.reduced ? 1 : Math.min(1, reveal + dt * 1.8);
   const m = clamp(motion.morph.x, 0, 1),
@@ -188,15 +201,35 @@ function tick(now: number) {
   optical.revealX = revealX;
   optical.revealY = revealY;
   optical.energy = energy;
+  optical.room = clamp(motion.portal.x, 0, 1);
+  if (optical.room > 0)
+    room.render(
+      motion.viewX.x,
+      motion.viewY.x,
+      (motion.x.x / width - 0.5) * 2,
+      (motion.y.x / height - 0.46) * 2,
+      motion.reduced ? 0 : motion.intensity.x,
+      depth,
+      radius * 3.2 * Math.min(devicePixelRatio || 1, 1.75) * monitor.scale,
+    );
   scene.draw(optical, media.source, media.decodedFrame);
   let rendered = true;
   try {
-    renderer.draw(optical, scene.canvas, scene.version);
+    renderer.draw(
+      optical,
+      scene.canvas,
+      scene.version,
+      optical.room > 0 ? room.frame : undefined,
+    );
   } catch (error) {
     console.warn("Renderer replaced:", String(error));
     fallback();
     rendered = false;
   }
+  renderer.canvas.dataset.roomStatus = room.status;
+  renderer.canvas.dataset.roomRenderer = room.backend;
+  renderer.canvas.dataset.roomDraws = String(room.draws);
+  renderer.canvas.dataset.roomResolution = String(room.resolution);
   lens.style.left = `${motion.x.x - radius}px`;
   lens.style.top = `${motion.y.x - radius}px`;
   lens.style.width = lens.style.height = `${radius * 2}px`;
@@ -219,6 +252,21 @@ function tick(now: number) {
   if (motion.moving || media.playing || media.demo || reveal < 1 || living)
     wake();
   else last = 0;
+}
+async function startRoom() {
+  if (room.status === "idle") toast("Opening the room…");
+  await room.init(
+    renderer.name !== "WebGPU" ||
+      new URLSearchParams(location.search).get("roomRenderer") === "webgl",
+  );
+  if (disposed) return;
+  if (roomEnabled)
+    toast(
+      room.status === "ready"
+        ? "Inside the glass · move to look around"
+        : "3D is unavailable · showing an architectural study",
+    );
+  wake();
 }
 function fallback() {
   if (!renderer || disposed) return;
@@ -519,7 +567,7 @@ function renderWorkspace(type: Workspace) {
       "Bring something of your own into the light.",
       1,
     );
-    body.innerHTML = `<div class="stage-gallery" role="group" aria-label="Studio environments">${["Fold", "Sculpture", "Veil"].map((name, index) => `<button class="stage-preset" data-composition="${index}" aria-pressed="${composition === index && !media.source}"><span class="stage-mini stage-${index}" aria-hidden="true"></span><span>${name}</span></button>`).join("")}</div><p class="gallery-note">CHOOSE AN ATMOSPHERE, OR BRING YOUR OWN.</p><label class="drop-zone" id="drop-zone">${icon("upload")}<strong>Drop a file, or browse</strong><small>IMAGE, VIDEO OR AUDIO · UP TO 150 MB</small><input id="file" type="file" accept="image/*,video/*,audio/*" aria-label="Choose a local media file"/></label><div id="media-info"></div><p class="media-note">Your files stay on this device. Visual media is shown in monochrome, with a cover crop that follows the lens.</p><button id="export-frame" class="export-button">${icon("download")}Save this moment<span>PNG ↗</span></button>`;
+    body.innerHTML = `<div class="stage-gallery" role="group" aria-label="Studio environments">${["Fold", "Sculpture", "Veil", "Room"].map((name, index) => `<button class="stage-preset" data-composition="${index}" aria-pressed="${index === 3 ? roomEnabled : !roomEnabled && composition === index && !media.source}"><span class="stage-mini stage-${index}" aria-hidden="true"></span><span>${name}</span></button>`).join("")}</div><p class="gallery-note">CHOOSE AN ATMOSPHERE, OR BRING YOUR OWN.</p>${roomEnabled ? `<div class="room-note"><span class="badge">A ROOM INSIDE THE LENS</span><p>A quiet gallery beyond the glass. Move your pointer to look around, or enable lens inspection to explore by touch.</p></div>${toggle("room-look", "Look around", "Gentle perspective movement. Reduced motion keeps it still.", roomLook)}` : ""}<label class="drop-zone" id="drop-zone">${icon("upload")}<strong>Drop a file, or browse</strong><small>IMAGE, VIDEO OR AUDIO · UP TO 150 MB</small><input id="file" type="file" accept="image/*,video/*,audio/*" aria-label="Choose a local media file"/></label><div id="media-info"></div><p class="media-note">Your files stay on this device. Visual media is shown in monochrome, with a cover crop that follows the lens.</p><button id="export-frame" class="export-button">${icon("download")}Save this moment<span>PNG ↗</span></button>`;
     for (const button of body.querySelectorAll<HTMLButtonElement>(
       "[data-composition]",
     ))
@@ -527,12 +575,27 @@ function renderWorkspace(type: Workspace) {
         scene.captureReveal();
         media.clear();
         filename = "";
+        if (Number(button.dataset.composition) === 3) {
+          roomEnabled = true;
+          resize();
+          closeWorkspace();
+          void startRoom();
+          return;
+        }
+        roomEnabled = false;
+        resize();
         composition = Number(button.dataset.composition) as 0 | 1 | 2;
         previousScene = sceneIndex;
         reveal = 0;
         revealX = saved.x / width;
         revealY = saved.y / height;
         closeWorkspace();
+        wake();
+      });
+    if (roomEnabled)
+      $<HTMLInputElement>("#room-look").addEventListener("change", (event) => {
+        roomLook = (event.target as HTMLInputElement).checked;
+        if (!roomLook) motion.viewX.target = motion.viewY.target = 0;
         wake();
       });
     $("#export-frame").addEventListener("click", () => {
@@ -594,7 +657,7 @@ function renderWorkspace(type: Workspace) {
       "An optical study in a single, continuous object.",
       4,
     );
-    body.innerHTML = `<div class="detail-row"><span>Active renderer</span><span id="renderer-name"></span></div><div class="detail-row"><span>Measured active frames</span><span id="fps">Collecting…</span></div><div class="detail-row"><span>Render resolution</span><span id="resolution"></span></div><div class="detail-row"><span>Backdrop updates</span><span id="texture-updates"></span></div><div class="detail-row"><span>Quality scale</span><span id="quality"></span></div><p class="details-copy">The lens samples the same scene you see behind it. Snell’s law bends the scene samples through a convex surface profile; optical depth controls their travel. Schlick’s approximation varies reflection with refractive index and viewing angle. Roughness softens both highlights and transmitted detail.</p><p class="details-copy">This is a real-time optical approximation, not physical ray tracing. The light wake is a soft caustic approximation driven by the same spring state as the lens.</p><span class="badge">60 FPS TARGET · 16.7 MS FRAME BUDGET</span>`;
+    body.innerHTML = `<div class="detail-row"><span>Active renderer</span><span id="renderer-name"></span></div><div class="detail-row"><span>Measured active frames</span><span id="fps">Collecting…</span></div><div class="detail-row"><span>Render resolution</span><span id="resolution"></span></div><div class="detail-row"><span>Room renderer</span><span id="room-renderer"></span></div><div class="detail-row"><span>Room rendering</span><span id="room-measurement"></span></div><div class="detail-row"><span>Backdrop updates</span><span id="texture-updates"></span></div><div class="detail-row"><span>Quality scale</span><span id="quality"></span></div><p class="details-copy">The lens samples the same scene you see behind it. Snell’s law bends the scene samples through a convex surface profile; optical depth controls their travel. Schlick’s approximation varies reflection with refractive index and viewing angle. Roughness softens both highlights and transmitted detail.</p><p class="details-copy">This is a real-time optical approximation, not physical ray tracing. The light wake is a soft caustic approximation driven by the same spring state as the lens.</p><span class="badge">60 FPS TARGET · 16.7 MS FRAME BUDGET</span>`;
     updateDetails();
   }
   measureDialog();
@@ -616,6 +679,9 @@ async function loadFile(file: File) {
     const loaded = await media.load(file);
     if (loaded) {
       filename = file.name;
+      roomEnabled = false;
+      resize();
+      if (workspace.active === "media") renderWorkspace("media");
       toast("Local media ready");
     }
   } catch (error) {
@@ -693,6 +759,13 @@ function updateDetails() {
     : "Awaiting active interaction";
   $("#resolution").textContent =
     `${renderer.canvas.width} × ${renderer.canvas.height}`;
+  $("#room-renderer").textContent = room.backend;
+  $("#room-measurement").textContent =
+    room.status === "ready"
+      ? `${room.resolution}² · ${room.meshCount} meshes · ${room.submitMs.toFixed(1)} ms CPU submit`
+      : room.status === "fallback"
+        ? "Illustration fallback"
+        : "On demand";
   $("#texture-updates").textContent =
     `${scene.version} · ${media.decodedFrame !== undefined ? "decoded video frames" : "on demand"}`;
   $("#quality").textContent = `${Math.round(monitor.scale * 100)}% · adaptive`;
@@ -710,6 +783,31 @@ const gestures = new Gestures({
   select,
   bounds: () => ({ width, height, radius }),
 });
+const roomInputs = new AbortController();
+window.addEventListener(
+  "pointermove",
+  (event) => {
+    if (!roomEnabled || !roomLook || dialog.open || motion.reduced) return;
+    if (
+      (event.target as Element)?.closest?.(
+        ".chrome,#actions,#exit-focus,dialog",
+      )
+    )
+      return;
+    motion.viewX.target = clamp((event.clientX / width - 0.5) * 2, -1, 1);
+    motion.viewY.target = clamp((event.clientY / height - 0.5) * 2, -1, 1);
+    wake();
+  },
+  { signal: roomInputs.signal, passive: true },
+);
+window.addEventListener(
+  "blur",
+  () => {
+    motion.viewX.target = motion.viewY.target = 0;
+    wake();
+  },
+  { signal: roomInputs.signal },
+);
 window.addEventListener("resize", resize);
 systemReduced.addEventListener("change", reduced);
 document.addEventListener("visibilitychange", () => {
@@ -734,6 +832,8 @@ window.addEventListener(
     observer.disconnect();
     media.dispose();
     frameExport.dispose();
+    roomInputs.abort();
+    void room.dispose();
     renderer.dispose();
     window.removeEventListener("resize", resize);
     systemReduced.removeEventListener("change", reduced);
@@ -745,3 +845,4 @@ $("#scene").append(renderer.canvas);
 reduced();
 resize();
 wake();
+if (roomEnabled) void startRoom();
