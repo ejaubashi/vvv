@@ -1,5 +1,7 @@
 # A room inside the lens
 
+Now expanded into [Living Rooms](LIVING-ROOMS.md), with three authored spaces and optional finite playback.
+
 An architectural prototype built on Three.js **r186**, WebGPURenderer, and TSL node materials. It extends the immersive-art branch; the other environments remain available.
 
 ## Try it
@@ -28,7 +30,7 @@ The room is rendered to its own bounded square canvas, then copied into a persis
 
 The room frame uses four-sample antialiasing and is 512–1024 pixels per axis, selected from lens size, device ratio and adaptive quality. The room stops drawing once its camera settles, pauses with the application's hidden-tab handling, and caches the geometry when switching to another environment. Geometry, shared materials, shadow resources and the renderer are released on disposal, including cancellation during initialization. Graphics loss or failed initialization retains a clearly identified **architectural illustration**, not a claim of 3D rendering.
 
-Diagnostics in **Details** identify the room backend, twelve meshes, resolution and the latest **CPU submission/copy** duration. This is not a GPU timestamp or an end-to-end frame-rate certification.
+Diagnostics in **Details** identify the room backend, the active edition’s mesh count, resolution and the latest **CPU submission/copy** duration. This is not a GPU timestamp or an end-to-end frame-rate certification.
 
 ## Validation
 
@@ -37,11 +39,11 @@ Diagnostics in **Details** identify the room backend, twelve meshes, resolution 
 - Browser tests verify WebGL and WebGPU room rendering, changing views, unchanged pixels outside the portal, settled rendering, environment switching, mobile inspection, reduced motion, initialization cancellation and fallback behavior.
 - The full existing studio suite remains part of the regression run.
 
-Run `npm test` (11 focused tests), `npm run test:browser` (25 browser tests), and `npm run build` from the repository root. Browser tests use system Chromium and software graphics; physical-device performance and Safari/Firefox rendering remain unverified.
+Run `npm test` (14 focused tests), `npm run test:browser` (32 browser tests), and `npm run build` from the repository root. Browser tests use system Chromium and software graphics; physical-device performance and Safari/Firefox rendering remain unverified.
 
 ## Delivery tradeoff
 
-Three.js is a new, concrete runtime dependency for geometry, camera/depth rendering, lights and cross-backend node materials. The prototype currently ships one JavaScript bundle of approximately **976 KB minified / 274 KB gzip**, compared with the earlier small optical-only bundle. Graphics initialization is on demand, but the library bytes are included in the initial bundle. This keeps the single-file CDN preview self-contained. A later production pass should split the room engine for normal hosting while retaining a separate bundled single-file export.
+Three.js is a new, concrete runtime dependency for geometry, camera/depth rendering, lights and cross-backend node materials. The prototype currently ships one JavaScript bundle of approximately **986 KB minified / 277 KB gzip**, compared with the earlier small optical-only bundle. Graphics initialization is on demand, but the library bytes are included in the initial bundle. This keeps the single-file CDN preview self-contained. A later production pass should split the room engine for normal hosting while retaining a separate bundled single-file export.
 
 ## Reproducible room benchmark
 

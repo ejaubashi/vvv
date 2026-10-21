@@ -7,6 +7,7 @@ import { createArchitecture, disposeArchitecture } from "./architecture";
 import { createRoomSurfaces } from "./materials";
 import { roomPose, type RoomPose } from "./pose";
 import type { PortalFrame } from "../render/portal-frame";
+import { roomDefinition, type RoomId } from "./catalog";
 
 export class PortalRoom {
   frame: PortalFrame = { canvas: document.createElement("canvas"), version: 0 };
@@ -15,10 +16,19 @@ export class PortalRoom {
   resolution = 0;
   draws = 0;
   submitMs = 0;
+  kind: RoomId = "gallery";
+  requested: RoomId = "gallery";
+  switching = false;
+  blend = 1;
   private engine: WebGPURenderer | null = null;
   private model: ReturnType<typeof createArchitecture> | null = null;
   private surfaces: ReturnType<typeof createRoomSurfaces> | null = null;
   private pending: Promise<void> | null = null;
+  private switchTask: Promise<void> | null = null;
+  private previous = document.createElement("canvas");
+  private current = document.createElement("canvas");
+  private lastBlend = 1;
+  private lastLight = Infinity;
   private cleanup: Promise<void> = Promise.resolve();
   private pose: RoomPose = { x: 0, y: 1.55, z: 6.2 };
   private lastPose: RoomPose = { x: Infinity, y: Infinity, z: Infinity };
@@ -27,10 +37,11 @@ export class PortalRoom {
     this.loss = onChange;
     this.frame.canvas.width = this.frame.canvas.height = 1;
   }
-  init(forceWebGL = false): Promise<void> {
+  init(forceWebGL = false, id: RoomId = "gallery"): Promise<void> {
     if (this.pending) return this.pending;
     if (this.status === "disposed") return Promise.resolve();
     this.status = "loading";
+    this.kind = this.requested = id;
     this.pending = this.initialize(forceWebGL);
     return this.pending;
   }
@@ -38,10 +49,12 @@ export class PortalRoom {
     try {
       if (new URLSearchParams(location.search).get("roomRenderer") === "none")
         throw Error("Room fallback requested");
-      this.surfaces = createRoomSurfaces();
-      this.model = createArchitecture(this.surfaces.materials);
+      this.surfaces = createRoomSurfaces(this.kind);
+      this.model = createArchitecture(this.surfaces.materials, this.kind);
       this.model.scene.environment = this.surfaces.environment;
-      this.model.scene.environmentIntensity = 0.35;
+      this.model.scene.environmentIntensity = roomDefinition(
+        this.kind,
+      ).environment;
       this.model.scene.add(this.surfaces.reflection.target);
       const engine = new WebGPURenderer({
         canvas: document.createElement("canvas"),
@@ -99,6 +112,83 @@ export class PortalRoom {
   private isLoading() {
     return this.status === "loading";
   }
+  /** Keep one renderer. Compile at most one replacement; newer requests supersede it. */
+  async select(id: RoomId) {
+    this.requested = id;
+    if (this.status === "loading") await this.pending;
+    if (this.status === "disposed" || this.status === "idle") return;
+    if (this.status === "fallback") {
+      this.kind = id;
+      this.lastPose.x = Infinity;
+      this.loss();
+      return;
+    }
+    if (this.switchTask) return this.switchTask;
+    if (this.kind === id) return;
+    this.switching = true;
+    this.loss();
+    this.switchTask = this.switchRooms().finally(() => {
+      this.switchTask = null;
+      this.switching = false;
+      this.loss();
+    });
+    return this.switchTask;
+  }
+  private async switchRooms() {
+    while (this.status === "ready" && this.requested !== this.kind) {
+      const id = this.requested,
+        engine = this.engine!;
+      const surfaces = createRoomSurfaces(id);
+      const model = createArchitecture(surfaces.materials, id);
+      model.scene.environment = surfaces.environment;
+      model.scene.environmentIntensity = roomDefinition(id).environment;
+      model.scene.add(surfaces.reflection.target);
+      model.sun.shadow.autoUpdate = false;
+      model.sun.shadow.needsUpdate = true;
+      let adopted = false;
+      try {
+        await engine.compileAsync(model.scene, model.camera);
+        if (
+          this.status !== "ready" ||
+          this.engine !== engine ||
+          id !== this.requested
+        )
+          continue;
+        if (this.resolution) {
+          this.previous.width = this.previous.height = this.resolution;
+          this.previous.getContext("2d")!.drawImage(this.frame.canvas, 0, 0);
+        }
+        disposeArchitecture(this.model!);
+        this.surfaces!.dispose();
+        this.model = model;
+        this.surfaces = surfaces;
+        adopted = true;
+        this.kind = id;
+        this.blend = this.resolution ? 0 : 1;
+        this.lastPose.x = Infinity;
+        this.lastLight = Infinity;
+        this.loss();
+      } catch (error) {
+        console.warn("Room change unavailable:", String(error));
+        if (this.status === "ready") this.useFallback();
+      } finally {
+        if (!adopted) {
+          disposeArchitecture(model);
+          surfaces.dispose();
+        }
+      }
+    }
+  }
+  /** Called only by the studio's existing animation clock. */
+  step(dt: number, reduced = false) {
+    if (this.blend < 1)
+      this.blend = reduced
+        ? 1
+        : Math.min(1, this.blend + Math.min(dt, 0.25) / 0.85);
+  }
+  get moving() {
+    return this.blend < 1;
+  }
   private release() {
     const engine = this.engine;
     this.engine = null;
@@ -127,6 +217,8 @@ export class PortalRoom {
   private useFallback() {
     if (this.status === "disposed" || this.status === "fallback") return;
     this.status = "fallback";
+    this.kind = this.requested;
+    this.blend = 1;
     this.backend = "Architectural illustration · 3D unavailable";
     this.release();
     this.frame.canvas = document.createElement("canvas");
@@ -144,30 +236,49 @@ export class PortalRoom {
     pressure: number,
     depth: number,
     size: number,
+    lightTime = 0,
   ) {
     if (this.status !== "ready" && this.status !== "fallback") return;
     size = Math.max(512, Math.min(1024, Math.round(size / 64) * 64));
     const changedSize = this.resolution !== size;
     roomPose(this.pose, lookX, lookY, lensX, lensY, pressure, depth);
-    if (
-      !changedSize &&
-      Math.abs(this.pose.x - this.lastPose.x) < 0.00025 &&
-      Math.abs(this.pose.y - this.lastPose.y) < 0.00025 &&
-      Math.abs(this.pose.z - this.lastPose.z) < 0.00025
-    )
-      return;
+    const changedPose =
+      changedSize ||
+      Math.abs(this.pose.x - this.lastPose.x) >= 0.00025 ||
+      Math.abs(this.pose.y - this.lastPose.y) >= 0.00025 ||
+      Math.abs(this.pose.z - this.lastPose.z) >= 0.00025 ||
+      Math.abs(lightTime - this.lastLight) >= 0.07;
+    if (!changedPose && this.blend === this.lastBlend) return;
     const start = performance.now();
     if (this.engine && this.model) {
       if (changedSize) this.engine.setSize(size, size, false);
       this.model.camera.position.set(this.pose.x, this.pose.y, this.pose.z);
       this.model.camera.lookAt(0, 1.65, -5.5);
       try {
-        this.engine.render(this.model.scene, this.model.camera);
+        if (changedPose) {
+          if (Math.abs(lightTime - this.lastLight) >= 0.07) {
+            this.model.sun.position.x = 3.2 + Math.sin(lightTime * 0.22) * 1.2;
+            this.model.sun.shadow.needsUpdate = true;
+          }
+          this.engine.render(this.model.scene, this.model.camera);
+          if (changedSize || this.current.width !== size)
+            this.current.width = this.current.height = size;
+          this.current
+            .getContext("2d")!
+            .drawImage(this.engine.domElement, 0, 0, size, size);
+          this.lastLight = lightTime;
+        }
         if (changedSize)
           this.frame.canvas.width = this.frame.canvas.height = size;
-        this.frame.canvas
-          .getContext("2d")!
-          .drawImage(this.engine.domElement, 0, 0, size, size);
+        const c = this.frame.canvas.getContext("2d")!;
+        c.globalAlpha = 1;
+        c.drawImage(this.current, 0, 0, size, size);
+        if (this.blend < 1) {
+          const t = this.blend * this.blend * (3 - 2 * this.blend);
+          c.globalAlpha = 1 - t;
+          c.drawImage(this.previous, 0, 0, size, size);
+          c.globalAlpha = 1;
+        }
       } catch (error) {
         console.warn("Room rendering stopped:", String(error));
         this.useFallback();
@@ -176,6 +287,7 @@ export class PortalRoom {
     } else this.poster(size);
     this.resolution = size;
     Object.assign(this.lastPose, this.pose);
+    this.lastBlend = this.blend;
     this.submitMs = performance.now() - start;
     this.draws++;
     this.frame.version++;
@@ -186,6 +298,45 @@ export class PortalRoom {
     const c = canvas.getContext("2d")!;
     c.fillStyle = "#292929";
     c.fillRect(0, 0, size, size);
+    if (this.kind === "nocturne") {
+      c.fillStyle = "#101923";
+      c.fillRect(0, 0, size, size);
+      c.strokeStyle = "#aebccc";
+      c.lineWidth = size * 0.012;
+      for (let i = 0; i < 3; i++) {
+        c.beginPath();
+        c.ellipse(
+          size * 0.5,
+          size * 0.46,
+          size * 0.33 * (1 - i * 0.23),
+          size * 0.33 * (1 - i * 0.23),
+          0,
+          0,
+          Math.PI * 2,
+        );
+        c.stroke();
+      }
+      return;
+    }
+    if (this.kind === "veil") {
+      c.fillStyle = "#9f978b";
+      c.fillRect(0, 0, size, size);
+      for (let i = 0; i < 8; i++) {
+        c.fillStyle = i % 2 ? "#dcd3c2" : "#bab1a0";
+        c.beginPath();
+        c.ellipse(
+          size * (0.1 + i * 0.115),
+          size * 0.45,
+          size * 0.07,
+          size * 0.44,
+          i % 2 ? 0.08 : -0.08,
+          0,
+          Math.PI * 2,
+        );
+        c.fill();
+      }
+      return;
+    }
     for (let i = 0; i < 5; i++) {
       const scale = Math.pow(0.74, i),
         w = size * 0.92 * scale,
@@ -212,6 +363,7 @@ export class PortalRoom {
     const loading = this.status === "loading";
     this.status = "disposed";
     if (loading) await this.pending;
-    else await this.release();
+    await this.switchTask;
+    await this.release();
   }
 }

@@ -14,13 +14,19 @@ import {
   Color,
   Fog,
   PCFShadowMap,
+  PlaneGeometry,
+  TorusGeometry,
+  MeshBasicMaterial,
+  type BufferGeometry,
 } from "three/webgpu";
 import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
+import { roomDefinition, type RoomId } from "./catalog";
 
 export interface RoomMaterials {
   stone: Material;
   floor: Material;
   sculpture: Material;
+  fabric?: Material;
 }
 export function createArchitecture(
   materials: RoomMaterials = {
@@ -32,17 +38,19 @@ export function createArchitecture(
       metalness: 0.25,
     }),
   },
+  id: RoomId = "gallery",
 ) {
+  const definition = roomDefinition(id);
   const scene = new Scene();
-  scene.background = new Color(0x282828);
-  scene.fog = new Fog(0x5d5a55, 18, 45);
+  scene.background = new Color(definition.background);
+  scene.fog = new Fog(definition.fog, 18, 45);
   const camera = new PerspectiveCamera(53, 1, 0.1, 45);
   camera.position.set(0, 1.55, 6.2);
   camera.lookAt(0, 1.65, -5.5);
   const meshes: Mesh[] = [];
   const add = (
     name: string,
-    geometry: BoxGeometry | ExtrudeGeometry | SphereGeometry | CylinderGeometry,
+    geometry: BufferGeometry,
     material: Material,
     x: number,
     y: number,
@@ -62,27 +70,78 @@ export function createArchitecture(
   add("left-wall", new BoxGeometry(0.2, 5, 20), materials.stone, -4, 2.5, -5);
   add("right-wall", new BoxGeometry(0.2, 5, 20), materials.stone, 4, 2.5, -5);
   add("end-wall", new BoxGeometry(8, 5, 0.2), materials.stone, 0, 2.5, -14);
-  const outline = new Shape();
-  outline.moveTo(-4, 0);
-  outline.lineTo(-4, 5);
-  outline.lineTo(4, 5);
-  outline.lineTo(4, 0);
-  outline.lineTo(1.52, 0);
-  outline.lineTo(1.52, 2.28);
-  outline.absarc(0, 2.28, 1.52, 0, Math.PI, false);
-  outline.lineTo(-1.52, 0);
-  outline.closePath();
-  const archGeometry = new ExtrudeGeometry(outline, {
-    depth: 0.46,
-    bevelEnabled: true,
-    bevelSegments: 3,
-    steps: 1,
-    bevelSize: 0.045,
-    bevelThickness: 0.035,
-    curveSegments: 64,
-  });
-  for (const [i, z] of [1, -2, -5, -8].entries())
-    add(`arch-${i}`, archGeometry, materials.stone, 0, 0, z);
+  if (id === "gallery") {
+    const outline = new Shape();
+    outline.moveTo(-4, 0);
+    outline.lineTo(-4, 5);
+    outline.lineTo(4, 5);
+    outline.lineTo(4, 0);
+    outline.lineTo(1.52, 0);
+    outline.lineTo(1.52, 2.28);
+    outline.absarc(0, 2.28, 1.52, 0, Math.PI, false);
+    outline.lineTo(-1.52, 0);
+    outline.closePath();
+    const archGeometry = new ExtrudeGeometry(outline, {
+      depth: 0.46,
+      bevelEnabled: true,
+      bevelSegments: 3,
+      steps: 1,
+      bevelSize: 0.045,
+      bevelThickness: 0.035,
+      curveSegments: 64,
+    });
+    for (const [i, z] of [1, -2, -5, -8].entries())
+      add(`arch-${i}`, archGeometry, materials.stone, 0, 0, z);
+  } else if (id === "nocturne") {
+    const ring = new TorusGeometry(1.48, 0.09, 20, 96);
+    for (const [i, z] of [-1, -5.8].entries()) {
+      const mesh = add(
+        `suspended-ring-${i}`,
+        ring,
+        materials.sculpture,
+        i ? 0.4 : -0.25,
+        2.2,
+        z,
+      );
+      mesh.rotation.y = i ? -0.2 : 0.14;
+    }
+    const strip = new BoxGeometry(0.045, 4.3, 0.05);
+    const luminous = new MeshBasicMaterial({ color: 0xc7dcf6 });
+    for (const x of [-3.84, 3.84])
+      add("light-seam", strip, luminous, x, 2.5, -5);
+  } else {
+    const cloth = new PlaneGeometry(2.4, 4.2, 48, 40);
+    const vertices = cloth.attributes.position;
+    for (let i = 0; i < vertices.count; i++) {
+      const x = vertices.getX(i),
+        y = vertices.getY(i);
+      const fold = Math.sin(x * 9) * 0.13 + Math.sin(x * 4.3 + y * 0.35) * 0.16;
+      vertices.setZ(i, fold);
+      vertices.setY(i, y - (0.065 * Math.cos(x * 5) * (2.1 - y)) / 4.2);
+    }
+    cloth.computeVertexNormals();
+    for (const [i, z] of [-0.4, -5.2].entries()) {
+      for (const side of [-1, 1]) {
+        const panel = add(
+          `fabric-${i}-${side}`,
+          cloth,
+          materials.fabric ?? materials.stone,
+          side * (i ? 1.85 : 2.05),
+          2.65,
+          z,
+        );
+        panel.rotation.y = side * (i ? 0.25 : -0.16);
+      }
+      add(
+        `suspension-${i}`,
+        new CylinderGeometry(0.025, 0.025, 7, 12),
+        materials.sculpture,
+        0,
+        4.8,
+        z,
+      ).rotation.z = Math.PI / 2;
+    }
+  }
   const occluder = add(
     "foreground-column",
     new RoundedBoxGeometry(0.45, 2.8, 0.45, 3, 0.035),
@@ -107,7 +166,7 @@ export function createArchitecture(
     1.35,
     -10.5,
   );
-  const sun = new DirectionalLight(0xfff5e5, 3.2);
+  const sun = new DirectionalLight(definition.light, definition.intensity);
   sun.position.set(3.2, 4.65, 4);
   sun.target.position.set(-0.5, 0.5, -7);
   sun.castShadow = true;
