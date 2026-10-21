@@ -15,6 +15,7 @@ const icons: Record<string, string> = {
   arrow: '<path d="m8 5 7 7-7 7"/>',
   upload: '<path d="M12 16V3m-5 5 5-5 5 5M4 15v5h16v-5"/>',
   play: '<path d="m8 5 11 7-11 7Z"/>',
+  download: '<path d="M12 3v13m-5-5 5 5 5-5M4 17v4h16v-4"/>',
   reset: '<path d="M4 10a8 8 0 1 1 1 8M4 4v6h6"/>',
 };
 export function icon(name: string) {

@@ -794,3 +794,127 @@ body.reduced *:after {
 .preset small {
   opacity: 0.75;
 }
+
+.advanced-optics {
+  border-top: 1px solid var(--line);
+  margin: 22px 0 0;
+}
+.advanced-optics summary {
+  font-size: 11px;
+  cursor: pointer;
+  padding: 17px 0;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+}
+.advanced-optics summary::-webkit-details-marker {
+  display: none;
+}
+.advanced-optics summary span {
+  opacity: 0.5;
+  transition: transform 0.2s;
+}
+.advanced-optics[open] summary span {
+  transform: rotate(90deg);
+}
+.advanced-optics summary:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+.advanced-optics .control:first-of-type {
+  margin-top: 8px;
+}
+.stage-gallery {
+  display: flex;
+  gap: 9px;
+}
+.stage-preset {
+  flex: 1;
+  padding: 0 0 11px;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  overflow: hidden;
+  text-align: left;
+  background: #ffffff20;
+}
+.stage-preset > span:last-child {
+  display: block;
+  padding: 0 12px;
+  font-size: 10px;
+}
+.stage-preset[aria-pressed="true"] {
+  border-color: #555c55;
+  background: #ffffff80;
+}
+.stage-mini {
+  height: 70px;
+  display: block;
+  margin-bottom: 11px;
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 30% 20%, #f1f1ef, #b8bbb7);
+}
+.stage-0:before {
+  content: "";
+  position: absolute;
+  left: 40%;
+  top: -20px;
+  bottom: -20px;
+  width: 6px;
+  transform: rotate(-30deg);
+  background: linear-gradient(90deg, #9fa29e, #fff);
+  box-shadow: 5px 0 15px #ffffff80;
+}
+.stage-1:before {
+  content: "";
+  position: absolute;
+  width: 40px;
+  height: 32px;
+  border-radius: 50%;
+  border: 10px solid #dededb;
+  box-shadow:
+    5px 9px 10px #00000025,
+    inset 2px 3px 6px #00000020;
+  left: calc(50% - 30px);
+  top: 7px;
+  transform: rotate(-35deg);
+}
+.stage-2:before {
+  content: "";
+  position: absolute;
+  inset: -30px;
+  background: repeating-linear-gradient(
+    110deg,
+    transparent 0 14px,
+    #ffffff60 20px,
+    transparent 34px
+  );
+  transform: rotate(-12deg);
+}
+.gallery-note {
+  font-size: 7px;
+  letter-spacing: 1.1px;
+  color: var(--muted);
+  margin: 14px 0 22px;
+}
+.export-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+  border-top: 1px solid var(--line);
+  padding: 17px 0 0;
+  font-size: 11px;
+  margin-top: 20px;
+}
+.export-button svg {
+  width: 16px;
+  height: 16px;
+}
+.export-button span {
+  margin-left: auto;
+  font-size: 8px;
+  letter-spacing: 1px;
+  opacity: 0.6;
+}

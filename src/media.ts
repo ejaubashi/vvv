@@ -5,6 +5,12 @@ export class MediaManager {
   kind: MediaKind | null = null;
   url: string | null = null;
   generation = 0;
+  frameVersion = 0;
+  private frameCallback: number | null = null;
+  private frameVideo: HTMLVideoElement | null = null;
+  private harmonics: OscillatorNode[] = [];
+  private modulation: OscillatorNode | null = null;
+  private modulationGain: GainNode | null = null;
   context: AudioContext | null = null;
   analyser: AnalyserNode | null = null;
   private nodes: AudioNode[] = [];
@@ -87,6 +93,7 @@ export class MediaManager {
         this.player.addEventListener("timeupdate", this.onChange);
         this.connectPlayer();
       }
+      if (this.source instanceof HTMLVideoElement) this.watchVideo(this.source);
       this.onChange();
       return true;
     } catch (error) {
@@ -100,6 +107,24 @@ export class MediaManager {
         return false;
       throw error;
     }
+  }
+  private watchVideo(video: HTMLVideoElement) {
+    this.frameVersion++;
+    if (typeof video.requestVideoFrameCallback !== "function") return;
+    this.frameVideo = video;
+    const frame = () => {
+      if (this.frameVideo !== video) return;
+      this.frameVersion++;
+      this.onChange();
+      this.frameCallback = video.requestVideoFrameCallback(frame);
+    };
+    this.frameCallback = video.requestVideoFrameCallback(frame);
+  }
+  get decodedFrame() {
+    return this.source instanceof HTMLVideoElement &&
+      typeof this.source.requestVideoFrameCallback === "function"
+      ? this.frameVersion
+      : undefined;
   }
   private ensureAudio() {
     this.context ??= new AudioContext();
@@ -134,10 +159,27 @@ export class MediaManager {
     const gain = this.context!.createGain();
     oscillator.type = "sine";
     oscillator.frequency.value = 110;
-    gain.gain.value = 0.035;
+    gain.gain.value = 0.018;
     oscillator.connect(gain);
     gain.connect(this.analyser!);
     oscillator.start();
+    for (const frequency of [164.81, 220]) {
+      const harmonic = this.context!.createOscillator();
+      harmonic.type = "sine";
+      harmonic.frequency.value = frequency;
+      harmonic.connect(gain);
+      harmonic.start();
+      this.harmonics.push(harmonic);
+    }
+    const modulation = this.context!.createOscillator(),
+      modulationGain = this.context!.createGain();
+    modulation.frequency.value = 0.09;
+    modulationGain.gain.value = 0.006;
+    modulation.connect(modulationGain);
+    modulationGain.connect(gain.gain);
+    modulation.start();
+    this.modulation = modulation;
+    this.modulationGain = modulationGain;
     this.demoGain = gain;
     this.oscillator = oscillator;
     this.demo = true;
@@ -147,6 +189,16 @@ export class MediaManager {
     this.oscillator?.stop();
     this.oscillator?.disconnect();
     this.oscillator = null;
+    for (const harmonic of this.harmonics) {
+      harmonic.stop();
+      harmonic.disconnect();
+    }
+    this.harmonics = [];
+    this.modulation?.stop();
+    this.modulation?.disconnect();
+    this.modulation = null;
+    this.modulationGain?.disconnect();
+    this.modulationGain = null;
     this.demoGain?.disconnect();
     this.demoGain = null;
     this.demo = false;
@@ -163,6 +215,11 @@ export class MediaManager {
     return !!this.player && !this.player.paused && !this.player.ended;
   }
   clearCurrent() {
+    if (this.frameVideo && this.frameCallback !== null)
+      this.frameVideo.cancelVideoFrameCallback(this.frameCallback);
+    this.frameVideo = null;
+    this.frameCallback = null;
+    this.frameVersion++;
     if (this.player) {
       for (const event of ["play", "pause", "ended", "timeupdate"])
         this.player.removeEventListener(event, this.onChange);

@@ -44,6 +44,8 @@ export class Motion {
   dy = new Spring();
   intensity = new Spring();
   morph = new Spring(0, 100, 21);
+  light = new Spring((-135 * Math.PI) / 180, 65, 17);
+  audio = new Spring(0, 90, 19);
   reduced = false;
   readonly springs = [
     this.x,
@@ -52,6 +54,8 @@ export class Motion {
     this.dy,
     this.intensity,
     this.morph,
+    this.light,
+    this.audio,
   ];
   step(dt: number) {
     for (const spring of this.springs)

@@ -1,0 +1,20 @@
+{
+  "renderer": "WebGPU / SwiftShader software Vulkan",
+  "viewport": "1100x800",
+  "output": "770x560",
+  "fullFrame": {
+    "samples": 40,
+    "meanMs": 27.38,
+    "p50Ms": 22.1,
+    "p95Ms": 54.9
+  },
+  "boundedOptics": {
+    "samples": 40,
+    "meanMs": 13.33,
+    "p50Ms": 11.5,
+    "p95Ms": 26.8
+  },
+  "metric": "CPU submission plus awaited GPU queue completion; not GPU timestamp duration or display FPS",
+  "date": "2026-10-21",
+  "method": "Same scene, optics, resolution and two-pass renderer. Full-frame condition overrides the optics scissor rectangle. 12 warmup submissions followed by 40 measured submissions per condition. Full-frame measured first. Single run on shared cloud software rendering; no claim of statistical significance or physical-device performance."
+}

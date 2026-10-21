@@ -1,7 +1,9 @@
+import { fresnelReflectance, refractedOffset } from "../optics";
 import type { OpticalState } from "../state";
-import { glVertex, glFragment, wgsl } from "./shaders";
+import { glVertex, glFragment, glBackground, wgsl } from "./shaders";
 export interface Renderer {
   name: string;
+  maxDimension: number;
   canvas: HTMLCanvasElement;
   resize(w: number, h: number, dpr: number): void;
   draw(state: OpticalState, scene: HTMLCanvasElement, version?: number): void;
@@ -29,13 +31,38 @@ function values(
   target[12] = s.roughness;
   target[13] = s.compare ? 1 : 0;
   target[14] = s.energy;
+  target[15] = ratio;
+  target[16] = s.depth;
+  target[17] = s.lightAngle;
   return target;
+}
+/** Expensive optics only cover the object plus a 96 CSS-pixel light/shadow halo. */
+function bounds(
+  s: OpticalState,
+  w: number,
+  h: number,
+  ratio: number,
+  out: Int32Array,
+) {
+  out[0] = Math.max(0, Math.floor((s.x - s.width * 0.6 - 96) * ratio));
+  out[1] = Math.max(0, Math.floor((s.y - s.height * 0.6 - 96) * ratio));
+  out[2] = Math.max(
+    1,
+    Math.min(w, Math.ceil((s.x + s.width * 0.6 + 96) * ratio)) - out[0],
+  );
+  out[3] = Math.max(
+    1,
+    Math.min(h, Math.ceil((s.y + s.height * 0.6 + 96) * ratio)) - out[1],
+  );
+  return out;
 }
 abstract class Base {
   canvas = document.createElement("canvas");
   ratio = 1;
+  maxDimension = 4096;
   name = "";
   data = new Float32Array(20);
+  rect = new Int32Array(4);
   chunks = Array.from({ length: 5 }, (_, i) =>
     this.data.subarray(i * 4, i * 4 + 4),
   );
@@ -50,6 +77,8 @@ export class WebGLRenderer extends Base implements Renderer {
   name = "WebGL 2";
   gl: WebGL2RenderingContext;
   program: WebGLProgram;
+  background: WebGLProgram;
+  backgroundUniform: WebGLUniformLocation;
   texture: WebGLTexture;
   uniforms: WebGLUniformLocation[];
   constructor(onLoss: () => void) {
@@ -61,6 +90,11 @@ export class WebGLRenderer extends Base implements Renderer {
     });
     if (!gl) throw Error("WebGL unavailable");
     this.gl = gl;
+    this.maxDimension = Math.min(
+      4096,
+      gl.getParameter(gl.MAX_TEXTURE_SIZE),
+      gl.getParameter(gl.MAX_RENDERBUFFER_SIZE),
+    );
     const compile = (type: number, source: string) => {
       const shader = gl.createShader(type)!;
       gl.shaderSource(shader, source);
@@ -75,6 +109,15 @@ export class WebGLRenderer extends Base implements Renderer {
     gl.attachShader(this.program, vertex);
     gl.attachShader(this.program, fragment);
     gl.linkProgram(this.program);
+    this.background = gl.createProgram()!;
+    const backgroundShader = compile(gl.FRAGMENT_SHADER, glBackground);
+    gl.attachShader(this.background, vertex);
+    gl.attachShader(this.background, backgroundShader);
+    gl.linkProgram(this.background);
+    if (!gl.getProgramParameter(this.background, gl.LINK_STATUS))
+      throw Error("Background shader link failed");
+    this.backgroundUniform = gl.getUniformLocation(this.background, "a")!;
+    gl.deleteShader(backgroundShader);
     gl.deleteShader(vertex);
     gl.deleteShader(fragment);
     if (!gl.getProgramParameter(this.program, gl.LINK_STATUS))
@@ -101,7 +144,6 @@ export class WebGLRenderer extends Base implements Renderer {
   draw(s: OpticalState, scene: HTMLCanvasElement, version = 0) {
     const gl = this.gl;
     gl.viewport(0, 0, this.canvas.width, this.canvas.height);
-    gl.useProgram(this.program);
     gl.bindTexture(gl.TEXTURE_2D, this.texture);
     if (this.version !== version) {
       gl.texImage2D(
@@ -115,6 +157,25 @@ export class WebGLRenderer extends Base implements Renderer {
       this.version = version;
     }
     values(this.data, s, this.canvas.width, this.canvas.height, this.ratio);
+    gl.disable(gl.SCISSOR_TEST);
+    gl.useProgram(this.background);
+    gl.uniform4fv(this.backgroundUniform, this.chunks[0]);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    gl.useProgram(this.program);
+    const rect = bounds(
+      s,
+      this.canvas.width,
+      this.canvas.height,
+      this.ratio,
+      this.rect,
+    );
+    gl.enable(gl.SCISSOR_TEST);
+    gl.scissor(
+      rect[0],
+      this.canvas.height - rect[1] - rect[3],
+      rect[2],
+      rect[3],
+    );
     for (let i = 0; i < this.uniforms.length; i++)
       gl.uniform4fv(this.uniforms[i], this.chunks[i]);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
@@ -122,6 +183,7 @@ export class WebGLRenderer extends Base implements Renderer {
   dispose() {
     this.gl.deleteTexture(this.texture);
     this.gl.deleteProgram(this.program);
+    this.gl.deleteProgram(this.background);
   }
 }
 export class WebGPURenderer extends Base implements Renderer {
@@ -131,6 +193,7 @@ export class WebGPURenderer extends Base implements Renderer {
   device!: GPUDevice;
   context!: GPUCanvasContext;
   pipeline!: GPURenderPipeline;
+  backgroundPipeline!: GPURenderPipeline;
   uniform!: GPUBuffer;
   sampler!: GPUSampler;
   texture: GPUTexture | null = null;
@@ -148,6 +211,10 @@ export class WebGPURenderer extends Base implements Renderer {
       throw Error("Insufficient GPU limits");
     this.adapter = adapter;
     this.device = await adapter.requestDevice();
+    this.maxDimension = Math.min(
+      4096,
+      this.device.limits.maxTextureDimension2D,
+    );
     this.device.lost.then((info) => {
       if (!this.disposed) {
         console.warn("WebGPU device lost:", info.reason, info.message);
@@ -166,8 +233,41 @@ export class WebGPURenderer extends Base implements Renderer {
     const info = await shader.getCompilationInfo();
     if (info.messages.some((m) => m.type === "error"))
       throw Error(info.messages.map((m) => m.message).join("\n"));
+    const layout = this.device.createPipelineLayout({
+      bindGroupLayouts: [
+        this.device.createBindGroupLayout({
+          entries: [
+            {
+              binding: 0,
+              visibility: GPUShaderStage.FRAGMENT,
+              buffer: { type: "uniform", minBindingSize: 80 },
+            },
+            {
+              binding: 1,
+              visibility: GPUShaderStage.FRAGMENT,
+              texture: { sampleType: "float" },
+            },
+            {
+              binding: 2,
+              visibility: GPUShaderStage.FRAGMENT,
+              sampler: { type: "filtering" },
+            },
+          ],
+        }),
+      ],
+    });
+    this.backgroundPipeline = await this.device.createRenderPipelineAsync({
+      layout,
+      vertex: { module: shader, entryPoint: "vs" },
+      fragment: {
+        module: shader,
+        entryPoint: "fsBackground",
+        targets: [{ format }],
+      },
+      primitive: { topology: "triangle-list" },
+    });
     this.pipeline = await this.device.createRenderPipelineAsync({
-      layout: "auto",
+      layout,
       vertex: { module: shader, entryPoint: "vs" },
       fragment: { module: shader, entryPoint: "fs", targets: [{ format }] },
       primitive: { topology: "triangle-list" },
@@ -229,8 +329,18 @@ export class WebGPURenderer extends Base implements Renderer {
         },
       ],
     });
-    pass.setPipeline(this.pipeline);
+    pass.setPipeline(this.backgroundPipeline);
     pass.setBindGroup(0, this.bind);
+    pass.draw(3);
+    const rect = bounds(
+      s,
+      this.canvas.width,
+      this.canvas.height,
+      this.ratio,
+      this.rect,
+    );
+    pass.setScissorRect(rect[0], rect[1], rect[2], rect[3]);
+    pass.setPipeline(this.pipeline);
     pass.draw(3);
     pass.end();
     d.queue.submit([encoder.finish()]);
@@ -268,7 +378,7 @@ export class CanvasRenderer extends Base implements Renderer {
     c.shadowColor = "transparent";
     c.clip();
     if (!s.compare) {
-      const scale = 1 + (s.ior - 1) * 0.2;
+      const scale = 1 + Math.abs(refractedOffset(0.7, s.ior, s.depth));
       c.translate(s.x, s.y);
       c.scale(scale, scale);
       c.translate(-s.x, -s.y);
@@ -284,7 +394,19 @@ export class CanvasRenderer extends Base implements Renderer {
       s.height,
       s.round,
     );
-    c.strokeStyle = "rgba(255,255,255,.65)";
+    const shine = c.createLinearGradient(
+      s.x + (Math.cos(s.lightAngle) * s.width) / 2,
+      s.y + (Math.sin(s.lightAngle) * s.height) / 2,
+      s.x - (Math.cos(s.lightAngle) * s.width) / 2,
+      s.y - (Math.sin(s.lightAngle) * s.height) / 2,
+    );
+    const reflection = 0.4 + fresnelReflectance(s.ior, 0.5) * 2;
+    shine.addColorStop(
+      0,
+      `rgba(255,255,255,${Math.min(0.95, reflection + 0.3)})`,
+    );
+    shine.addColorStop(1, "rgba(255,255,255,.22)");
+    c.strokeStyle = shine;
     c.lineWidth = 1;
     c.stroke();
   }

@@ -13,6 +13,7 @@ import { Gestures } from "./gestures";
 import { WorkspaceTransition } from "./transitions";
 import { MediaManager } from "./media";
 import { PerformanceMonitor } from "./performance";
+import { FrameExport } from "./export";
 import { SceneTexture } from "./render/scene";
 import {
   createRenderer,
@@ -30,7 +31,8 @@ const workspace = new WorkspaceState(),
   motion = new Motion(),
   media = new MediaManager(),
   monitor = new PerformanceMonitor(),
-  scene = new SceneTexture();
+  scene = new SceneTexture(),
+  frameExport = new FrameExport();
 let width = innerWidth,
   height = innerHeight,
   radius = Math.min(128, width * 0.27, height * 0.18),
@@ -49,7 +51,13 @@ let ior = defaults.ior,
   compare = false,
   inspect = false,
   focus = false,
-  userReduced = false;
+  userReduced = false,
+  ambient = false,
+  depth = defaults.depth,
+  lightAngle = defaults.lightAngle,
+  composition: 0 | 1 | 2 = 0,
+  ambientTime = 0,
+  pendingExport = false;
 const systemReduced = matchMedia("(prefers-reduced-motion: reduce)");
 let saved = { x: width * 0.5, y: height * 0.46 },
   target = { x: width * 0.5, y: height * 0.5, w: 480, h: 500 };
@@ -72,6 +80,9 @@ const optical: OpticalState = {
   ior,
   roughness,
   compare,
+  depth,
+  lightAngle: (lightAngle * Math.PI) / 180,
+  composition,
   scene: 0,
   previousScene: 0,
   reveal: 1,
@@ -103,6 +114,7 @@ function resize() {
     Math.min(
       devicePixelRatio || 1,
       1.75,
+      (renderer?.maxDimension ?? 4096) / Math.max(width, height),
       Math.sqrt(3_000_000 / (width * height)),
     ) * monitor.scale;
   renderer?.resize(width, height, ratio);
@@ -139,15 +151,22 @@ function tick(now: number) {
   frame = 0;
   if (disposed || document.hidden) return;
   const dt = last ? Math.min((now - last) / 1000, 0.25) : 1 / 60;
-  const continuous = motion.moving || media.playing || media.demo || reveal < 1;
+  const living = ambient && !motion.reduced;
+  const continuous =
+    motion.moving || media.playing || media.demo || reveal < 1 || living;
   if (last && continuous) {
     if (monitor.sample(now - last)) resize();
   }
   last = now;
+  if (living) ambientTime += dt;
+  motion.light.target =
+    (lightAngle * Math.PI) / 180 +
+    (living ? Math.sin(ambientTime * 0.22) * 0.55 : 0);
+  motion.audio.target = media.playing || media.demo ? media.energy() : 0;
   motion.step(dt);
   if (reveal < 1) reveal = motion.reduced ? 1 : Math.min(1, reveal + dt * 1.8);
   const m = clamp(motion.morph.x, 0, 1),
-    energy = media.energy();
+    energy = motion.audio.x;
   optical.x = motion.x.x + (target.x - motion.x.x) * m;
   optical.y = motion.y.x + (target.y - motion.y.x) * m;
   optical.width = radius * 2 + (target.w - radius * 2) * m;
@@ -160,18 +179,23 @@ function tick(now: number) {
   optical.ior = ior;
   optical.roughness = roughness;
   optical.compare = compare;
+  optical.depth = depth;
+  optical.lightAngle = motion.light.x;
+  optical.composition = composition;
   optical.scene = sceneIndex;
   optical.previousScene = previousScene;
   optical.reveal = reveal;
   optical.revealX = revealX;
   optical.revealY = revealY;
   optical.energy = energy;
-  scene.draw(optical, media.source);
+  scene.draw(optical, media.source, media.decodedFrame);
+  let rendered = true;
   try {
     renderer.draw(optical, scene.canvas, scene.version);
   } catch (error) {
     console.warn("Renderer replaced:", String(error));
     fallback();
+    rendered = false;
   }
   lens.style.left = `${motion.x.x - radius}px`;
   lens.style.top = `${motion.y.x - radius}px`;
@@ -181,7 +205,19 @@ function tick(now: number) {
   lens.style.visibility = dialog.open ? "hidden" : "visible";
   if (!actions.hidden) positionActions();
   if (workspace.active === "details") updateDetails();
-  if (motion.moving || media.playing || media.demo || reveal < 1) wake();
+  if (pendingExport && !dialog.open && rendered) {
+    pendingExport = false;
+    void frameExport
+      .save(renderer.canvas)
+      .then(() =>
+        toast(
+          `Study saved · ${renderer.canvas.width} × ${renderer.canvas.height} px`,
+        ),
+      )
+      .catch((error) => toast(error.message));
+  }
+  if (motion.moving || media.playing || media.demo || reveal < 1 || living)
+    wake();
   else last = 0;
 }
 function fallback() {
@@ -255,7 +291,11 @@ function executeAction(action: string) {
             ? "Disable sound demonstration"
             : "Enable sound demonstration",
         );
-        toast(media.demo ? "Sound on · a quiet 110 Hz study" : "Sound off");
+        toast(
+          media.demo
+            ? "Sound on · a slowly breathing harmonic study"
+            : "Sound off",
+        );
         wake();
       })
       .catch(() => toast("Audio could not start in this browser."));
@@ -431,12 +471,14 @@ function renderWorkspace(type: Workspace) {
       )
       .join(
         "",
-      )}</div>${range("ior", "Refractive index", 1, 2, 0.01, ior)}${range("roughness", "Surface frost", 0, 1, 0.01, roughness)}${toggle("compare", "Original scene", "Temporarily remove the optical distortion.", compare)}${toggle("inspect", "Inspect the lens", "Drag freely. Arrow keys move; Escape exits.", inspect)}<button class="text-button" id="reset-material">${icon("reset")}Reset material & position</button>`;
+      )}</div>${range("ior", "Refractive index", 1, 2, 0.01, ior)}${range("roughness", "Surface frost", 0, 1, 0.01, roughness)}<details class="advanced-optics"><summary>Depth & lighting<span>↗</span></summary>${range("depth", "Depth of glass", 0, 2, 0.01, depth)}${range("light-angle", "Light direction", -180, 180, 1, lightAngle)}</details>${toggle("compare", "Original scene", "Temporarily remove the optical distortion.", compare)}${toggle("inspect", "Inspect the lens", "Drag freely. Arrow keys move; Escape exits.", inspect)}<button class="text-button" id="reset-material">${icon("reset")}Reset material & position</button>`;
     bindRange("ior", (value) => {
       ior = value;
       updatePresets();
     });
     bindRange("roughness", (value) => (roughness = value));
+    bindRange("depth", (value) => (depth = value));
+    bindRange("light-angle", (value) => (lightAngle = value), 0);
     for (const preset of body.querySelectorAll<HTMLButtonElement>("[data-ior]"))
       preset.addEventListener("click", () => {
         ior = Number(preset.dataset.ior);
@@ -460,6 +502,8 @@ function renderWorkspace(type: Workspace) {
     $("#reset-material").addEventListener("click", () => {
       ior = defaults.ior;
       roughness = defaults.roughness;
+      depth = defaults.depth;
+      lightAngle = defaults.lightAngle;
       compare = false;
       setInspect(false);
       saved = { x: width * 0.5, y: height * 0.46 };
@@ -475,7 +519,26 @@ function renderWorkspace(type: Workspace) {
       "Bring something of your own into the light.",
       1,
     );
-    body.innerHTML = `<label class="drop-zone" id="drop-zone">${icon("upload")}<strong>Drop a file, or browse</strong><small>IMAGE, VIDEO OR AUDIO · UP TO 150 MB</small><input id="file" type="file" accept="image/*,video/*,audio/*" aria-label="Choose a local media file"/></label><div id="media-info"></div><p class="media-note">Your files stay on this device. Visual media is shown in monochrome, with a cover crop that follows the lens.</p>`;
+    body.innerHTML = `<div class="stage-gallery" role="group" aria-label="Studio environments">${["Fold", "Sculpture", "Veil"].map((name, index) => `<button class="stage-preset" data-composition="${index}" aria-pressed="${composition === index && !media.source}"><span class="stage-mini stage-${index}" aria-hidden="true"></span><span>${name}</span></button>`).join("")}</div><p class="gallery-note">CHOOSE AN ATMOSPHERE, OR BRING YOUR OWN.</p><label class="drop-zone" id="drop-zone">${icon("upload")}<strong>Drop a file, or browse</strong><small>IMAGE, VIDEO OR AUDIO · UP TO 150 MB</small><input id="file" type="file" accept="image/*,video/*,audio/*" aria-label="Choose a local media file"/></label><div id="media-info"></div><p class="media-note">Your files stay on this device. Visual media is shown in monochrome, with a cover crop that follows the lens.</p><button id="export-frame" class="export-button">${icon("download")}Save this moment<span>PNG ↗</span></button>`;
+    for (const button of body.querySelectorAll<HTMLButtonElement>(
+      "[data-composition]",
+    ))
+      button.addEventListener("click", () => {
+        scene.captureReveal();
+        media.clear();
+        filename = "";
+        composition = Number(button.dataset.composition) as 0 | 1 | 2;
+        previousScene = sceneIndex;
+        reveal = 0;
+        revealX = saved.x / width;
+        revealY = saved.y / height;
+        closeWorkspace();
+        wake();
+      });
+    $("#export-frame").addEventListener("click", () => {
+      pendingExport = true;
+      closeWorkspace();
+    });
     $<HTMLInputElement>("#file").addEventListener("change", (e) => {
       const input = e.target as HTMLInputElement;
       const f = input.files?.[0];
@@ -502,8 +565,12 @@ function renderWorkspace(type: Workspace) {
       "Fine-tune the relationship between you and the lens.",
       3,
     );
-    body.innerHTML = `${range("magnet", "Magnetic response", 0, 1, 0.01, magnet)}${toggle("reduce-motion", "Reduced motion", systemReduced.matches ? "System preference is active." : "Settle immediately. Keep every interaction.", userReduced || systemReduced.matches)}<p class="media-note">In navigation mode, press the lens to reveal its actions. In Material, enable inspection to move the lens without selecting an action.</p><button id="reset-interaction" class="text-button">${icon("reset")}Reset interaction</button>`;
+    body.innerHTML = `${range("magnet", "Magnetic response", 0, 1, 0.01, magnet)}${toggle("living-light", "Living light", "A slow, continuous drift across the glass.", ambient)}${toggle("reduce-motion", "Reduced motion", systemReduced.matches ? "System preference is active." : "Settle immediately. Keep every interaction.", userReduced || systemReduced.matches)}<p class="media-note">In navigation mode, press the lens to reveal its actions. In Material, enable inspection to move the lens without selecting an action.</p><button id="reset-interaction" class="text-button">${icon("reset")}Reset interaction</button>`;
     bindRange("magnet", (value) => (magnet = value));
+    $<HTMLInputElement>("#living-light").addEventListener("change", (e) => {
+      ambient = (e.target as HTMLInputElement).checked;
+      wake();
+    });
     $<HTMLInputElement>("#reduce-motion").addEventListener("change", (e) => {
       userReduced = (e.target as HTMLInputElement).checked;
       reduced();
@@ -512,6 +579,8 @@ function renderWorkspace(type: Workspace) {
     $("#reset-interaction").addEventListener("click", () => {
       magnet = defaults.magnet;
       userReduced = false;
+      ambient = false;
+      ambientTime = 0;
       setInspect(false);
       motion.release();
       reduced();
@@ -525,7 +594,7 @@ function renderWorkspace(type: Workspace) {
       "An optical study in a single, continuous object.",
       4,
     );
-    body.innerHTML = `<div class="detail-row"><span>Active renderer</span><span id="renderer-name"></span></div><div class="detail-row"><span>Measured active frames</span><span id="fps">Collecting…</span></div><div class="detail-row"><span>Render resolution</span><span id="resolution"></span></div><div class="detail-row"><span>Quality scale</span><span id="quality"></span></div><p class="details-copy">The lens samples the same scene you see behind it. An analytical approximation bends those samples according to the surface profile and refractive index. Edge reflections approximate Fresnel response; neighboring samples soften the surface frost.</p><p class="details-copy">This is a real-time optical approximation, not physical ray tracing. The light wake is a soft caustic approximation driven by the same spring state as the lens.</p><span class="badge">60 FPS TARGET · 16.7 MS FRAME BUDGET</span>`;
+    body.innerHTML = `<div class="detail-row"><span>Active renderer</span><span id="renderer-name"></span></div><div class="detail-row"><span>Measured active frames</span><span id="fps">Collecting…</span></div><div class="detail-row"><span>Render resolution</span><span id="resolution"></span></div><div class="detail-row"><span>Backdrop updates</span><span id="texture-updates"></span></div><div class="detail-row"><span>Quality scale</span><span id="quality"></span></div><p class="details-copy">The lens samples the same scene you see behind it. Snell’s law bends the scene samples through a convex surface profile; optical depth controls their travel. Schlick’s approximation varies reflection with refractive index and viewing angle. Roughness softens both highlights and transmitted detail.</p><p class="details-copy">This is a real-time optical approximation, not physical ray tracing. The light wake is a soft caustic approximation driven by the same spring state as the lens.</p><span class="badge">60 FPS TARGET · 16.7 MS FRAME BUDGET</span>`;
     updateDetails();
   }
   measureDialog();
@@ -624,6 +693,8 @@ function updateDetails() {
     : "Awaiting active interaction";
   $("#resolution").textContent =
     `${renderer.canvas.width} × ${renderer.canvas.height}`;
+  $("#texture-updates").textContent =
+    `${scene.version} · ${media.decodedFrame !== undefined ? "decoded video frames" : "on demand"}`;
   $("#quality").textContent = `${Math.round(monitor.scale * 100)}% · adaptive`;
 }
 const gestures = new Gestures({
@@ -662,6 +733,7 @@ window.addEventListener(
     gestures.dispose();
     observer.disconnect();
     media.dispose();
+    frameExport.dispose();
     renderer.dispose();
     window.removeEventListener("resize", resize);
     systemReduced.removeEventListener("change", reduced);
