@@ -13,6 +13,9 @@ export interface OpticalState {
   ior: number;
   roughness: number;
   compare: boolean;
+  depth: number;
+  lightAngle: number;
+  composition: 0 | 1 | 2;
   scene: Scene;
   reveal: number;
   previousScene: Scene;
@@ -20,7 +23,13 @@ export interface OpticalState {
   revealY: number;
   energy: number;
 }
-export const defaults = { ior: 1.52, roughness: 0.08, magnet: 0.5 };
+export const defaults = {
+  ior: 1.52,
+  roughness: 0.08,
+  magnet: 0.5,
+  depth: 0.85,
+  lightAngle: -135,
+};
 export class WorkspaceState {
   active: Workspace | null = null;
   generation = 0;

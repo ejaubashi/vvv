@@ -418,3 +418,117 @@ test("the renderer stops requesting frames after the interaction settles", async
     before,
   );
 });
+
+test("art environments replace the displayed scene and keep their selection", async ({
+  page,
+}) => {
+  await go(page);
+  const before = await page.locator("#scene canvas").screenshot();
+  await open(page, "Media");
+  await page.getByRole("button", { name: "Sculpture", exact: true }).click();
+  await expect(page.locator("dialog")).not.toBeVisible();
+  const sculpture = await page.locator("#scene canvas").screenshot();
+  expect(Buffer.compare(before, sculpture)).not.toBe(0);
+  await open(page, "Media");
+  await expect(
+    page.getByRole("button", { name: "Sculpture", exact: true }),
+  ).toHaveAttribute("aria-pressed", "true");
+  await page.getByRole("button", { name: "Veil", exact: true }).click();
+  await expect(page.locator("dialog")).not.toBeVisible();
+  const veil = await page.locator("#scene canvas").screenshot();
+  expect(Buffer.compare(veil, sculpture)).not.toBe(0);
+});
+
+test("optical depth and light controls persist, reset, and export an actual PNG", async ({
+  page,
+}) => {
+  await go(page);
+  await open(page, "Material");
+  await page.getByText("Depth & lighting", { exact: false }).click();
+  await page.locator("#depth").fill("1.7");
+  await page.locator("#light-angle").fill("45");
+  await expect(page.locator("#depth-value")).toHaveText("1.70");
+  await close(page);
+  await open(page, "Material");
+  await page.getByText("Depth & lighting", { exact: false }).click();
+  await expect(page.locator("#depth")).toHaveValue("1.7");
+  await expect(page.locator("#light-angle")).toHaveValue("45");
+  await page.getByRole("button", { name: "Reset material & position" }).click();
+  await expect(page.locator("#depth")).toHaveValue("0.85");
+  await expect(page.locator("#light-angle")).toHaveValue("-135");
+  await close(page);
+  await open(page, "Media");
+  const downloaded = page.waitForEvent("download");
+  await page.getByRole("button", { name: /Save this moment/ }).click();
+  const download = await downloaded;
+  expect(download.suggestedFilename()).toBe("form-optical-study.png");
+  const { readFile } = await import("node:fs/promises");
+  const bytes = await readFile((await download.path())!);
+  expect(bytes.subarray(1, 4).toString()).toBe("PNG");
+  expect(bytes.readUInt32BE(16)).toBeGreaterThan(500);
+  expect(bytes.length).toBeGreaterThan(1000);
+  await expect(page.locator("dialog")).not.toBeVisible();
+  await expect(page.locator("#toast")).toContainText("Study saved");
+});
+
+test("living light runs only when enabled and honors application reduced motion", async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    const original = requestAnimationFrame;
+    (window as any).__frames = 0;
+    window.requestAnimationFrame = (callback) => {
+      (window as any).__frames++;
+      return original.call(window, callback);
+    };
+  });
+  await go(page);
+  await open(page, "Interaction");
+  await page.getByRole("switch", { name: /Living light/ }).check();
+  await close(page);
+  const before = await page.evaluate(() => (window as any).__frames);
+  await expect
+    .poll(() => page.evaluate(() => (window as any).__frames))
+    .toBeGreaterThan(before + 2);
+  await open(page, "Interaction");
+  await page.getByRole("switch", { name: /Reduced motion/ }).check();
+  await close(page);
+  await page.waitForTimeout(200);
+  const settled = await page.evaluate(() => (window as any).__frames);
+  await page.waitForTimeout(300);
+  expect(await page.evaluate(() => (window as any).__frames)).toBe(settled);
+});
+
+test("video frame callbacks are canceled and stop after removing the source", async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    const request = HTMLVideoElement.prototype.requestVideoFrameCallback,
+      cancel = HTMLVideoElement.prototype.cancelVideoFrameCallback;
+    (window as any).__videoRequests = 0;
+    (window as any).__videoCancels = 0;
+    HTMLVideoElement.prototype.requestVideoFrameCallback = function (callback) {
+      (window as any).__videoRequests++;
+      return request.call(this, callback);
+    };
+    HTMLVideoElement.prototype.cancelVideoFrameCallback = function (id) {
+      (window as any).__videoCancels++;
+      cancel.call(this, id);
+    };
+  });
+  await go(page);
+  await open(page, "Media");
+  await page.locator("#file").setInputFiles("tests/fixtures/study.webm");
+  await expect(page.locator("#filename")).toHaveText("study.webm");
+  await page.getByRole("button", { name: "Play media" }).click();
+  await expect
+    .poll(() => page.evaluate(() => (window as any).__videoRequests))
+    .toBeGreaterThan(2);
+  await page.getByRole("button", { name: "Remove media" }).click();
+  expect(await page.evaluate(() => (window as any).__videoCancels)).toBe(1);
+  const requests = await page.evaluate(() => (window as any).__videoRequests);
+  await page.waitForTimeout(300);
+  expect(await page.evaluate(() => (window as any).__videoRequests)).toBe(
+    requests,
+  );
+});
