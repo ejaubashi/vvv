@@ -14,6 +14,7 @@ import { WorkspaceTransition } from "./transitions";
 import { MediaManager } from "./media";
 import { PerformanceMonitor } from "./performance";
 import { PortalRoom } from "./room/room";
+import { visitBounds, RoomViewInputs, type VisitBounds } from "./room/visit";
 import {
   ROOMS,
   parseRoomId,
@@ -73,6 +74,18 @@ let ior = defaults.ior,
     new URLSearchParams(location.search).get("space"),
   ),
   roomLook = true;
+let entered = false,
+  enterPending = false,
+  visitToken = 0,
+  studioOpen = false,
+  restoreVisitFocus = false,
+  visitInspect = false,
+  visitWasRoom = false,
+  visitRadius = radius,
+  visitView = { x: 0, y: 0 };
+const roomView = $("#room-view"),
+  enterButton = $<HTMLButtonElement>("#enter-room");
+const viewBounds: VisitBounds = { x: 0, y: 0, width: 1, height: 1, round: 1 };
 journey.go(selectedRoom);
 const systemReduced = matchMedia("(prefers-reduced-motion: reduce)");
 let saved = { x: width * 0.5, y: height * 0.46 },
@@ -106,6 +119,7 @@ const optical: OpticalState = {
   revealY: 0.5,
   energy: 0,
   room: 0,
+  immersion: 0,
 };
 function toast(message: string) {
   const el = $("#toast");
@@ -209,18 +223,30 @@ function tick(now: number) {
   motion.step(dt);
   if (reveal < 1) reveal = motion.reduced ? 1 : Math.min(1, reveal + dt * 1.8);
   const m = clamp(motion.morph.x, 0, 1),
-    energy = motion.audio.x;
-  optical.x = motion.x.x + (target.x - motion.x.x) * m;
-  optical.y = motion.y.x + (target.y - motion.y.x) * m;
-  optical.width = radius * 2 + (target.w - radius * 2) * m;
-  optical.height = radius * 2 + (target.h - radius * 2) * m;
-  optical.round = radius + (30 - radius) * m;
+    energy = motion.audio.x,
+    immersion = clamp(motion.immersion.x, 0, 1),
+    panelMorph = m * (1 - immersion);
+  visitBounds(
+    viewBounds,
+    width,
+    height,
+    motion.x.x,
+    motion.y.x,
+    visitActive() ? visitRadius : radius,
+    immersion,
+  );
+  optical.x = viewBounds.x + (target.x - viewBounds.x) * panelMorph;
+  optical.y = viewBounds.y + (target.y - viewBounds.y) * panelMorph;
+  optical.width = viewBounds.width + (target.w - viewBounds.width) * panelMorph;
+  optical.height =
+    viewBounds.height + (target.h - viewBounds.height) * panelMorph;
+  optical.round = viewBounds.round + (30 - viewBounds.round) * panelMorph;
   optical.dx = motion.dx.x;
   optical.dy = motion.dy.x;
   optical.intensity = (motion.intensity.x + energy * 0.2) * (1 - m);
   optical.radius = radius;
   optical.ior = ior;
-  optical.roughness = roughness;
+  optical.roughness = roughness * (1 - immersion * 0.75);
   optical.compare = compare;
   optical.depth = depth;
   optical.lightAngle = motion.light.x;
@@ -232,6 +258,8 @@ function tick(now: number) {
   optical.revealY = revealY;
   optical.energy = energy;
   optical.room = clamp(motion.portal.x, 0, 1);
+  optical.immersion = immersion;
+  const viewportInset = width < 600 ? 10 : 16;
   if (optical.room > 0)
     room.render(
       motion.viewX.x,
@@ -240,8 +268,18 @@ function tick(now: number) {
       (motion.y.x / height - 0.46) * 2,
       motion.reduced ? 0 : motion.intensity.x,
       depth,
-      radius * 3.2 * Math.min(devicePixelRatio || 1, 1.75) * monitor.scale,
+      immersion > 0
+        ? motion.immersion.moving
+          ? 768
+          : Math.max(width, height) *
+            Math.min(devicePixelRatio || 1, 1.25) *
+            monitor.scale
+        : radius * 3.2 * Math.min(devicePixelRatio || 1, 1.75) * monitor.scale,
       ambientTime,
+      immersion > 0
+        ? (width - viewportInset * 2) / (height - viewportInset * 2)
+        : 1,
+      immersion,
     );
   scene.draw(optical, media.source, media.decodedFrame);
   let rendered = true;
@@ -264,13 +302,15 @@ function tick(now: number) {
   renderer.canvas.dataset.roomId = room.kind;
   renderer.canvas.dataset.roomSwitching = String(room.switching);
   renderer.canvas.dataset.roomBlend = String(room.blend);
+  renderer.canvas.dataset.immersion = String(immersion);
   lens.style.left = `${motion.x.x - radius}px`;
   lens.style.top = `${motion.y.x - radius}px`;
   lens.style.width = lens.style.height = `${radius * 2}px`;
   lens.style.visibility = dialog.open ? "hidden" : "visible";
   transition.update(m, workspace.active !== null);
   updateRoomChrome();
-  lens.style.visibility = dialog.open ? "hidden" : "visible";
+  updateVisitChrome();
+  lens.style.visibility = dialog.open || visitActive() ? "hidden" : "visible";
   if (!actions.hidden) positionActions();
   if (workspace.active === "details") updateDetails();
   if (pendingExport && !dialog.open && rendered) {
@@ -295,6 +335,97 @@ function tick(now: number) {
     wake();
   else last = 0;
 }
+function visitActive() {
+  return entered || enterPending || motion.immersion.x > 0;
+}
+async function enterLens() {
+  if (enterPending || entered || dialog.open) return;
+  const token = ++visitToken;
+  enterPending = true;
+  restoreVisitFocus = false;
+  studioOpen = false;
+  visitInspect = inspect;
+  visitWasRoom = roomEnabled;
+  visitRadius = radius;
+  visitView = { x: motion.viewX.target, y: motion.viewY.target };
+  setInspect(false);
+  motion.release();
+  closeActions();
+  journey.pause();
+  roomEnabled = true;
+  resize();
+  updateVisitChrome();
+  $("#return-to-lens").focus({ preventScroll: true });
+  await startRoom();
+  if (disposed || token !== visitToken || !enterPending) return;
+  enterPending = false;
+  entered = true;
+  motion.immersion.target = 1;
+  wake();
+}
+function returnToLens() {
+  ++visitToken;
+  enterPending = entered = studioOpen = false;
+  journey.pause();
+  motion.immersion.target = 0;
+  motion.viewX.target = visitView.x;
+  motion.viewY.target = visitView.y;
+  roomEnabled = visitWasRoom;
+  resize();
+  visitRadius = radius;
+  setInspect(visitInspect);
+  restoreVisitFocus = true;
+  closeActions();
+  wake();
+}
+function updateVisitChrome() {
+  const active = visitActive(),
+    p = clamp(motion.immersion.x, 0, 1);
+  document.body.classList.toggle("visiting", active);
+  document.body.classList.toggle("visit-expanded", p >= 0.5);
+  document.body.style.setProperty("--visit-progress", String(p));
+  document.body.dataset.visit = enterPending
+    ? "loading"
+    : entered
+      ? "inside"
+      : active
+        ? "returning"
+        : "lens";
+  lens.inert = active;
+  $("header").inert = active;
+  enterButton.hidden = active || dialog.open || !actions.hidden;
+  enterButton.style.left = `${motion.x.x}px`;
+  enterButton.style.top = `${motion.y.x + radius - 58}px`;
+  $("#visit-bar").hidden = !active;
+  roomView.hidden = !active || dialog.open;
+  roomView.inert = !entered || motion.immersion.moving;
+  const dock = $("#studio-dock");
+  dock.hidden = active && !studioOpen;
+  $("#visit-studio").setAttribute("aria-expanded", String(studioOpen));
+  $<HTMLButtonElement>("#visit-studio").disabled =
+    enterPending || motion.immersion.moving;
+  $("#visit-hint").textContent = enterPending
+    ? "OPENING THE ROOM…"
+    : room.status === "fallback"
+      ? "ARCHITECTURAL ILLUSTRATION · DRAG TO LOOK AROUND"
+      : "DRAG OR USE ARROW KEYS TO LOOK AROUND";
+  const nav = $("#room-nav");
+  nav.style.opacity = String(Math.abs(2 * p - 1));
+  nav.inert = active && (enterPending || motion.immersion.moving);
+  if (restoreVisitFocus && !active && !dialog.open) {
+    restoreVisitFocus = false;
+    enterButton.hidden = false;
+    enterButton.focus({ preventScroll: true });
+  }
+}
+enterButton.addEventListener("click", () => {
+  void enterLens();
+});
+$("#return-to-lens").addEventListener("click", returnToLens);
+$("#visit-studio").addEventListener("click", () => {
+  studioOpen = !studioOpen;
+  updateVisitChrome();
+});
 async function startRoom() {
   if (room.status === "idle") toast("Opening the room…");
   await room.init(
@@ -317,7 +448,7 @@ function updateRoomChrome() {
   document.body.classList.toggle("has-room", roomEnabled);
   nav.hidden = !roomEnabled || dialog.open;
   const index = ROOMS.findIndex((r) => r.id === selectedRoom);
-  const caption = `LIVING ROOMS · 0${index + 1} / 03`;
+  const caption = `${room.status === "fallback" ? "ILLUSTRATED ROOMS" : "LIVING ROOMS"} · 0${index + 1} / 03`;
   if ($("#room-count").textContent !== caption)
     $("#room-count").textContent = caption;
   const label = `${roomDefinition(selectedRoom).name}${room.switching || room.status === "loading" ? " · Opening…" : ""}`;
@@ -351,6 +482,7 @@ function updateRoomChrome() {
   if (replay) replay.disabled = play.disabled;
 }
 function leaveRooms() {
+  if (visitActive()) returnToLens();
   roomEnabled = false;
   journey.pause();
   const url = new URL(location.href);
@@ -402,7 +534,7 @@ function positionActions() {
   actions.style.top = `${clamp(motion.y.x + radius + 26, 100, height - 190)}px`;
 }
 function openActions() {
-  if (workspace.active || inspect) return;
+  if (workspace.active || inspect || visitActive()) return;
   actions.hidden = false;
   lens.setAttribute("aria-expanded", "true");
   positionActions();
@@ -537,6 +669,13 @@ document.addEventListener("keydown", (e) => {
     if (dialog.open) {
       e.preventDefault();
       closeWorkspace();
+    } else if (visitActive()) {
+      e.preventDefault();
+      if (studioOpen) {
+        studioOpen = false;
+        updateVisitChrome();
+        $("#visit-studio").focus();
+      } else returnToLens();
     } else if (!actions.hidden) {
       closeActions();
       lens.focus();
@@ -575,7 +714,8 @@ function openWorkspace(type: Workspace, trigger: HTMLElement) {
     motion.x.target = saved.x;
     motion.y.target = saved.y;
   }
-  transition.open(trigger);
+  studioOpen = false;
+  transition.open(visitActive() ? $("#visit-studio") : trigger);
   renderWorkspace(type);
   measureDialog();
   wake();
@@ -659,6 +799,7 @@ function renderWorkspace(type: Workspace) {
       compare = (e.target as HTMLInputElement).checked;
       wake();
     });
+    $<HTMLInputElement>("#inspect").disabled = visitActive();
     $<HTMLInputElement>("#inspect").addEventListener("change", (e) => {
       setInspect((e.target as HTMLInputElement).checked);
       if (inspect) {
@@ -904,7 +1045,7 @@ function updateDetails() {
   $("#room-renderer").textContent = room.backend;
   $("#room-measurement").textContent =
     room.status === "ready"
-      ? `${room.resolution}² · ${room.meshCount} meshes · ${room.submitMs.toFixed(1)} ms CPU submit`
+      ? `${room.frame.canvas.width} × ${room.frame.canvas.height} · ${room.meshCount} meshes · ${room.submitMs.toFixed(1)} ms CPU submit`
       : room.status === "fallback"
         ? "Illustration fallback"
         : "On demand";
@@ -917,7 +1058,7 @@ const gestures = new Gestures({
   motion,
   inspect: () => inspect,
   magnet: () => magnet,
-  blocked: () => dialog.open,
+  blocked: () => dialog.open || visitActive(),
   wake,
   openActions,
   closeActions,
@@ -925,14 +1066,28 @@ const gestures = new Gestures({
   select,
   bounds: () => ({ width, height, radius }),
 });
+const viewInputs = new RoomViewInputs(
+  roomView,
+  motion,
+  () => entered && !dialog.open && !motion.immersion.moving,
+  wake,
+);
 const roomInputs = new AbortController();
 window.addEventListener(
   "pointermove",
   (event) => {
-    if (!roomEnabled || !roomLook || dialog.open || motion.reduced) return;
+    if (
+      !roomEnabled ||
+      !roomLook ||
+      dialog.open ||
+      motion.reduced ||
+      viewInputs.dragging ||
+      (entered && event.pointerType === "touch")
+    )
+      return;
     if (
       (event.target as Element)?.closest?.(
-        ".chrome,#actions,#exit-focus,dialog",
+        ".chrome,#actions,#exit-focus,#visit-bar,dialog",
       )
     )
       return;
@@ -975,6 +1130,7 @@ window.addEventListener(
     media.dispose();
     frameExport.dispose();
     roomInputs.abort();
+    viewInputs.dispose();
     void room.dispose();
     renderer.dispose();
     window.removeEventListener("resize", resize);

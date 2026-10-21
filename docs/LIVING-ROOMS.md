@@ -1,6 +1,6 @@
 # Living Rooms
 
-Three authored spaces behind one lens. Open `?room=1&renderer=webgl`, use the arrows below the lens, or choose **Media → Room** and select an edition. Add `&space=nocturne` or `&space=veil` to open a particular room. Manual room choices update the current URL without adding browser-history entries.
+Three authored spaces behind one lens. [Enter the lens](ENTER-THE-LENS.md) now opens the current space into a large architectural view with direct exploration and a return action. Open `?room=1&renderer=webgl`, use the arrows below the lens, or choose **Media → Room** and select an edition. Add `&space=nocturne` or `&space=veil` to open a particular room. Manual room choices update the current URL without adding browser-history entries.
 
 | Room      | Architecture and atmosphere                                                             | Meshes |
 | --------- | --------------------------------------------------------------------------------------- | ------ |
@@ -27,15 +27,15 @@ Opening a workspace pauses sequence time. Hidden tabs pause the application cloc
 
 `architecture.ts` builds each geometry graph; `materials.ts` authors its surfaces and environment lighting. `PortalRoom.select()` keeps the same Three.js renderer across editions and compiles at most one replacement at a time. Rapid choices supersede an older pending selection. The old image remains visible while the next graph compiles. On adoption, the previous geometry/material/texture/reflector resources are disposed, while a bounded canvas snapshot supports the crossfade. A superseded or cancelled candidate is disposed without becoming visible. At most one active and one compiling geometry graph are owned at once.
 
-During a transition, the cached new room image and old snapshot are blended. A blend-only change does not rerender geometry. The room frame remains bounded to 512–1024 pixels; the floor reflection uses half that resolution. The last image is reused when the camera and optional light stop moving. Graphics failure retains clearly labeled architectural illustrations of all three editions and manual navigation.
+During a transition, the cached new room image and old snapshot are blended. A blend-only change does not rerender geometry. The room frame remains bounded to 512–1024 pixels in the resting lens, with a 1536-pixel long-edge cap when entered; the floor reflection uses half that resolution. The last image is reused when the camera and optional light stop moving. Graphics failure retains clearly labeled architectural illustrations of all three editions and manual navigation.
 
 ## Validation and limits
 
-The focused suite has **14 tests** covering geometry, shared-resource disposal, camera bounds and the finite journey's pause/resume/replay/end behavior. The browser suite has **32 tests**, including all earlier optical-studio regressions, actual room-image changes, latest-selection behavior, paced progression, mobile/reduced motion, replacement cancellation, fallback navigation and all three editions through WebGPU.
+The focused suite has **17 tests** covering geometry, shared-resource disposal, camera bounds and the finite journey's pause/resume/replay/end behavior. The browser suite has **39 tests**, including all earlier optical-studio regressions, actual room-image changes, latest-selection behavior, paced progression, mobile/reduced motion, replacement cancellation, fallback navigation and all three editions through WebGPU.
 
 Production TypeScript and Vite build checks are included. Desktop and emulated mobile are tested with Chromium software graphics. Physical devices, Safari/Firefox and hardware GPU performance remain unverified. The refined default room's software WebGPU benchmark in [ROOM-PROTOTYPE.md](ROOM-PROTOTYPE.md) is a known performance limitation; it does not certify the other rooms or a hardware frame budget. The supplied preview uses WebGL for responsiveness. The application still supports its normal WebGPU-first selection.
 
-The bundle is approximately 986 KB minified / 277 KB gzip, including Three.js. All procedural assets are created locally; no texture, audio, model or API downloads are needed. Code splitting for conventional production hosting remains future work; the published single-file preview intentionally embeds the complete application.
+The bundle is approximately 992 KB minified / 279 KB gzip, including Three.js. All procedural assets are created locally; no texture, audio, model or API downloads are needed. Code splitting for conventional production hosting remains future work; the published single-file preview intentionally embeds the complete application.
 
 ## Preview captures
 

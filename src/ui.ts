@@ -26,6 +26,9 @@ export function mount() {
 <div id="scene" aria-hidden="true"></div>
 <header class="chrome"><a class="wordmark" href="./" aria-label="FORM home">form<span>®</span></a><div class="edition"><span>OPTICAL INTERACTION STUDIO</span><span class="edition-no">VOL. 001 — LIGHT & MATTER</span></div></header>
 <button id="lens" aria-label="Glass lens. Open actions" aria-expanded="false" aria-controls="actions"></button>
+<button id="enter-room" class="enter-room chrome">Enter the lens ${icon("arrow")}</button>
+<div id="room-view" tabindex="0" role="region" aria-label="Room view. Drag or use arrow keys to look around. Escape returns to the lens." hidden></div>
+<div id="visit-bar" hidden><button id="return-to-lens">${icon("arrow")}Return to lens</button><span id="visit-hint">DRAG OR USE ARROW KEYS TO LOOK AROUND</span><button id="visit-studio" aria-expanded="false" aria-controls="studio-dock">${icon("material")}Studio</button></div>
 <div id="actions" hidden role="group" aria-label="Lens actions">${["scene", "sound", "focus"].map((x) => `<button data-action="${x}" aria-label="${x === "sound" ? "Enable sound demonstration" : x === "scene" ? "Cycle scene" : "Enter focus mode"}">${icon(x)}<span>${x[0].toUpperCase() + x.slice(1)}</span></button>`).join("")}</div>
 <button id="exit-focus" hidden>${icon("focus")}<span>Exit focus</span></button>
 <div class="corner-note chrome"><span class="status-dot"></span><span id="scene-label">PAPER</span><span class="note-separator">/</span><span id="mode-label">MOVE TO EXPLORE</span></div>
@@ -36,7 +39,7 @@ export function mount() {
 <button id="journey-play" aria-label="Play rooms">${icon("play")}</button>
 <button id="next-room" aria-label="Next room">${icon("arrow")}</button>
 </nav>
-<div class="dock-wrap chrome"><span class="dock-caption" id="dock-caption">A STUDY IN REFRACTION</span><nav class="dock" aria-label="Studio workspaces">${["media", "material", "interaction", "details"].map((x, i) => `<button data-workspace="${x}" aria-label="${x[0].toUpperCase() + x.slice(1)}" aria-haspopup="dialog"><span class="dock-icon">${icon(x)}</span><span class="dock-label">${x[0].toUpperCase() + x.slice(1)}</span><span class="dock-number">0${i + 1}</span></button>`).join("")}</nav></div>
+<div class="dock-wrap chrome" id="studio-dock"><span class="dock-caption" id="dock-caption">A STUDY IN REFRACTION</span><nav class="dock" aria-label="Studio workspaces">${["media", "material", "interaction", "details"].map((x, i) => `<button data-workspace="${x}" aria-label="${x[0].toUpperCase() + x.slice(1)}" aria-haspopup="dialog"><span class="dock-icon">${icon(x)}</span><span class="dock-label">${x[0].toUpperCase() + x.slice(1)}</span><span class="dock-number">0${i + 1}</span></button>`).join("")}</nav></div>
 <dialog id="workspace" aria-labelledby="workspace-title"><div class="workspace-content"><div class="workspace-top"><span class="eyebrow" id="workspace-eyebrow">THE STUDIO / 01</span><button class="icon-button" id="close-workspace" aria-label="Close workspace">${icon("close")}</button></div><h1 id="workspace-title"></h1><p id="workspace-description" class="description"></p><div id="workspace-body"></div><footer class="workspace-footer"><span>FORM — OPTICAL STUDIO</span><span>EXPERIMENT FREELY.</span></footer></div></dialog>
 <div id="toast" role="status" aria-live="polite"></div>
 `;

@@ -23,6 +23,7 @@ export interface OpticalState {
   revealY: number;
   energy: number;
   room: number;
+  immersion: number;
 }
 export const defaults = {
   ior: 1.52,

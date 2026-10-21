@@ -23,31 +23,33 @@ A single-file edition can be generated after building with `node scripts/export-
 
 ## Use
 
+- **Enter the lens** opens a large architectural view with a coordinated camera approach. Drag or use arrow keys to look around. **Return to lens** (or Escape) restores the resting lens; **Studio** exposes its settings. See [Enter the lens](docs/ENTER-THE-LENS.md).
+
 - Press the lens to expose **Scene**, **Sound**, and **Focus**. Drag to a labeled action and release, or activate its button. Release outside the lens and targets to cancel. Enter/Space exposes the same actions; left/right arrows navigate them.
 - Open **Material** to choose water, glass, or crystal; adjust refraction and frost; expand **Depth & lighting** to change optical depth and highlight direction; compare the original scene; or enable inspection. Inspection drags move the lens without triggering actions. Arrow keys move it; Escape exits inspection.
 - **Media → Room** opens **Living Rooms**: Limestone, Nocturne and Veil, three actual 3D spaces inside the glass. Use the arrows beneath the lens or opt into the finite **Play rooms** sequence. Move the pointer to look around, or enable lens inspection for touch/keyboard exploration. Add `?room=1` to the page URL to start there. See [Living Rooms](docs/LIVING-ROOMS.md) and [the prototype notes](docs/ROOM-PROTOTYPE.md).
 - **Media** also offers three generated art environments: **Fold**, **Sculpture**, and **Veil**. It also accepts local images, videos, and audio up to 150 MB. Images and videos cover the viewport in grayscale. Playback, scrubbing, and elapsed time appear for video/audio. Failed replacements preserve the previous selection. Remove restores the generated scene.
-- **Save this moment** in Media contracts the workspace back into the lens and downloads the optical canvas as a local PNG, without controls or chrome.
+- **Save this moment** in Media closes the workspace and downloads the current optical view as a local PNG, without controls or chrome. An entered room stays expanded for its export.
 - **Interaction** controls magnetic response, optional slowly moving **Living light**, and reduced motion. System reduced motion always takes precedence.
 - **Details** explains the approximation and reports active renderer, measured frame intervals, resolution, and quality scale.
 - A slowly breathing, three-harmonic soundscape starts only after an explicit user action. Focus mode has an exit button. Escape closes panels and restores focus.
 
 ## Architecture
 
-| Module                                                                                         | Responsibility                                                                             |
-| ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| `src/main.ts`, `state.ts`                                                                      | Application/workspace state, controls, on-demand orchestration                             |
-| `gestures.ts`                                                                                  | Pointer capture, pressure where available, drag selection, inspection                      |
-| `motion.ts`                                                                                    | Shared damped springs, bounded time steps, exact settling                                  |
-| `transitions.ts`                                                                               | Native modal lifecycle, optical morph coordination, inert controls, focus restoration      |
-| `render/renderer.ts`                                                                           | Typed renderer contract, WebGPU, WebGL 2, Canvas fallback, disposal                        |
-| `optics.ts`, `export.ts`                                                                       | Reference transmission/reflection math and local PNG download lifecycle                    |
-| `render/shaders.ts`                                                                            | WGSL/GLSL analytical optics consuming the same uniforms                                    |
-| `room/catalog.ts`, `room/architecture.ts`, `room/materials.ts`, `room/pose.ts`, `room/room.ts` | Actual architectural geometry, bounded camera, Three.js WebGPU/TSL rendering and lifecycle |
-| `render/scene.ts`                                                                              | Shared backdrop texture, interrupted radial reveals, grayscale media cover crop            |
-| `media.ts`                                                                                     | Local URLs, cancelable replacement, playback, Web Audio analysis and cleanup               |
-| `ui.ts`, `style.css`                                                                           | Accessible controls, minimal composition, responsive presentation                          |
-| `performance.ts`                                                                               | Active-frame measurements and adaptive resolution with hysteresis                          |
+| Module                                                                                                          | Responsibility                                                                             |
+| --------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `src/main.ts`, `state.ts`                                                                                       | Application/workspace state, controls, on-demand orchestration                             |
+| `gestures.ts`                                                                                                   | Pointer capture, pressure where available, drag selection, inspection                      |
+| `motion.ts`                                                                                                     | Shared damped springs, bounded time steps, exact settling                                  |
+| `transitions.ts`                                                                                                | Native modal lifecycle, optical morph coordination, inert controls, focus restoration      |
+| `render/renderer.ts`                                                                                            | Typed renderer contract, WebGPU, WebGL 2, Canvas fallback, disposal                        |
+| `optics.ts`, `export.ts`                                                                                        | Reference transmission/reflection math and local PNG download lifecycle                    |
+| `render/shaders.ts`                                                                                             | WGSL/GLSL analytical optics consuming the same uniforms                                    |
+| `room/catalog.ts`, `room/architecture.ts`, `room/materials.ts`, `room/pose.ts`, `room/room.ts`, `room/visit.ts` | Actual architectural geometry, bounded camera, Three.js WebGPU/TSL rendering and lifecycle |
+| `render/scene.ts`                                                                                               | Shared backdrop texture, interrupted radial reveals, grayscale media cover crop            |
+| `media.ts`                                                                                                      | Local URLs, cancelable replacement, playback, Web Audio analysis and cleanup               |
+| `ui.ts`, `style.css`                                                                                            | Accessible controls, minimal composition, responsive presentation                          |
+| `performance.ts`                                                                                                | Active-frame measurements and adaptive resolution with hysteresis                          |
 
 The lens bends samples from the **actual displayed backdrop**, using a convex surface profile, Snell refraction, optical depth and refractive index. Schlick’s approximation links Fresnel reflection to the material and viewing angle; neighboring samples approximate roughness. Position, deformation, compression, wake, and workspace morph use the same motion state. This is **analytical screen-space optics**, not physical ray tracing; caustics and thickness are approximate. Text fades into the expanded surface without being stretched.
 
@@ -58,8 +60,8 @@ Renderer selection is WebGPU → WebGL 2 → Canvas 2D. Initialization failures 
 ## Validation
 
 ```sh
-npm test                 # 14 focused simulation/state/optics/geometry tests
-npm run test:browser     # 32 Chromium functional, room, shader, media and lifecycle tests
+npm test                 # 17 focused simulation/state/optics/geometry tests
+npm run test:browser     # 39 Chromium functional, room, shader, media and lifecycle tests
 npm run build            # strict TypeScript + production build
 ```
 

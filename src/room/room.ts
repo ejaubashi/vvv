@@ -8,6 +8,7 @@ import { createRoomSurfaces } from "./materials";
 import { roomPose, type RoomPose } from "./pose";
 import type { PortalFrame } from "../render/portal-frame";
 import { roomDefinition, type RoomId } from "./catalog";
+import { roomFrameSize } from "./visit";
 
 export class PortalRoom {
   frame: PortalFrame = { canvas: document.createElement("canvas"), version: 0 };
@@ -155,7 +156,8 @@ export class PortalRoom {
         )
           continue;
         if (this.resolution) {
-          this.previous.width = this.previous.height = this.resolution;
+          this.previous.width = this.frame.canvas.width;
+          this.previous.height = this.frame.canvas.height;
           this.previous.getContext("2d")!.drawImage(this.frame.canvas, 0, 0);
         }
         disposeArchitecture(this.model!);
@@ -237,11 +239,17 @@ export class PortalRoom {
     depth: number,
     size: number,
     lightTime = 0,
+    aspect = 1,
+    immersion = 0,
   ) {
     if (this.status !== "ready" && this.status !== "fallback") return;
-    size = Math.max(512, Math.min(1024, Math.round(size / 64) * 64));
-    const changedSize = this.resolution !== size;
-    roomPose(this.pose, lookX, lookY, lensX, lensY, pressure, depth);
+    const dimensions = roomFrameSize(size, aspect, immersion > 0);
+    const w = dimensions.width,
+      h = dimensions.height;
+    size = dimensions.longEdge;
+    const changedSize =
+      this.frame.canvas.width !== w || this.frame.canvas.height !== h;
+    roomPose(this.pose, lookX, lookY, lensX, lensY, pressure, depth, immersion);
     const changedPose =
       changedSize ||
       Math.abs(this.pose.x - this.lastPose.x) >= 0.00025 ||
@@ -251,7 +259,13 @@ export class PortalRoom {
     if (!changedPose && this.blend === this.lastBlend) return;
     const start = performance.now();
     if (this.engine && this.model) {
-      if (changedSize) this.engine.setSize(size, size, false);
+      if (changedSize) {
+        this.engine.setSize(w, h, false);
+      }
+      if (this.model.camera.aspect !== w / h) {
+        this.model.camera.aspect = w / h;
+        this.model.camera.updateProjectionMatrix();
+      }
       this.model.camera.position.set(this.pose.x, this.pose.y, this.pose.z);
       this.model.camera.lookAt(0, 1.65, -5.5);
       try {
@@ -261,22 +275,30 @@ export class PortalRoom {
             this.model.sun.shadow.needsUpdate = true;
           }
           this.engine.render(this.model.scene, this.model.camera);
-          if (changedSize || this.current.width !== size)
-            this.current.width = this.current.height = size;
+          if (
+            changedSize ||
+            this.current.width !== w ||
+            this.current.height !== h
+          ) {
+            this.current.width = w;
+            this.current.height = h;
+          }
           this.current
             .getContext("2d")!
-            .drawImage(this.engine.domElement, 0, 0, size, size);
+            .drawImage(this.engine.domElement, 0, 0, w, h);
           this.lastLight = lightTime;
         }
-        if (changedSize)
-          this.frame.canvas.width = this.frame.canvas.height = size;
+        if (changedSize) {
+          this.frame.canvas.width = w;
+          this.frame.canvas.height = h;
+        }
         const c = this.frame.canvas.getContext("2d")!;
         c.globalAlpha = 1;
-        c.drawImage(this.current, 0, 0, size, size);
+        c.drawImage(this.current, 0, 0, w, h);
         if (this.blend < 1) {
           const t = this.blend * this.blend * (3 - 2 * this.blend);
           c.globalAlpha = 1 - t;
-          c.drawImage(this.previous, 0, 0, size, size);
+          c.drawImage(this.previous, 0, 0, w, h);
           c.globalAlpha = 1;
         }
       } catch (error) {
@@ -284,7 +306,7 @@ export class PortalRoom {
         this.useFallback();
         return;
       }
-    } else this.poster(size);
+    } else this.poster(w, h);
     this.resolution = size;
     Object.assign(this.lastPose, this.pose);
     this.lastBlend = this.blend;
@@ -292,10 +314,13 @@ export class PortalRoom {
     this.draws++;
     this.frame.version++;
   }
-  private poster(size: number) {
+  private poster(width: number, height: number) {
     const canvas = this.frame.canvas;
-    canvas.width = canvas.height = size;
+    canvas.width = width;
+    canvas.height = height;
     const c = canvas.getContext("2d")!;
+    const size = Math.max(width, height);
+    c.translate((width - size) / 2, (height - size) / 2);
     c.fillStyle = "#292929";
     c.fillRect(0, 0, size, size);
     if (this.kind === "nocturne") {
