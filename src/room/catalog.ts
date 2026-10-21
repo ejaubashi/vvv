@@ -1,4 +1,4 @@
-export const ROOMS = [
+export const AUTHORED_ROOMS = [
   {
     id: "gallery",
     name: "Limestone",
@@ -42,6 +42,19 @@ export const ROOMS = [
     intensity: 2.5,
   },
 ] as const;
+export type AuthoredRoomId = (typeof AUTHORED_ROOMS)[number]["id"];
+/** The capture is an optional experiment, outside the three-room authored sequence. */
+export const ROOMS = [
+  ...AUTHORED_ROOMS,
+  {
+    ...AUTHORED_ROOMS[0],
+    id: "pantheon",
+    name: "Pantheon",
+    subtitle: "A captured place · 10.6 MB",
+    detail:
+      "Photographed stone, a coffered dome and captured daylight. A Gaussian-splat reconstruction by artfletch; the source includes a reconstructed floor.",
+  },
+] as const;
 export type RoomId = (typeof ROOMS)[number]["id"];
 export const roomDefinition = (id: RoomId) =>
   ROOMS.find((room) => room.id === id)!;
@@ -56,7 +69,10 @@ export class RoomJourney {
   finished = false;
   readonly dwell = 14;
   go(id: RoomId) {
-    this.index = ROOMS.findIndex((room) => room.id === id);
+    this.index = Math.max(
+      0,
+      AUTHORED_ROOMS.findIndex((room) => room.id === id),
+    );
     this.elapsed = 0;
     this.playing = false;
     this.finished = false;
@@ -64,7 +80,7 @@ export class RoomJourney {
   play() {
     if (this.finished) this.go("gallery");
     this.playing = true;
-    return ROOMS[this.index].id;
+    return AUTHORED_ROOMS[this.index].id;
   }
   pause() {
     this.playing = false;
@@ -78,11 +94,11 @@ export class RoomJourney {
     this.elapsed += Math.max(0, Math.min(dt, 0.25));
     if (this.elapsed < this.dwell) return null;
     this.elapsed = 0;
-    if (this.index === ROOMS.length - 1) {
+    if (this.index === AUTHORED_ROOMS.length - 1) {
       this.finished = true;
       this.pause();
       return null;
     }
-    return ROOMS[++this.index].id;
+    return AUTHORED_ROOMS[++this.index].id;
   }
 }

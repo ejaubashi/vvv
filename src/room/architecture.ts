@@ -20,7 +20,7 @@ import {
   type BufferGeometry,
 } from "three/webgpu";
 import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
-import { roomDefinition, type RoomId } from "./catalog";
+import { roomDefinition, type AuthoredRoomId } from "./catalog";
 
 export interface RoomMaterials {
   stone: Material;
@@ -38,7 +38,7 @@ export function createArchitecture(
       metalness: 0.25,
     }),
   },
-  id: RoomId = "gallery",
+  id: AuthoredRoomId = "gallery",
 ) {
   const definition = roomDefinition(id);
   const scene = new Scene();

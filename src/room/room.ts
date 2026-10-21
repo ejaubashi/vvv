@@ -9,6 +9,7 @@ import { roomPose, type RoomPose } from "./pose";
 import type { PortalFrame } from "../render/portal-frame";
 import { roomDefinition, type RoomId } from "./catalog";
 import { roomFrameSize } from "./visit";
+import type { CapturedRoom } from "./capture";
 
 export class PortalRoom {
   frame: PortalFrame = { canvas: document.createElement("canvas"), version: 0 };
@@ -21,6 +22,11 @@ export class PortalRoom {
   requested: RoomId = "gallery";
   switching = false;
   blend = 1;
+  captureMessage = "";
+  captureError = false;
+  private capture: CapturedRoom | null = null;
+  private captureLoad: AbortController | null = null;
+  private forceWebGL = false;
   private engine: WebGPURenderer | null = null;
   private model: ReturnType<typeof createArchitecture> | null = null;
   private surfaces: ReturnType<typeof createRoomSurfaces> | null = null;
@@ -42,6 +48,7 @@ export class PortalRoom {
     if (this.pending) return this.pending;
     if (this.status === "disposed") return Promise.resolve();
     this.status = "loading";
+    this.forceWebGL = forceWebGL;
     this.kind = this.requested = id;
     this.pending = this.initialize(forceWebGL);
     return this.pending;
@@ -50,6 +57,23 @@ export class PortalRoom {
     try {
       if (new URLSearchParams(location.search).get("roomRenderer") === "none")
         throw Error("Room fallback requested");
+      if (this.kind === "pantheon") {
+        const capture = await this.loadCapture();
+        if (this.status === "disposed") {
+          capture?.dispose();
+          return;
+        }
+        if (capture && this.requested === "pantheon") {
+          this.capture = capture;
+          this.backend = "Spark / Gaussian splats / WebGL 2";
+          this.status = "ready";
+          this.loss();
+          return;
+        }
+        capture?.dispose();
+        // Preserve a functioning authored room when an optional asset fails.
+        this.kind = this.requested === "pantheon" ? "gallery" : this.requested;
+      }
       this.surfaces = createRoomSurfaces(this.kind);
       this.model = createArchitecture(this.surfaces.materials, this.kind);
       this.model.scene.environment = this.surfaces.environment;
@@ -76,13 +100,15 @@ export class PortalRoom {
       this.model.sun.shadow.autoUpdate = false;
       this.model.sun.shadow.needsUpdate = true;
       engine.onDeviceLost = () => {
-        if (this.status !== "disposed") this.useFallback();
+        if (this.status !== "disposed" && this.engine === engine)
+          this.useFallback();
       };
       engine.domElement.addEventListener(
         "webglcontextlost",
         (event) => {
           event.preventDefault();
-          if (this.status !== "disposed") this.useFallback();
+          if (this.status !== "disposed" && this.engine === engine)
+            this.useFallback();
         },
         { once: true },
       );
@@ -113,12 +139,20 @@ export class PortalRoom {
   private isLoading() {
     return this.status === "loading";
   }
+  private isReady() {
+    return this.status === "ready";
+  }
   /** Keep one renderer. Compile at most one replacement; newer requests supersede it. */
   async select(id: RoomId) {
+    if (id !== this.requested) this.captureLoad?.abort();
     this.requested = id;
     if (this.status === "loading") await this.pending;
     if (this.status === "disposed" || this.status === "idle") return;
     if (this.status === "fallback") {
+      if (id === "pantheon") {
+        this.pending = null;
+        return this.init(this.forceWebGL, id);
+      }
       this.kind = id;
       this.lastPose.x = Infinity;
       this.loss();
@@ -135,10 +169,91 @@ export class PortalRoom {
     });
     return this.switchTask;
   }
+  private async loadCapture() {
+    const controller = new AbortController();
+    this.captureLoad = controller;
+    const signal = AbortSignal.any([
+      controller.signal,
+      AbortSignal.timeout(120_000),
+    ]);
+    this.captureError = false;
+    this.captureMessage = "Downloading capture · 0%";
+    this.loss();
+    try {
+      const { CapturedRoom } = await import("./capture");
+      signal.throwIfAborted();
+      return await CapturedRoom.load(
+        signal,
+        this.loss,
+        (ratio) => {
+          const message =
+            ratio === 1
+              ? "Developing capture…"
+              : `Downloading capture · ${Math.floor(ratio * 100)}%`;
+          if (this.captureMessage !== message) {
+            this.captureMessage = message;
+            this.loss();
+          }
+        },
+        () => {
+          if (this.kind === "pantheon") this.useFallback();
+        },
+      );
+    } catch (error) {
+      if (!controller.signal.aborted && this.status !== "disposed") {
+        console.info("Optional capture unavailable:", String(error));
+        this.captureError = true;
+      }
+      return null;
+    } finally {
+      if (this.captureLoad === controller) this.captureLoad = null;
+      this.captureMessage = "";
+      this.loss();
+    }
+  }
+  private snapshot() {
+    if (!this.resolution) return;
+    this.previous.width = this.frame.canvas.width;
+    this.previous.height = this.frame.canvas.height;
+    this.previous.getContext("2d")!.drawImage(this.frame.canvas, 0, 0);
+  }
   private async switchRooms() {
     while (this.status === "ready" && this.requested !== this.kind) {
       const id = this.requested,
-        engine = this.engine!;
+        engine = this.engine;
+      if (id === "pantheon") {
+        const capture = await this.loadCapture();
+        if (this.status !== "ready" || id !== this.requested) {
+          capture?.dispose();
+          continue;
+        }
+        if (!capture) {
+          this.requested = this.kind;
+          break;
+        }
+        this.snapshot();
+        this.release();
+        this.capture = capture;
+        this.kind = id;
+        this.backend = "Spark / Gaussian splats / WebGL 2";
+        this.blend = this.resolution ? 0 : 1;
+        this.lastPose.x = Infinity;
+        this.loss();
+        continue;
+      }
+      if (!engine) {
+        this.snapshot();
+        this.capture?.dispose();
+        this.capture = null;
+        this.status = "loading";
+        this.kind = id;
+        await this.initialize(this.forceWebGL);
+        if (this.isReady()) {
+          this.blend = this.resolution ? 0 : 1;
+          this.lastPose.x = Infinity;
+        }
+        continue;
+      }
       const surfaces = createRoomSurfaces(id);
       const model = createArchitecture(surfaces.materials, id);
       model.scene.environment = surfaces.environment;
@@ -155,11 +270,7 @@ export class PortalRoom {
           id !== this.requested
         )
           continue;
-        if (this.resolution) {
-          this.previous.width = this.frame.canvas.width;
-          this.previous.height = this.frame.canvas.height;
-          this.previous.getContext("2d")!.drawImage(this.frame.canvas, 0, 0);
-        }
+        this.snapshot();
         disposeArchitecture(this.model!);
         this.surfaces!.dispose();
         this.model = model;
@@ -192,6 +303,8 @@ export class PortalRoom {
     return this.blend < 1;
   }
   private release() {
+    this.capture?.dispose();
+    this.capture = null;
     const engine = this.engine;
     this.engine = null;
     if (engine) {
@@ -221,7 +334,11 @@ export class PortalRoom {
     this.status = "fallback";
     this.kind = this.requested;
     this.blend = 1;
-    this.backend = "Architectural illustration · 3D unavailable";
+    this.backend =
+      this.kind === "pantheon"
+        ? "Capture unavailable"
+        : "Architectural illustration · 3D unavailable";
+    if (this.kind === "pantheon") this.captureError = true;
     this.release();
     this.frame.canvas = document.createElement("canvas");
     this.frame.canvas.width = this.frame.canvas.height = 1;
@@ -255,26 +372,36 @@ export class PortalRoom {
       Math.abs(this.pose.x - this.lastPose.x) >= 0.00025 ||
       Math.abs(this.pose.y - this.lastPose.y) >= 0.00025 ||
       Math.abs(this.pose.z - this.lastPose.z) >= 0.00025 ||
-      Math.abs(lightTime - this.lastLight) >= 0.07;
+      (!this.capture && Math.abs(lightTime - this.lastLight) >= 0.07) ||
+      this.capture?.dirty === true;
     if (!changedPose && this.blend === this.lastBlend) return;
     const start = performance.now();
-    if (this.engine && this.model) {
-      if (changedSize) {
-        this.engine.setSize(w, h, false);
+    if (this.capture || (this.engine && this.model)) {
+      const engine = this.engine,
+        model = this.model;
+      if (engine && model) {
+        if (changedSize) {
+          engine.setSize(w, h, false);
+        }
+        if (model.camera.aspect !== w / h) {
+          model.camera.aspect = w / h;
+          model.camera.updateProjectionMatrix();
+        }
+        model.camera.position.set(this.pose.x, this.pose.y, this.pose.z);
+        model.camera.lookAt(0, 1.65, -5.5);
       }
-      if (this.model.camera.aspect !== w / h) {
-        this.model.camera.aspect = w / h;
-        this.model.camera.updateProjectionMatrix();
-      }
-      this.model.camera.position.set(this.pose.x, this.pose.y, this.pose.z);
-      this.model.camera.lookAt(0, 1.65, -5.5);
       try {
         if (changedPose) {
-          if (Math.abs(lightTime - this.lastLight) >= 0.07) {
-            this.model.sun.position.x = 3.2 + Math.sin(lightTime * 0.22) * 1.2;
-            this.model.sun.shadow.needsUpdate = true;
+          let source: HTMLCanvasElement;
+          if (this.capture) source = this.capture.render(this.pose, w, h);
+          else {
+            if (Math.abs(lightTime - this.lastLight) >= 0.07) {
+              model!.sun.position.x = 3.2 + Math.sin(lightTime * 0.22) * 1.2;
+              model!.sun.shadow.needsUpdate = true;
+            }
+            engine!.render(model!.scene, model!.camera);
+            source = engine!.domElement;
           }
-          this.engine.render(this.model.scene, this.model.camera);
           if (
             changedSize ||
             this.current.width !== w ||
@@ -283,9 +410,7 @@ export class PortalRoom {
             this.current.width = w;
             this.current.height = h;
           }
-          this.current
-            .getContext("2d")!
-            .drawImage(this.engine.domElement, 0, 0, w, h);
+          this.current.getContext("2d")!.drawImage(source, 0, 0, w, h);
           this.lastLight = lightTime;
         }
         if (changedSize) {
@@ -323,6 +448,17 @@ export class PortalRoom {
     c.translate((width - size) / 2, (height - size) / 2);
     c.fillStyle = "#292929";
     c.fillRect(0, 0, size, size);
+    if (this.kind === "pantheon") {
+      c.fillStyle = "#ded7c8";
+      c.textAlign = "center";
+      c.font = `${Math.max(12, size * 0.025)}px sans-serif`;
+      c.fillText(
+        "Capture unavailable · choose another room",
+        size / 2,
+        size / 2,
+      );
+      return;
+    }
     if (this.kind === "nocturne") {
       c.fillStyle = "#101923";
       c.fillRect(0, 0, size, size);
@@ -387,6 +523,7 @@ export class PortalRoom {
     if (this.status === "disposed") return this.cleanup;
     const loading = this.status === "loading";
     this.status = "disposed";
+    this.captureLoad?.abort();
     if (loading) await this.pending;
     await this.switchTask;
     await this.release();

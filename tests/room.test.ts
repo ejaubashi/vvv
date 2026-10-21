@@ -6,7 +6,7 @@ import {
   disposeArchitecture,
 } from "../src/room/architecture";
 import { roomPose } from "../src/room/pose";
-import { ROOMS, RoomJourney } from "../src/room/catalog";
+import { AUTHORED_ROOMS, RoomJourney } from "../src/room/catalog";
 test("architecture has finite mesh geometry and a perspective depth range", () => {
   const model = createArchitecture();
   try {
@@ -57,7 +57,7 @@ test("room camera stays bounded and changes with lens and gesture state", () => 
 });
 test("all room editions have distinct finite geometry and dispose shared geometry once", () => {
   const signatures = new Set<string>();
-  for (const definition of ROOMS) {
+  for (const definition of AUTHORED_ROOMS) {
     const model = createArchitecture(undefined, definition.id);
     const geometries = new Set(model.meshes.map((m) => m.geometry));
     const disposals = new Map([...geometries].map((geometry) => [geometry, 0]));
@@ -80,7 +80,7 @@ test("all room editions have distinct finite geometry and dispose shared geometr
     disposeArchitecture(model);
     for (const count of disposals.values()) assert.equal(count, 1);
   }
-  assert.equal(signatures.size, ROOMS.length);
+  assert.equal(signatures.size, AUTHORED_ROOMS.length);
 });
 test("the opt-in room journey pauses, resumes, finishes and replays without looping", () => {
   const journey = new RoomJourney();

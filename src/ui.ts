@@ -35,10 +35,11 @@ export function mount() {
 <div class="index-note chrome"><span>AN EXPLORATION OF</span><span>LIGHT, IN YOUR HANDS.</span></div>
 <nav id="room-nav" class="room-nav chrome" aria-label="Living rooms" hidden>
 <button id="previous-room" aria-label="Previous room">${icon("arrow")}</button>
-<div class="room-caption"><span id="room-count">LIVING ROOMS · 01 / 03</span><span id="room-name" aria-live="polite" aria-atomic="true">Limestone</span></div>
+<div class="room-caption"><span id="room-count">LIVING ROOMS · 01 / 04</span><span id="room-name" aria-live="polite" aria-atomic="true">Limestone</span></div>
 <button id="journey-play" aria-label="Play rooms">${icon("play")}</button>
 <button id="next-room" aria-label="Next room">${icon("arrow")}</button>
 </nav>
+<aside id="capture-note" class="capture-note chrome" aria-label="Captured room" hidden><span id="capture-state" role="status" aria-live="polite"></span><span><a href="https://superspl.at/scene/dac6e508" target="_blank" rel="noopener">Pantheon · artfletch</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a><button id="capture-retry" hidden>Retry capture</button></span></aside>
 <div class="dock-wrap chrome" id="studio-dock"><span class="dock-caption" id="dock-caption">A STUDY IN REFRACTION</span><nav class="dock" aria-label="Studio workspaces">${["media", "material", "interaction", "details"].map((x, i) => `<button data-workspace="${x}" aria-label="${x[0].toUpperCase() + x.slice(1)}" aria-haspopup="dialog"><span class="dock-icon">${icon(x)}</span><span class="dock-label">${x[0].toUpperCase() + x.slice(1)}</span><span class="dock-number">0${i + 1}</span></button>`).join("")}</nav></div>
 <dialog id="workspace" aria-labelledby="workspace-title"><div class="workspace-content"><div class="workspace-top"><span class="eyebrow" id="workspace-eyebrow">THE STUDIO / 01</span><button class="icon-button" id="close-workspace" aria-label="Close workspace">${icon("close")}</button></div><h1 id="workspace-title"></h1><p id="workspace-description" class="description"></p><div id="workspace-body"></div><footer class="workspace-footer"><span>FORM — OPTICAL STUDIO</span><span>EXPERIMENT FREELY.</span></footer></div></dialog>
 <div id="toast" role="status" aria-live="polite"></div>
