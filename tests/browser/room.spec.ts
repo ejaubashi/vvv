@@ -214,6 +214,22 @@ test("WebGPU renders the architectural scene through the WebGPU lens", async ({
   await expect(page.locator("#renderer-name")).toHaveText("WebGPU");
   await expect(page.locator("#room-measurement")).toContainText("12 meshes");
   await close(page);
+  for (const id of ["nocturne", "veil"]) {
+    await page.getByRole("button", { name: "Next room", exact: true }).click();
+    await expect(page.locator("#scene canvas")).toHaveAttribute(
+      "data-room-id",
+      id,
+      { timeout: 30000 },
+    );
+    await expect(page.locator("#scene canvas")).toHaveAttribute(
+      "data-room-switching",
+      "false",
+    );
+    await expect(page.locator("#scene canvas")).toHaveAttribute(
+      "data-room-blend",
+      "1",
+    );
+  }
   await page.screenshot({ path: "/tmp/form-room-webgpu-test.png" });
   expect(errors).toEqual([]);
   await browser.close();

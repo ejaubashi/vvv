@@ -7,6 +7,7 @@ import {
   LinearMipmapLinearFilter,
   EquirectangularReflectionMapping,
   MeshStandardNodeMaterial,
+  DoubleSide,
 } from "three/webgpu";
 import {
   color,
@@ -18,9 +19,11 @@ import {
   bumpMap,
   reflector,
 } from "three/tsl";
+import { roomDefinition, type RoomId } from "./catalog";
 
 /** Small, deterministic textures keep the room self-contained and available offline. */
-export function createRoomSurfaces() {
+export function createRoomSurfaces(id: RoomId = "gallery") {
+  const definition = roomDefinition(id);
   const grainData = new Uint8Array(256 * 256 * 4);
   let seed = 1847;
   for (let y = 0; y < 256; y++) {
@@ -75,7 +78,7 @@ export function createRoomSurfaces() {
     positionWorld,
     normalWorld,
   ).r;
-  stone.colorNode = color(0xc9c5bc).mul(stoneGrain.mul(0.24).add(0.79));
+  stone.colorNode = color(definition.stone).mul(stoneGrain.mul(0.24).add(0.79));
   stone.roughnessNode = stoneGrain.mul(0.15).add(0.72);
   stone.normalNode = bumpMap(stoneGrain, float(0.026));
   stone.aoNode = positionWorld.y.smoothstep(0, 0.3).mul(0.22).add(0.78);
@@ -90,10 +93,12 @@ export function createRoomSurfaces() {
   const joints = distanceToJoint.x
     .smoothstep(0.002, 0.008)
     .mul(distanceToJoint.y.smoothstep(0.002, 0.008));
-  floor.colorNode = color(0xaaa69f)
+  floor.colorNode = color(definition.floor)
     .mul(floorGrain.mul(0.12).add(0.86))
     .mul(joints.mul(0.18).add(0.82));
-  floor.roughnessNode = floorGrain.mul(0.12).add(0.32);
+  floor.roughnessNode = floorGrain
+    .mul(0.12)
+    .add(id === "nocturne" ? 0.18 : 0.32);
   floor.normalNode = bumpMap(
     floorGrain.mul(0.018).add(joints.mul(0.006)),
     float(1),
@@ -128,18 +133,33 @@ export function createRoomSurfaces() {
   reflection.target.rotation.x = -Math.PI / 2;
   reflection.target.position.y = 0.004;
   // One half-resolution reflected view, softened and subdued like honed stone.
-  floor.emissiveNode = reflection.level(float(2)).rgb.mul(0.13);
+  floor.emissiveNode = reflection
+    .level(float(2))
+    .rgb.mul(id === "nocturne" ? 0.22 : 0.13);
 
   const sculpture = new MeshStandardNodeMaterial({
-    color: 0xa1a3a5,
-    metalness: 0.86,
-    roughness: 0.18,
+    color: definition.sculpture,
+    metalness: id === "veil" ? 0.12 : 0.86,
+    roughness: id === "veil" ? 0.48 : 0.18,
   });
+  const fabric = new MeshStandardNodeMaterial({
+    color: 0xe8dfce,
+    roughness: 0.96,
+    side: DoubleSide,
+  });
+  const weave = positionWorld.x
+    .mul(160)
+    .sin()
+    .mul(positionWorld.y.mul(160).sin());
+  fabric.normalNode = bumpMap(weave, float(0.0005));
+  fabric.aoNode = float(0.9);
   return {
-    materials: { stone, floor, sculpture },
+    materials: { stone, floor, sculpture, fabric },
     environment,
     reflection,
     dispose() {
+      // The other materials are disposed with their geometry graph.
+      if (id !== "veil") fabric.dispose();
       reflection.dispose();
       grain.dispose();
       environment.dispose();

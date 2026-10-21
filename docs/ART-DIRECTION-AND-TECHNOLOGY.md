@@ -29,7 +29,7 @@ MDN's compatibility snapshot reports WebGPU in Safari 26, Chrome Android 121, Ch
 
 The renderers continue to use screen-space analytical optics. They do **not** trace rays through arbitrary scene geometry, simulate spectral dispersion, or solve physical multi-bounce caustics. The light halo is an approximation. The canvas fallback uses simpler magnification, blur, and directional rim lighting.
 
-## The next larger releases
+## Larger releases and current status
 
 | Release               | Experience                                                                                                                                                   | Implementation and acceptance gate                                                                                                                                                                                                                                                  |
 | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -38,7 +38,7 @@ The renderers continue to use screen-space analytical optics. They do **not** tr
 | **Motion Editions**   | Capture a 5–15 second local film of a personal interaction, optionally with the soundscape.                                                                  | Capability-test MediaRecorder/WebCodecs configurations, choose a valid codec/container pair, bound frame queues and memory, and release VideoFrames. Start with a supported WebM path; do not assume universal AV1 or H.264 encoding. No upload required.                           |
 | **Exhibition Mode**   | A focused installation for large screens with accessible exit controls, predictable idle behavior and recovery after interruption.                           | Add user-initiated fullscreen, authored idle/recovery states and real hardware testing. Consider optional XR only after the desktop/touch artwork is coherent; headset support and permissions are a separate project.                                                              |
 
-These are proposed milestones, **not implemented features or a fixed delivery estimate**. The near-term priority is Living Rooms, because authored spatial composition and pacing will improve immersion more than adding another rendering API.
+The first [Living Rooms release](LIVING-ROOMS.md) is now implemented with Limestone, Nocturne and Veil, optional paced playback, pause/replay, manual navigation and reduced-motion behavior. The remaining milestones are proposals, **not implemented features or a fixed delivery estimate**. The near-term priority is Living Rooms, because authored spatial composition and pacing will improve immersion more than adding another rendering API.
 
 ## Performance research and validation
 

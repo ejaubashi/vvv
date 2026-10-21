@@ -14,6 +14,13 @@ import { WorkspaceTransition } from "./transitions";
 import { MediaManager } from "./media";
 import { PerformanceMonitor } from "./performance";
 import { PortalRoom } from "./room/room";
+import {
+  ROOMS,
+  parseRoomId,
+  roomDefinition,
+  RoomJourney,
+  type RoomId,
+} from "./room/catalog";
 import { FrameExport } from "./export";
 import { SceneTexture } from "./render/scene";
 import {
@@ -34,7 +41,8 @@ const workspace = new WorkspaceState(),
   monitor = new PerformanceMonitor(),
   scene = new SceneTexture(),
   frameExport = new FrameExport(),
-  room = new PortalRoom(wake);
+  room = new PortalRoom(wake),
+  journey = new RoomJourney();
 let width = innerWidth,
   height = innerHeight,
   radius = Math.min(128, width * 0.27, height * 0.18),
@@ -61,7 +69,11 @@ let ior = defaults.ior,
   ambientTime = 0,
   pendingExport = false,
   roomEnabled = new URLSearchParams(location.search).get("room") === "1",
+  selectedRoom: RoomId = parseRoomId(
+    new URLSearchParams(location.search).get("space"),
+  ),
   roomLook = true;
+journey.go(selectedRoom);
 const systemReduced = matchMedia("(prefers-reduced-motion: reduce)");
 let saved = { x: width * 0.5, y: height * 0.46 },
   target = { x: width * 0.5, y: height * 0.5, w: 480, h: 500 };
@@ -109,6 +121,7 @@ function wake() {
 function reduced() {
   motion.reduced = systemReduced.matches || userReduced;
   document.body.classList.toggle("reduced", motion.reduced);
+  if (motion.reduced) journey.pause();
   wake();
 }
 function resize() {
@@ -162,12 +175,29 @@ function tick(now: number) {
   const dt = last ? Math.min((now - last) / 1000, 0.25) : 1 / 60;
   const living = ambient && !motion.reduced;
   const continuous =
-    motion.moving || media.playing || media.demo || reveal < 1 || living;
+    motion.moving ||
+    room.moving ||
+    journey.playing ||
+    media.playing ||
+    media.demo ||
+    reveal < 1 ||
+    living;
   if (last && continuous) {
     if (monitor.sample(now - last)) resize();
   }
   last = now;
   if (living) ambientTime += dt;
+  if (roomEnabled && !dialog.open) {
+    room.step(dt, motion.reduced);
+    if (
+      !room.switching &&
+      !room.moving &&
+      (room.status === "ready" || room.status === "fallback")
+    ) {
+      const next = journey.step(dt);
+      if (next) void chooseRoom(next, true);
+    }
+  }
   motion.light.target =
     (lightAngle * Math.PI) / 180 +
     (living ? Math.sin(ambientTime * 0.22) * 0.55 : 0);
@@ -211,6 +241,7 @@ function tick(now: number) {
       motion.reduced ? 0 : motion.intensity.x,
       depth,
       radius * 3.2 * Math.min(devicePixelRatio || 1, 1.75) * monitor.scale,
+      ambientTime,
     );
   scene.draw(optical, media.source, media.decodedFrame);
   let rendered = true;
@@ -230,11 +261,15 @@ function tick(now: number) {
   renderer.canvas.dataset.roomRenderer = room.backend;
   renderer.canvas.dataset.roomDraws = String(room.draws);
   renderer.canvas.dataset.roomResolution = String(room.resolution);
+  renderer.canvas.dataset.roomId = room.kind;
+  renderer.canvas.dataset.roomSwitching = String(room.switching);
+  renderer.canvas.dataset.roomBlend = String(room.blend);
   lens.style.left = `${motion.x.x - radius}px`;
   lens.style.top = `${motion.y.x - radius}px`;
   lens.style.width = lens.style.height = `${radius * 2}px`;
   lens.style.visibility = dialog.open ? "hidden" : "visible";
   transition.update(m, workspace.active !== null);
+  updateRoomChrome();
   lens.style.visibility = dialog.open ? "hidden" : "visible";
   if (!actions.hidden) positionActions();
   if (workspace.active === "details") updateDetails();
@@ -249,7 +284,14 @@ function tick(now: number) {
       )
       .catch((error) => toast(error.message));
   }
-  if (motion.moving || media.playing || media.demo || reveal < 1 || living)
+  if (
+    motion.moving ||
+    (roomEnabled && !dialog.open && (room.moving || journey.playing)) ||
+    media.playing ||
+    media.demo ||
+    reveal < 1 ||
+    living
+  )
     wake();
   else last = 0;
 }
@@ -258,16 +300,94 @@ async function startRoom() {
   await room.init(
     renderer.name !== "WebGPU" ||
       new URLSearchParams(location.search).get("roomRenderer") === "webgl",
+    selectedRoom,
   );
+  await room.select(selectedRoom);
   if (disposed) return;
   if (roomEnabled)
     toast(
       room.status === "ready"
-        ? "Inside the glass · move to look around"
+        ? `${roomDefinition(selectedRoom).name} · move to look around`
         : "3D is unavailable · showing an architectural study",
     );
   wake();
 }
+function updateRoomChrome() {
+  const nav = $("#room-nav");
+  document.body.classList.toggle("has-room", roomEnabled);
+  nav.hidden = !roomEnabled || dialog.open;
+  const index = ROOMS.findIndex((r) => r.id === selectedRoom);
+  const caption = `LIVING ROOMS · 0${index + 1} / 03`;
+  if ($("#room-count").textContent !== caption)
+    $("#room-count").textContent = caption;
+  const label = `${roomDefinition(selectedRoom).name}${room.switching || room.status === "loading" ? " · Opening…" : ""}`;
+  if ($("#room-name").textContent !== label)
+    $("#room-name").textContent = label;
+  nav.dataset.playing = String(journey.playing);
+  const play = $<HTMLButtonElement>("#journey-play");
+  const name = journey.playing
+    ? "Pause rooms"
+    : journey.finished
+      ? "Replay rooms"
+      : "Play rooms";
+  if (play.getAttribute("aria-label") !== name) {
+    play.setAttribute("aria-label", name);
+    play.innerHTML = journey.playing
+      ? '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14" stroke="currentColor" stroke-width="2"/></svg>'
+      : icon("play");
+  }
+  play.disabled = motion.reduced || room.status === "loading" || room.switching;
+  play.title = motion.reduced
+    ? "Reduced motion · use Previous and Next to explore"
+    : "A paced sequence · 14 seconds in each room";
+  const mediaPlay =
+    document.querySelector<HTMLButtonElement>("#journey-toggle");
+  if (mediaPlay) {
+    mediaPlay.disabled = play.disabled;
+    if (mediaPlay.textContent !== name)
+      mediaPlay.innerHTML = `${icon("play")}${name}`;
+  }
+  const replay = document.querySelector<HTMLButtonElement>("#journey-replay");
+  if (replay) replay.disabled = play.disabled;
+}
+function leaveRooms() {
+  roomEnabled = false;
+  journey.pause();
+  const url = new URL(location.href);
+  url.searchParams.delete("room");
+  url.searchParams.delete("space");
+  history.replaceState(null, "", url);
+  resize();
+}
+async function chooseRoom(id: RoomId, automatic = false) {
+  selectedRoom = id;
+  if (!automatic) journey.go(id);
+  motion.viewX.target = motion.viewY.target = 0;
+  const url = new URL(location.href);
+  url.searchParams.set("room", "1");
+  url.searchParams.set("space", id);
+  history.replaceState(null, "", url);
+  updateRoomChrome();
+  wake();
+  await room.select(id);
+  if (!disposed) wake();
+}
+function nextRoom(direction: number) {
+  const index = ROOMS.findIndex((r) => r.id === selectedRoom);
+  void chooseRoom(ROOMS[(index + direction + ROOMS.length) % ROOMS.length].id);
+}
+$("#previous-room").addEventListener("click", () => nextRoom(-1));
+$("#next-room").addEventListener("click", () => nextRoom(1));
+$("#journey-play").addEventListener("click", () => {
+  if (motion.reduced) return;
+  if (journey.playing) journey.pause();
+  else {
+    const id = journey.play();
+    if (id !== selectedRoom) void chooseRoom(id, true);
+  }
+  updateRoomChrome();
+  wake();
+});
 function fallback() {
   if (!renderer || disposed) return;
   renderer.dispose();
@@ -567,7 +687,7 @@ function renderWorkspace(type: Workspace) {
       "Bring something of your own into the light.",
       1,
     );
-    body.innerHTML = `<div class="stage-gallery" role="group" aria-label="Studio environments">${["Fold", "Sculpture", "Veil", "Room"].map((name, index) => `<button class="stage-preset" data-composition="${index}" aria-pressed="${index === 3 ? roomEnabled : !roomEnabled && composition === index && !media.source}"><span class="stage-mini stage-${index}" aria-hidden="true"></span><span>${name}</span></button>`).join("")}</div><p class="gallery-note">CHOOSE AN ATMOSPHERE, OR BRING YOUR OWN.</p>${roomEnabled ? `<div class="room-note"><span class="badge">A ROOM INSIDE THE LENS</span><p>A quiet gallery beyond the glass. Move your pointer to look around, or enable lens inspection to explore by touch.</p></div>${toggle("room-look", "Look around", "Gentle perspective movement. Reduced motion keeps it still.", roomLook)}` : ""}<label class="drop-zone" id="drop-zone">${icon("upload")}<strong>Drop a file, or browse</strong><small>IMAGE, VIDEO OR AUDIO · UP TO 150 MB</small><input id="file" type="file" accept="image/*,video/*,audio/*" aria-label="Choose a local media file"/></label><div id="media-info"></div><p class="media-note">Your files stay on this device. Visual media is shown in monochrome, with a cover crop that follows the lens.</p><button id="export-frame" class="export-button">${icon("download")}Save this moment<span>PNG ↗</span></button>`;
+    body.innerHTML = `<div class="stage-gallery" role="group" aria-label="Studio environments">${["Fold", "Sculpture", "Veil", "Room"].map((name, index) => `<button class="stage-preset" data-composition="${index}" aria-pressed="${index === 3 ? roomEnabled : !roomEnabled && composition === index && !media.source}"><span class="stage-mini stage-${index}" aria-hidden="true"></span><span>${name}</span></button>`).join("")}</div><p class="gallery-note">CHOOSE AN ATMOSPHERE, OR BRING YOUR OWN.</p>${roomEnabled ? `<div class="room-note"><span class="badge">LIVING ROOMS / THREE SPACES, ONE LENS</span><p>Choose a space, or play a quiet sequence. Move to look around; lens inspection offers touch and keyboard exploration.</p></div><div class="room-gallery" role="group" aria-label="Choose a room">${ROOMS.map((entry) => `<button class="room-preset room-edition-${entry.id}" data-room="${entry.id}" aria-pressed="${selectedRoom === entry.id}"><span class="room-mini" aria-hidden="true"></span><strong>${entry.name}</strong><small>${entry.subtitle}</small></button>`).join("")}</div><p class="room-description">${roomDefinition(selectedRoom).detail}</p><div class="journey-controls"><button id="journey-toggle" class="text-button" ${motion.reduced ? "disabled" : ""}>${icon("play")}${journey.playing ? "Pause rooms" : journey.finished ? "Replay rooms" : "Play rooms"}</button><button id="journey-replay" class="text-button" ${motion.reduced ? "disabled" : ""}>${icon("reset")}Start again</button></div><p class="media-note">${motion.reduced ? "Reduced motion is active. Choose any room to explore it at rest." : "14 seconds in each room. Pause anytime; the sequence ends after Veil."}</p>${toggle("room-look", "Look around", "Gentle perspective movement. Reduced motion keeps it still.", roomLook)}` : ""}<label class="drop-zone" id="drop-zone">${icon("upload")}<strong>Drop a file, or browse</strong><small>IMAGE, VIDEO OR AUDIO · UP TO 150 MB</small><input id="file" type="file" accept="image/*,video/*,audio/*" aria-label="Choose a local media file"/></label><div id="media-info"></div><p class="media-note">Your files stay on this device. Visual media is shown in monochrome, with a cover crop that follows the lens.</p><button id="export-frame" class="export-button">${icon("download")}Save this moment<span>PNG ↗</span></button>`;
     for (const button of body.querySelectorAll<HTMLButtonElement>(
       "[data-composition]",
     ))
@@ -582,8 +702,7 @@ function renderWorkspace(type: Workspace) {
           void startRoom();
           return;
         }
-        roomEnabled = false;
-        resize();
+        leaveRooms();
         composition = Number(button.dataset.composition) as 0 | 1 | 2;
         previousScene = sceneIndex;
         reveal = 0;
@@ -592,12 +711,36 @@ function renderWorkspace(type: Workspace) {
         closeWorkspace();
         wake();
       });
-    if (roomEnabled)
+    if (roomEnabled) {
+      for (const button of body.querySelectorAll<HTMLButtonElement>(
+        "[data-room]",
+      ))
+        button.addEventListener("click", () => {
+          closeWorkspace();
+          void chooseRoom(button.dataset.room as RoomId);
+        });
+      $("#journey-toggle").addEventListener("click", () => {
+        if (motion.reduced) return;
+        if (journey.playing) journey.pause();
+        else {
+          const id = journey.play();
+          if (id !== selectedRoom) void chooseRoom(id, true);
+        }
+        closeWorkspace();
+        wake();
+      });
+      $("#journey-replay").addEventListener("click", () => {
+        if (motion.reduced) return;
+        void chooseRoom(journey.replay(), true);
+        closeWorkspace();
+        wake();
+      });
       $<HTMLInputElement>("#room-look").addEventListener("change", (event) => {
         roomLook = (event.target as HTMLInputElement).checked;
         if (!roomLook) motion.viewX.target = motion.viewY.target = 0;
         wake();
       });
+    }
     $("#export-frame").addEventListener("click", () => {
       pendingExport = true;
       closeWorkspace();
@@ -628,7 +771,7 @@ function renderWorkspace(type: Workspace) {
       "Fine-tune the relationship between you and the lens.",
       3,
     );
-    body.innerHTML = `${range("magnet", "Magnetic response", 0, 1, 0.01, magnet)}${toggle("living-light", "Living light", "A slow, continuous drift across the glass.", ambient)}${toggle("reduce-motion", "Reduced motion", systemReduced.matches ? "System preference is active." : "Settle immediately. Keep every interaction.", userReduced || systemReduced.matches)}<p class="media-note">In navigation mode, press the lens to reveal its actions. In Material, enable inspection to move the lens without selecting an action.</p><button id="reset-interaction" class="text-button">${icon("reset")}Reset interaction</button>`;
+    body.innerHTML = `${range("magnet", "Magnetic response", 0, 1, 0.01, magnet)}${toggle("living-light", "Living light", "A slow drift through the glass and the room’s light.", ambient)}${toggle("reduce-motion", "Reduced motion", systemReduced.matches ? "System preference is active." : "Settle immediately. Keep every interaction.", userReduced || systemReduced.matches)}<p class="media-note">In navigation mode, press the lens to reveal its actions. In Material, enable inspection to move the lens without selecting an action.</p><button id="reset-interaction" class="text-button">${icon("reset")}Reset interaction</button>`;
     bindRange("magnet", (value) => (magnet = value));
     $<HTMLInputElement>("#living-light").addEventListener("change", (e) => {
       ambient = (e.target as HTMLInputElement).checked;
@@ -679,8 +822,7 @@ async function loadFile(file: File) {
     const loaded = await media.load(file);
     if (loaded) {
       filename = file.name;
-      roomEnabled = false;
-      resize();
+      leaveRooms();
       if (workspace.active === "media") renderWorkspace("media");
       toast("Local media ready");
     }
