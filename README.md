@@ -77,7 +77,7 @@ To reproduce the Pages build locally:
 
 ```sh
 npm run build -- --base=/vvv/
-npm run preview -- --port 4173
+npm run preview -- --base=/vvv/ --port 4173
 ```
 
 Use the `/vvv/` path when inspecting that build. The intended Pages URL is `https://ejaubashi.github.io/vvv/`; the URL is not live until a GitHub Pages deployment succeeds. GitHub API access and repository administration permissions are needed to configure Pages automatically.
