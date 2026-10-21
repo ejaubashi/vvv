@@ -1,0 +1,87 @@
+{
+  "date": "2026-10-21",
+  "build": "passed",
+  "unitTests": {
+    "passed": 19
+  },
+  "browserCases": {
+    "passed": 43,
+    "fullRunPassed": 42,
+    "focusedMobileRerunPassed": 1,
+    "note": "Mobile capture wait increased from 5 to 30 seconds for software-GPU readback. No application code change was needed for the rerun."
+  },
+  "graphics": "Chromium / SwiftShader; physical GPUs, Safari and Firefox unmeasured",
+  "deployment": {
+    "nestedPath": "/revision/preview/",
+    "captureEntryAndReturn": "passed",
+    "browserErrors": []
+  },
+  "portable": {
+    "bytes": 18193162,
+    "externalAssetRequests": 0,
+    "externalHosts": [],
+    "browserErrors": []
+  },
+  "capture": {
+    "splats": 700000,
+    "bytes": 10577976,
+    "sha256": "bb8c454d78197ae9077215b9e1386af5d3cf8d922c3f983beb33817a9b846185"
+  },
+  "buildFiles": [
+    {
+      "path": "THIRD-PARTY-LICENSES.txt",
+      "bytes": 2550,
+      "sha256": "39ff275aebc1e3347aeadc10f1d2ed38c8d198a9160c5c75272ced3de6e904c5"
+    },
+    {
+      "path": "assets/capture-rZ0moNeu.js",
+      "bytes": 2675125,
+      "sha256": "40e00d8bee2d1b70523b90db1fec752553cae2dadf38181082f82a2b85053cd6"
+    },
+    {
+      "path": "assets/index-B2m3DOvc.css",
+      "bytes": 19461,
+      "sha256": "50539469203d9f3d040f620eee61eb74247feac7a958954d2483fc61df2a6171"
+    },
+    {
+      "path": "assets/index-CQLCyerx.js",
+      "bytes": 781034,
+      "sha256": "0f7e05fef2204934d2198ee2987354100903d47e2813e72c9fb27dc1cd46c73f"
+    },
+    {
+      "path": "assets/pantheon-m1QjEi82.webp",
+      "bytes": 24262,
+      "sha256": "0bc2190df82d60d5759f66881b35032ad8b01cb17290b69dd7401c658e2885ff"
+    },
+    {
+      "path": "assets/three.module-DsSdJ_fD.js",
+      "bytes": 589698,
+      "sha256": "fcde2c761e4cd97a24920515309c34114150d4afd061b968cd90bae7a237b395"
+    },
+    {
+      "path": "captures/pantheon/PROVENANCE.json",
+      "bytes": 643,
+      "sha256": "76ce138b47bc55d1d32949784ce68a233af14e88210f79f2fce29922e478ec36"
+    },
+    {
+      "path": "captures/pantheon/UPSTREAM-ATTRIBUTION.txt",
+      "bytes": 1166,
+      "sha256": "1fe5f1b99894b59b54d47703a6a531bf05c6f387caace72bdc0aabaf4adee7ad"
+    },
+    {
+      "path": "captures/pantheon/pantheon.sog",
+      "bytes": 10577976,
+      "sha256": "bb8c454d78197ae9077215b9e1386af5d3cf8d922c3f983beb33817a9b846185"
+    },
+    {
+      "path": "captures/pantheon/thumb.webp",
+      "bytes": 24262,
+      "sha256": "0bc2190df82d60d5759f66881b35032ad8b01cb17290b69dd7401c658e2885ff"
+    },
+    {
+      "path": "index.html",
+      "bytes": 957,
+      "sha256": "42b10f0ede0c39e80d0c6d29f33ae005c1989cb74b918186d8c405e7eb1fa630"
+    }
+  ]
+}

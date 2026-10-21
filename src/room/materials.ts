@@ -19,10 +19,10 @@ import {
   bumpMap,
   reflector,
 } from "three/tsl";
-import { roomDefinition, type RoomId } from "./catalog";
+import { roomDefinition, type AuthoredRoomId } from "./catalog";
 
 /** Small, deterministic textures keep the room self-contained and available offline. */
-export function createRoomSurfaces(id: RoomId = "gallery") {
+export function createRoomSurfaces(id: AuthoredRoomId = "gallery") {
   const definition = roomDefinition(id);
   const grainData = new Uint8Array(256 * 256 * 4);
   let seed = 1847;

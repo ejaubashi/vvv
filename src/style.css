@@ -1001,6 +1001,67 @@ body.reduced *:after {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
 }
+.room-edition-pantheon {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 88px 1fr;
+  align-items: center;
+  padding: 0;
+}
+.room-edition-pantheon .room-mini {
+  grid-row: 1 / 3;
+  height: 78px;
+  margin: 0;
+  background: url("./assets/pantheon.webp") center / cover;
+}
+.room-edition-pantheon strong {
+  align-self: end;
+}
+.room-edition-pantheon small {
+  align-self: start;
+}
+.capture-note {
+  position: absolute;
+  z-index: 4;
+  bottom: 104px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  width: max-content;
+  max-width: calc(100vw - 40px);
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: #f4f3efed;
+  color: #44483c;
+  font-size: 9px;
+  text-align: center;
+  line-height: 1.4;
+}
+.capture-note[hidden] {
+  display: none;
+}
+.capture-note a,
+.media-note a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+#capture-retry {
+  margin-left: 10px;
+  font-size: inherit;
+  text-decoration: underline;
+}
+.visit-expanded .capture-note {
+  bottom: max(94px, calc(env(safe-area-inset-bottom) + 82px));
+}
+@media (max-height: 560px) {
+  .capture-note,
+  .visit-expanded .capture-note {
+    bottom: 82px;
+  }
+}
 .room-preset {
   padding: 0 0 12px;
   border: 1px solid var(--line);
