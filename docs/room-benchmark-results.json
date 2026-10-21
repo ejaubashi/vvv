@@ -1,0 +1,28 @@
+{
+  "date": "2026-10-21",
+  "environment": "Headless Chromium, SwiftShader software graphics",
+  "metric": "Room draw plus persistent-canvas copy and explicit GPU completion; excludes optical compositing, UI, JavaScript download and display scheduling",
+  "method": "8 warmups then 30 measured camera changes per backend, WebGL first; single run on shared cloud hardware",
+  "results": [
+    {
+      "backend": "Three.js / WebGL 2",
+      "resolution": 384,
+      "meshes": 12,
+      "initializationMs": 211.7,
+      "samples": 30,
+      "meanMs": 0.71,
+      "p50Ms": 0.5,
+      "p95Ms": 3.1
+    },
+    {
+      "backend": "Three.js / WebGPU",
+      "resolution": 384,
+      "meshes": 12,
+      "initializationMs": 164.3,
+      "samples": 30,
+      "meanMs": 47.17,
+      "p50Ms": 42.2,
+      "p95Ms": 60
+    }
+  ]
+}

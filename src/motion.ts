@@ -46,6 +46,9 @@ export class Motion {
   morph = new Spring(0, 100, 21);
   light = new Spring((-135 * Math.PI) / 180, 65, 17);
   audio = new Spring(0, 90, 19);
+  viewX = new Spring(0, 85, 20);
+  viewY = new Spring(0, 85, 20);
+  portal = new Spring(0, 85, 19);
   reduced = false;
   readonly springs = [
     this.x,
@@ -56,6 +59,9 @@ export class Motion {
     this.morph,
     this.light,
     this.audio,
+    this.viewX,
+    this.viewY,
+    this.portal,
   ];
   step(dt: number) {
     for (const spring of this.springs)

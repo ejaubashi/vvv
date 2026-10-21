@@ -1,4 +1,5 @@
 import { fresnelReflectance, refractedOffset } from "../optics";
+import type { PortalFrame } from "./portal-frame";
 import type { OpticalState } from "../state";
 import { glVertex, glFragment, glBackground, wgsl } from "./shaders";
 export interface Renderer {
@@ -6,7 +7,12 @@ export interface Renderer {
   maxDimension: number;
   canvas: HTMLCanvasElement;
   resize(w: number, h: number, dpr: number): void;
-  draw(state: OpticalState, scene: HTMLCanvasElement, version?: number): void;
+  draw(
+    state: OpticalState,
+    scene: HTMLCanvasElement,
+    version?: number,
+    portal?: PortalFrame,
+  ): void;
   dispose(): void;
 }
 function values(
@@ -34,6 +40,7 @@ function values(
   target[15] = ratio;
   target[16] = s.depth;
   target[17] = s.lightAngle;
+  target[18] = s.room ?? 0;
   return target;
 }
 /** Expensive optics only cover the object plus a 96 CSS-pixel light/shadow halo. */
@@ -80,6 +87,8 @@ export class WebGLRenderer extends Base implements Renderer {
   background: WebGLProgram;
   backgroundUniform: WebGLUniformLocation;
   texture: WebGLTexture;
+  portalTexture: WebGLTexture;
+  portalVersion = -1;
   uniforms: WebGLUniformLocation[];
   constructor(onLoss: () => void) {
     super();
@@ -129,6 +138,27 @@ export class WebGLRenderer extends Base implements Renderer {
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    this.portalTexture = gl.createTexture()!;
+    gl.activeTexture(gl.TEXTURE1);
+    gl.bindTexture(gl.TEXTURE_2D, this.portalTexture);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texImage2D(
+      gl.TEXTURE_2D,
+      0,
+      gl.RGBA,
+      1,
+      1,
+      0,
+      gl.RGBA,
+      gl.UNSIGNED_BYTE,
+      new Uint8Array([0, 0, 0, 255]),
+    );
+    gl.useProgram(this.program);
+    gl.uniform1i(gl.getUniformLocation(this.program, "room"), 1);
+    gl.activeTexture(gl.TEXTURE0);
     this.uniforms = ["a", "b", "c", "d", "e"].map((n) =>
       gl.getUniformLocation(this.program, n)!,
     );
@@ -141,9 +171,28 @@ export class WebGLRenderer extends Base implements Renderer {
       { once: true },
     );
   }
-  draw(s: OpticalState, scene: HTMLCanvasElement, version = 0) {
+  draw(
+    s: OpticalState,
+    scene: HTMLCanvasElement,
+    version = 0,
+    portal?: PortalFrame,
+  ) {
     const gl = this.gl;
     gl.viewport(0, 0, this.canvas.width, this.canvas.height);
+    gl.activeTexture(gl.TEXTURE1);
+    gl.bindTexture(gl.TEXTURE_2D, this.portalTexture);
+    if (portal && this.portalVersion !== portal.version) {
+      gl.texImage2D(
+        gl.TEXTURE_2D,
+        0,
+        gl.RGBA,
+        gl.RGBA,
+        gl.UNSIGNED_BYTE,
+        portal.canvas,
+      );
+      this.portalVersion = portal.version;
+    }
+    gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, this.texture);
     if (this.version !== version) {
       gl.texImage2D(
@@ -182,6 +231,7 @@ export class WebGLRenderer extends Base implements Renderer {
   }
   dispose() {
     this.gl.deleteTexture(this.texture);
+    this.gl.deleteTexture(this.portalTexture);
     this.gl.deleteProgram(this.program);
     this.gl.deleteProgram(this.background);
   }
@@ -197,6 +247,9 @@ export class WebGPURenderer extends Base implements Renderer {
   uniform!: GPUBuffer;
   sampler!: GPUSampler;
   texture: GPUTexture | null = null;
+  portalTexture: GPUTexture | null = null;
+  portalVersion = -1;
+  portalWidth = 0;
   bind: GPUBindGroup | null = null;
   tw = 0;
   th = 0;
@@ -252,6 +305,11 @@ export class WebGPURenderer extends Base implements Renderer {
               visibility: GPUShaderStage.FRAGMENT,
               sampler: { type: "filtering" },
             },
+            {
+              binding: 3,
+              visibility: GPUShaderStage.FRAGMENT,
+              texture: { sampleType: "float" },
+            },
           ],
         }),
       ],
@@ -281,13 +339,49 @@ export class WebGPURenderer extends Base implements Renderer {
       minFilter: "linear",
     });
   }
-  draw(s: OpticalState, scene: HTMLCanvasElement, version = 0) {
+  draw(
+    s: OpticalState,
+    scene: HTMLCanvasElement,
+    version = 0,
+    portal?: PortalFrame,
+  ) {
     const d = this.device;
+    const portalSize = portal?.canvas.width ?? 1;
+    if (!this.portalTexture || this.portalWidth !== portalSize) {
+      this.portalTexture?.destroy();
+      this.portalWidth = portalSize;
+      this.portalVersion = -1;
+      this.portalTexture = d.createTexture({
+        size: [portalSize, portalSize],
+        format: "rgba8unorm",
+        usage:
+          GPUTextureUsage.TEXTURE_BINDING |
+          GPUTextureUsage.COPY_DST |
+          GPUTextureUsage.RENDER_ATTACHMENT,
+      });
+      this.bind = null;
+      if (!portal)
+        d.queue.writeTexture(
+          { texture: this.portalTexture },
+          new Uint8Array([0, 0, 0, 255]),
+          { bytesPerRow: 4 },
+          { width: 1, height: 1 },
+        );
+    }
+    if (portal && this.portalVersion !== portal.version) {
+      d.queue.copyExternalImageToTexture(
+        { source: portal.canvas },
+        { texture: this.portalTexture },
+        { width: portalSize, height: portalSize },
+      );
+      this.portalVersion = portal.version;
+    }
     if (!this.texture || this.tw !== scene.width || this.th !== scene.height) {
       this.texture?.destroy();
       this.tw = scene.width;
       this.th = scene.height;
       this.version = -1;
+      this.bind = null;
       this.texture = d.createTexture({
         size: [this.tw, this.th],
         format: "rgba8unorm",
@@ -296,15 +390,17 @@ export class WebGPURenderer extends Base implements Renderer {
           GPUTextureUsage.COPY_DST |
           GPUTextureUsage.RENDER_ATTACHMENT,
       });
+    }
+    if (!this.bind)
       this.bind = d.createBindGroup({
         layout: this.pipeline.getBindGroupLayout(0),
         entries: [
           { binding: 0, resource: { buffer: this.uniform } },
           { binding: 1, resource: this.texture.createView() },
           { binding: 2, resource: this.sampler },
+          { binding: 3, resource: this.portalTexture.createView() },
         ],
       });
-    }
     if (this.version !== version) {
       d.queue.copyExternalImageToTexture(
         { source: scene },
@@ -348,6 +444,7 @@ export class WebGPURenderer extends Base implements Renderer {
   dispose() {
     this.disposed = true;
     this.texture?.destroy();
+    this.portalTexture?.destroy();
     this.uniform?.destroy();
     this.context?.unconfigure();
     this.device?.destroy();
@@ -356,7 +453,12 @@ export class WebGPURenderer extends Base implements Renderer {
 export class CanvasRenderer extends Base implements Renderer {
   name = "Canvas 2D fallback";
   ctx = this.canvas.getContext("2d", { alpha: false })!;
-  draw(s: OpticalState, scene: HTMLCanvasElement) {
+  draw(
+    s: OpticalState,
+    scene: HTMLCanvasElement,
+    _version = 0,
+    portal?: PortalFrame,
+  ) {
     const c = this.ctx,
       r = this.ratio;
     c.setTransform(r, 0, 0, r, 0, 0);
@@ -377,13 +479,18 @@ export class CanvasRenderer extends Base implements Renderer {
     c.fill();
     c.shadowColor = "transparent";
     c.clip();
-    if (!s.compare) {
+    if (!s.compare || (portal && s.room > 0)) {
       const scale = 1 + Math.abs(refractedOffset(0.7, s.ior, s.depth));
       c.translate(s.x, s.y);
-      c.scale(scale, scale);
+      c.scale(s.compare ? 1 : scale, s.compare ? 1 : scale);
       c.translate(-s.x, -s.y);
-      c.filter = `blur(${s.roughness * 5}px)`;
+      c.filter = `blur(${s.compare ? 0 : s.roughness * 5}px)`;
       c.drawImage(scene, 0, 0, this.canvas.width / r, this.canvas.height / r);
+      if (portal && s.room > 0) {
+        const side = Math.max(s.width, s.height);
+        c.globalAlpha = s.room;
+        c.drawImage(portal.canvas, s.x - side / 2, s.y - side / 2, side, side);
+      }
     }
     c.restore();
     c.beginPath();
