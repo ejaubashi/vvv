@@ -1,0 +1,13 @@
+{
+  "sourceRepository": "https://github.com/skylarhknight/Oculo",
+  "revision": "2543e2388671f6d5252acd60357abcb5a5ec0895",
+  "path": "apps/mobile/public/scenes/small-garden",
+  "source": "https://superspl.at/scene/108dd868",
+  "creator": "scbenoit",
+  "license": "CC-BY-4.0",
+  "retrieved": "2026-10-22",
+  "bytes": 13081550,
+  "splats": 689694,
+  "sha256": "68ef9089854aeb84ace37ce51c2ded9404151db86f2e47d8d64ed5f25ce95cb6",
+  "modifications": "Unchanged mirrored SOG. FORM applies the credited example transform, a narrower view and bounded navigation; optional reversible deformation changes presentation at runtime."
+}

@@ -1,0 +1,10 @@
+Apartment (source title: SA3D_R&D_XP47)
+Creator: Stephane Agullo
+Source: https://superspl.at/view?id=cdcec084
+License: CC BY 4.0
+https://creativecommons.org/licenses/by/4.0/
+
+Asset-specific license evidence: PlayCanvas engine examples/src/examples/gaussian-splatting/editor.example.mjs and paint.example.mjs at 3465f3ebe2ca19d53c7e0b853fc129af20df5811. Both credit this scene and load examples/assets/splats/apartment.sog.
+
+Unchanged mirrored SOG. FORM applies the credited example transform, a narrower view and bounded navigation; optional reversible deformation changes presentation at runtime.
+Source example camera and 180-degree X object rotation, scale 0.5, translation [0,-0.5,-3] retained. FORM uses a 75-degree vertical field of view.

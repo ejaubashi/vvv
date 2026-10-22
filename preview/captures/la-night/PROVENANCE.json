@@ -1,0 +1,13 @@
+{
+  "sourceRepository": "https://github.com/skylarhknight/Oculo",
+  "revision": "2543e2388671f6d5252acd60357abcb5a5ec0895",
+  "path": "apps/mobile/public/scenes/la-night",
+  "source": "https://superspl.at/scene/d1ea0b35",
+  "creator": "matousekfoto",
+  "license": "CC-BY-4.0",
+  "retrieved": "2026-10-22",
+  "bytes": 10784806,
+  "splats": 700000,
+  "sha256": "1855bafab769a80533c0b2e1a2dc3f8bd52b345488c6f04e04e7f96f9470f041",
+  "modifications": "Unchanged mirrored SOG. FORM applies the credited example transform, a narrower view and bounded navigation; optional reversible deformation changes presentation at runtime."
+}
