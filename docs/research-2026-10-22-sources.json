@@ -1,0 +1,376 @@
+{
+  "researchDate": "2026-10-22",
+  "sources": [
+    {
+      "id": "spark-readme",
+      "url": "https://github.com/sparkjsdev/spark/blob/v2.4.0/README.md",
+      "retrieval": "GitHub contents API, raw response",
+      "bytes": 6320,
+      "sha256": "2024838879230ccb23d6069d329ab674445047066a5a53805e99f23517c3d530"
+    },
+    {
+      "id": "spark-portal-main",
+      "url": "https://github.com/sparkjsdev/spark/blob/v2.4.0/examples/splat-portal/main.js",
+      "retrieval": "GitHub contents API, raw response",
+      "bytes": 12860,
+      "sha256": "cb8fd089b0f83cda700e5df954bbf4560b9e81e65bd1b00eda5468ebffcdc1d0"
+    },
+    {
+      "id": "spark-portals",
+      "url": "https://github.com/sparkjsdev/spark/blob/v2.4.0/src/SparkPortals.ts",
+      "retrieval": "GitHub contents API, raw response",
+      "bytes": 22375,
+      "sha256": "921aa1ee34d14c4380dd3b25c049734719511da6db3c5b522052f2c310bda887"
+    },
+    {
+      "id": "three-portal",
+      "url": "https://github.com/mrdoob/three.js/blob/r186/examples/webgl_portal.html",
+      "retrieval": "GitHub contents API, raw response",
+      "bytes": 9149,
+      "sha256": "f6b24f2cacf3c38da74f42d8851753ac6791aeacc0cb77110babddaca5f7072f"
+    },
+    {
+      "id": "three-splats",
+      "url": "https://github.com/mrdoob/three.js/blob/r186/examples/jsm/objects/GaussianSplat.js",
+      "retrieval": "GitHub contents API, raw response",
+      "bytes": 32105,
+      "sha256": "ea3f148d39413ef31781cdbb1c97a8972b2dce01ef5eebe6ef800c2b1ba7ab42"
+    },
+    {
+      "id": "drei-portal",
+      "url": "https://github.com/pmndrs/drei/blob/bf6f4addf47467d3885de272d94ca5127f6ef68f/src/core/MeshPortalMaterial.tsx",
+      "retrieval": "GitHub contents API, raw response",
+      "bytes": 18121,
+      "sha256": "dcae620a12fdab43c717d01f4e811d10122184c0d83fb53f2dd36d072a156b45"
+    },
+    {
+      "id": "drei-portal-docs",
+      "url": "https://github.com/pmndrs/drei/blob/bf6f4addf47467d3885de272d94ca5127f6ef68f/docs/portals/mesh-portal-material.mdx",
+      "retrieval": "GitHub contents API, raw response",
+      "bytes": 2402,
+      "sha256": "1e044bba6b06362fbe4dd55864bc336b7a66ca902361c2dba6c3ccf0442a3da8"
+    },
+    {
+      "id": "glTF-splats",
+      "url": "https://github.com/KhronosGroup/glTF/blob/7cee0fcddd5730e90d488bfb5aa2e52171483dde/extensions/2.0/Khronos/KHR_gaussian_splatting/README.md",
+      "retrieval": "GitHub contents API, raw response",
+      "bytes": 38845,
+      "sha256": "d01452284b84cd767c658c928e1ffcdce0809f4ebe7a39be91f0b793258a5f26"
+    },
+    {
+      "id": "spz-readme",
+      "url": "https://github.com/nianticlabs/spz/blob/main/README.md",
+      "retrieval": "GitHub contents API, raw response",
+      "bytes": 11938,
+      "sha256": "bd28be76252328d6fa65d7c098197075e6a6b15d7b43e0acbf67c75497c43318"
+    },
+    {
+      "id": "gsplat",
+      "url": "https://github.com/nerfstudio-project/gsplat/blob/main/README.md",
+      "retrieval": "GitHub contents API, raw response",
+      "bytes": 10864,
+      "sha256": "f86d3579caff8d204086a04afb1edf4f09b7841e368a5d34eb21b9dbd54a99e6"
+    },
+    {
+      "id": "gsplat4d",
+      "url": "https://github.com/hustvl/4DGaussians/blob/master/README.md",
+      "retrieval": "GitHub contents API, raw response",
+      "bytes": 13347,
+      "sha256": "b6bc3b450330ec548d5bfc8001eae2ea600615f900126ed047d553dc19fdf9af"
+    },
+    {
+      "id": "motion-changelog",
+      "url": "https://github.com/motiondivision/motion/blob/b7e4d5af1ded78585e1478ea235718ec0a61caec/CHANGELOG.md",
+      "retrieval": "GitHub contents API, raw response",
+      "bytes": 132519,
+      "sha256": "1a98ddcb9cd753e58bb0ffc49312d99720642e3e8099f79b0a7090db2f341d5c"
+    },
+    {
+      "id": "rive-readme",
+      "url": "https://github.com/rive-app/rive-wasm/blob/main/README.md",
+      "retrieval": "GitHub contents API, raw response",
+      "bytes": 3612,
+      "sha256": "4f6240efd1f623a960bc77204d17bdfe84420cde9808c28313f406ecc0c63b05"
+    },
+    {
+      "id": "spline",
+      "url": "https://github.com/splinetool/react-spline/blob/main/README.md",
+      "retrieval": "GitHub contents API, raw response",
+      "bytes": 13397,
+      "sha256": "78fafa7b6bb28bd7db8cf7b97417f0ee5e58a955d5803942af56f228b206ae0b"
+    },
+    {
+      "id": "theatre-readme",
+      "url": "https://github.com/theatre-js/theatre/blob/6ea82b938ea49609489f6377ded693ccc6ee8f5b/README.md",
+      "retrieval": "GitHub contents API, raw response",
+      "bytes": 5032,
+      "sha256": "a5b6be8fec45220609f12ca629884dbb6567bd545cd4ad849d90ad49fdc564f2"
+    },
+    {
+      "id": "gsap-readme",
+      "url": "https://github.com/greensock/GSAP/blob/master/README.md",
+      "retrieval": "GitHub contents API, raw response",
+      "bytes": 6199,
+      "sha256": "66a79667b0538b19634b5a000a9a3debe588c98d390424e73e5d4de847270828"
+    },
+    {
+      "id": "p5-readme",
+      "url": "https://github.com/processing/p5.js/blob/main/README.md",
+      "retrieval": "GitHub contents API, raw response",
+      "bytes": 10191,
+      "sha256": "460758c363412e49b7393b5823e3305a3d62dcf78f0a212bfc8c6e6c4276dd14"
+    },
+    {
+      "id": "audio-panner",
+      "url": "https://github.com/WebAudio/web-audio-api/blob/main/index.bs",
+      "retrieval": "GitHub contents API, raw response",
+      "bytes": 585913,
+      "sha256": "12471d9235a14f6262d1d6ba1feb0d9be9276b4f10d52ecee4df76f60b7a1700"
+    },
+    {
+      "id": "webgpu-xr-spec",
+      "url": "https://github.com/immersive-web/WebXR-WebGPU-Binding/blob/main/index.bs",
+      "retrieval": "GitHub contents API, raw response",
+      "bytes": 75003,
+      "sha256": "e133de80bd996a1315f2c87724dd41540787dfc3a5fd25167c85a4724d097358"
+    },
+    {
+      "id": "view-transitions",
+      "url": "https://github.com/WICG/view-transitions/blob/main/README.md",
+      "retrieval": "GitHub contents API, raw response",
+      "bytes": 6567,
+      "sha256": "241782e9a3306ef412b30ad053732bbf44b9f94de9cd6e1fe6be14f6a3d53e69"
+    },
+    {
+      "id": "animate-css",
+      "url": "https://github.com/w3c/csswg-drafts/blob/main/scroll-animations-1/Overview.bs",
+      "retrieval": "GitHub contents API, raw response",
+      "bytes": 65352,
+      "sha256": "e72de207dccdbaa254436914d54d31a750257f9b52c6b6db1c9a63c40da694b7"
+    },
+    {
+      "id": "webgpu-spec",
+      "url": "https://github.com/gpuweb/gpuweb/blob/main/README.md",
+      "retrieval": "GitHub contents API, raw response",
+      "bytes": 2568,
+      "sha256": "d95473e1d57d950c8598d3a2cac4f98945cf728d004abaadb186c0fa67e4b598"
+    },
+    {
+      "id": "codrops/interlude",
+      "url": "https://github.com/codrops/interlude/tree/3f1a9ce2b27ef724817659236599ecd63062fef2",
+      "revision": "3f1a9ce2b27ef724817659236599ecd63062fef2",
+      "retrieval": "GitHub raw README API",
+      "bytes": 54944,
+      "sha256": "2a57c107514d16dab6f296a33ea5faa408dd9802ff7018b38badfe0049002132"
+    },
+    {
+      "id": "codrops/atelier-north",
+      "url": "https://github.com/codrops/atelier-north/tree/6703fc3f15ec92979964070814a99855d0baa38f",
+      "revision": "6703fc3f15ec92979964070814a99855d0baa38f",
+      "retrieval": "GitHub raw README API",
+      "bytes": 1435,
+      "sha256": "12e652a15f43b6ee407050d7b085addf4f9184e604d345398b727441e074aae7"
+    },
+    {
+      "id": "codrops/OnScrollColumnsRows",
+      "url": "https://github.com/codrops/OnScrollColumnsRows/tree/33001fa32bbc04443f9eb8e325d6ef13136fc16f",
+      "revision": "33001fa32bbc04443f9eb8e325d6ef13136fc16f",
+      "retrieval": "GitHub raw README API",
+      "bytes": 1082,
+      "sha256": "5acced2e449e76137242184c8f0720f95ea24bfd86330f37f4fd8b3ea3006837"
+    }
+  ],
+  "releases": [
+    {
+      "html_url": "https://github.com/KhronosGroup/glTF/releases/tag/v1.0-draft2",
+      "tag_name": "v1.0-draft2",
+      "published_at": "2016-01-26T19:08:04Z",
+      "body": "Example for downloading and running from the command line on Mac:\n\n```\ncurl -L -O 'https://github.com/KhronosGroup/glTF/releases/download/v1.0-draft/collada2gltf_mac_v1.0-draft_x64.gz'\ngunzip collada2gltf_mac_v1.0-draft_x64.gz\nmv collada2gltf_mac_v1.0-draft_x64 collada2gltf\nchmod +x collada2gltf\n./collada2gltf\n```\n"
+    },
+    {
+      "html_url": "https://github.com/pmndrs/uikit/releases/tag/v1.0.46",
+      "tag_name": "v1.0.46",
+      "published_at": "2025-10-16T17:44:16Z",
+      "body": "<h1 align=\"center\">uikit 1.0</h1>\r\n\r\n![uikit-1-0](https://github.com/user-attachments/assets/799afd7f-1bf7-4787-a67a-3ff3137492e5)\r\n\r\n> 1.0 is now officially out\r\n\r\n## 4 Major Advantages\r\n\r\n1. Breaking changes to be more aligned with html/css meeting developers where they are\r\n2. vanilla three.js - `pmndrs/uikit` - is now the stable core of the project simplifying the adoption across the three.js ecosystem\r\n3. All kits and icon packages are now available as React Three Fiber and vanilla three.js version\r\n4. Simplified architecture to improve maintainability while the project and its use cases mature\r\n\r\n## What has changed for developers?\r\n\r\nUikit 1.0 introduces several new properties such as `zIndex`, `display: contents`, `white-space`, `classList`, and \u00ecmportant`. It aligns more closely with HTML/CSS behavior through property inheritance, improved styling APIs, and consistent naming conventions. Unnecassary components like `Root` and `FontFamilyProvider` are deprecated and can be replaced by simpler Container patterns and unified style management. Obsolete features, including `opacity`-specific properties, `useRootSize`, and `isInteractionPanel`, have been removed in favor of an API more aligned with HTML/CSS.\r\n\r\nThe full list of changes and the guide for migrating to uikit 1.0 can be found [here](https://pmndrs.github.io/uikit/docs/migration/from-version-0).\r\n"
+    },
+    {
+      "html_url": "https://github.com/nianticlabs/spz/releases/tag/v3.0.0",
+      "tag_name": "v3.0.0",
+      "published_at": "2026-05-05T05:26:15Z",
+      "body": "## What's Changed\r\n* Add BUILD_TOOLS option, enable C++17 for CLI targets by @kring in https://github.com/nianticlabs/spz/pull/63\r\n* Update README.md by @azadbal in https://github.com/nianticlabs/spz/pull/65\r\n* Integrate Vendor-specific SPZ Extensions, WASM Bindings, and CMake Improvements (Backward-Compatible) by @raymondyfei in https://github.com/nianticlabs/spz/pull/67\r\n* Performance: Optimization for C++/JS Data Transfer by @raymondyfei in https://github.com/nianticlabs/spz/pull/74\r\n* Switch SPZ compression from GZip to ZSTD with parallel multi-stream encoding by @udwinj in https://github.com/nianticlabs/spz/pull/73\r\n* Reinstate Backwards Compatibility Writing by @lukeyreyno in https://github.com/nianticlabs/spz/pull/76\r\n* Move V4 Extensions to Memory Space between Header and TOC by @lukeyreyno in https://github.com/nianticlabs/spz/pull/77\r\n* [ci] Run Python tests on macOS by @RiyaanB in https://github.com/nianticlabs/spz/pull/78\r\n* Install headers to spz prefix  by @hobu in https://github.com/nianticlabs/spz/pull/48\r\n* [perf] Use std::nth_element for medianVolume() by @RiyaanB in https://github.com/nianticlabs/spz/pull/79\r\n\r\n## New Contributors\r\n* @kring made their first contribution in https://github.com/nianticlabs/spz/pull/63\r\n* @udwinj made their first contribution in https://github.com/nianticlabs/spz/pull/73\r\n* @lukeyreyno made their first contribution in https://github.com/nianticlabs/spz/pull/76\r\n* @RiyaanB made their first contribution in https://github.com/nianticlabs/spz/pull/78\r\n\r\n**Full Changelog**: https://github.com/nianticlabs/spz/compare/v2.1.0...v3.0.0"
+    },
+    {
+      "html_url": "https://github.com/mkkellogg/GaussianSplats3D/releases/tag/v0.4.7",
+      "tag_name": "v0.4.7",
+      "published_at": "2025-01-25T03:11:24Z",
+      "body": "Added the capability to load PlayCanvas compressed .PLY files and SPZ compressed .PLY files. Additionally fixed some bugs with rendering spherical harmonics."
+    },
+    {
+      "html_url": "https://github.com/google/filament/releases/tag/v1.78.1",
+      "tag_name": "v1.78.1",
+      "published_at": "2026-10-21T15:37:36Z",
+      "body": "- build: add tvOS support (`appletvos`/`appletvsimulator`), Metal-only, via `./build.sh -p tvos`\r\n"
+    },
+    {
+      "html_url": "https://github.com/sparkjsdev/spark/releases/tag/v2.4.0",
+      "tag_name": "v2.4.0",
+      "published_at": "2026-10-20T04:13:18Z",
+      "body": "## 2.4.0 (Oct 19, 2026)\r\n\r\nBug fixes and improvements\r\n\r\n### Enhancements\r\n\r\n- Add SPZ v4 read support (#484) (@udwinj, @mrxz) \r\n- Decouple and abstract paged splat load logic from `PagedSplat` into `FetchSource` that retrieves data from in-memory file, URL or any other custom mechanism (#463) (@mrxz, @xohm\r\n, @oscarlorentzon)\r\n- Switch to `flate2` from `zlib-rs` backend for RAD deflate compression. ~50% faster compression, ~2-5% smaller outputs and ~20% faster decoding (#474) (@mrxz, @oscarlorentzon)\r\n- Replace `miniz_oxide` with `flate2` for Gzip (de)compression of SPZ files. Remove `miniz_oxide` as dependency (#485) (@mrxz)\r\n- Address stutter during animations. Skip unnecessary splat sortings if the splat buffer needs or has changed like for example when LoD levels change or splats animate / move (#347) (#460) (@oscarlorentzon, @mrxz)\r\n- Refactor `PagedSplats` into its own separate file (#462) (@mrxz)\r\n- Remove outdated Github workflows CI commands (#464) (@mrxz)\r\n- Add Rust linter (#414) (@mrxz)\r\n- Improve tests (#483, #482) (@mrxz)\r\n- Improve docs (#478) (@oscarlorentzon)\r\n\r\n### Bug Fixes\r\n\r\n- (WebXR) Use camera projection projection matrix to calculate LoD pixel limit. The THREE.Camera fov value was incorrectly used before: It doesn't match the one reported by the WebXR API (#488) (@oscarlorentzon)\r\n- Adress view-dependent color precission loss due to unwanted SH coefficinets clamping (#465) (@oscarlorentzon) \r\n- Dispose the LoD index textures when renderer is disposed (#479) (@oscarlorentzon)\r\n- Fix issue with Level 3 Spherical Harmonics (sh3) dropped due to incorrect type assertions. It introduces explicit types in `PackedSplats` and `ExtSplats` instead of loose types + assertions. (#467) (@mrxz, @oscarlorentzon)\r\n- (WebXR) Fix issue with splat size and anti-alias blur rendered at half the correct width. Use whole viewport width for calculations instead of half (#487) (@oscarlorentzon)\r\n- Ignore errors / rejections after `SparkRenderer` is disposed. This can happen when for instance there's pending LoD sorting in parallel in the worker when the renderered is disposed (#476) (@oscarlorentzon)\r\n- Replace workers that hit a fatal error / crash / trap. The pool tried to reuse those in a broken state (#480) (@oscarlorentzon)\r\n- Fix issue with long thin splats drawn off axis, too wide or too narrow. Compute 2D covariance eigenvectors without cancellation (#486) (@oscarlorentzon)\r\n- Stop retrying a failed level of detail tree on every update (#477) (@mrxz, @oscarlorentzon)\r\n- Address raycasting precission and speed issues (#469) (@n3ur0m4n, @oscarlorentzon)"
+    },
+    {
+      "html_url": "https://github.com/pmndrs/react-three-fiber/releases/tag/v9.8.2",
+      "tag_name": "v9.8.2",
+      "published_at": "2026-10-15T15:35:16Z",
+      "body": "We have another set of bug fixes, some backported from v10. Here are the highlights:\r\n\r\n- Portal memory leaks have been fixed. The portal's root state would get held by the parent even when the portal got unmounted disallowing garbage collection. You mount and unmount on a complex enough app and this adds up quickly. A portal can now be cleaned up properly when unmounted.\r\n- Pixel ratio updates automatically when moving between displays or zooming. Note: `setDpr` is overwritten by the `dpr` prop whenever the `Canvas` rerenders. If you want to use `setDpr` then don't use the `dpr` prop. This behavior will change in v10.\r\n- TypeScript JSX types fixed, preventing `React.ElementType` props from collapsing to `never`. Importing R3F no longer breaks unrelated React types.\r\n- Dragging stays active when an object\u2019s `args` change.\r\n- Removed objects disappear immediately with `frameloop=\"demand\"` instead of lingering as ghosts.\r\n\r\n## What's Changed\r\n* ci(docs): publish the v10 alpha docs under /next with a version switcher by @DennisSmolek in https://github.com/pmndrs/react-three-fiber/pull/3971\r\n* ci: remove the canary workflow from master (canary is v10-only) by @DennisSmolek in https://github.com/pmndrs/react-three-fiber/pull/3986\r\n* fix(events): keep pointer capture across instance reconstruction by @DennisSmolek in https://github.com/pmndrs/react-three-fiber/pull/3985\r\n* docs: use three addons loader imports in hooks examples by @pavan-sh in https://github.com/pmndrs/react-three-fiber/pull/3746\r\n* docs: add sparkjs, threepipe, react-three-map, wawa-vfx, r3f-globe, Three-VFX to community components grid by @jo-chemla in https://github.com/pmndrs/react-three-fiber/pull/3714\r\n* fix(docs): remove outdated koestlich README link by @alex-marinov in https://github.com/pmndrs/react-three-fiber/pull/3767\r\n* docs(tutorials): add STL loading to the Loading Models guide by @BenMalaga in https://github.com/pmndrs/react-three-fiber/pull/3787\r\n* fix(core): request a frame when an object is removed with frameloop=\"demand\" by @xaviergonz in https://github.com/pmndrs/react-three-fiber/pull/3976\r\n* fix(types): only register three constructors as intrinsic elements by @DennisSmolek in https://github.com/pmndrs/react-three-fiber/pull/4002\r\n* fix(core): follow devicePixelRatio changes by @tonyblu331 in https://github.com/pmndrs/react-three-fiber/pull/3959\r\n* docs: add Codesandbox preview images by @abernier in https://github.com/pmndrs/react-three-fiber/pull/4004\r\n* refactor(fiber): clarify v9 core domain boundaries by @krispya in https://github.com/pmndrs/react-three-fiber/pull/4008\r\n* docs: use the built-in version switcher of @pmndrs/docs 4 by @abernier in https://github.com/pmndrs/react-three-fiber/pull/4005\r\n* docs: adopt the default pmndrs palette of @pmndrs/docs 4.20 by @abernier in https://github.com/pmndrs/react-three-fiber/pull/4011\r\n* chore: add a pull request template by @DennisSmolek in https://github.com/pmndrs/react-three-fiber/pull/4019\r\n* docs: fix two dead links in testing and basic animations pages by @SatvikMishra08 in https://github.com/pmndrs/react-three-fiber/pull/4024\r\n* fix(fiber): port the Portal leak fixes from v10 by @wrangelvid in https://github.com/pmndrs/react-three-fiber/pull/4030\r\n\r\n## New Contributors\r\n* @alex-marinov made their first contribution in https://github.com/pmndrs/react-three-fiber/pull/3767\r\n* @BenMalaga made their first contribution in https://github.com/pmndrs/react-three-fiber/pull/3787\r\n* @xaviergonz made their first contribution in https://github.com/pmndrs/react-three-fiber/pull/3976\r\n* @SatvikMishra08 made their first contribution in https://github.com/pmndrs/react-three-fiber/pull/4024\r\n* @wrangelvid made their first contribution in https://github.com/pmndrs/react-three-fiber/pull/4030\r\n\r\n**Full Changelog**: https://github.com/pmndrs/react-three-fiber/compare/v9.8.1...v9.8.2"
+    },
+    {
+      "html_url": "https://github.com/rive-app/rive-wasm/releases/tag/2.45.0",
+      "tag_name": "2.45.0",
+      "published_at": "2026-10-17T19:50:10Z",
+      "body": "This release adds experimental **inkbleed** antialiasing to `@rive-app/webgl2`, along with angular (sweep) gradients, artboard paints, and a handful of fixes.\r\n\r\n# New\r\n\r\n### Inkbleed antialiasing (WebGL2 only)\r\n\r\nInkbleed is a new antialiasing mode in the Rive Renderer, offered as an alternative to MSAA. Opt in when creating the Rive instance:\r\n\r\n```ts\r\nimport { Rive } from \"@rive-app/webgl2\";\r\n\r\nconst r = new Rive({\r\n  canvas,\r\n  src: \"my-file.riv\",\r\n  enableInkbleed: true,\r\n});\r\n\r\n// Toggle at runtime (only works if enabled at construction)\r\nr.inkbleed = false;\r\n```\r\n\r\nNotes:\r\n- It disables the canvas's native MSAA.\r\n- Fills that don't use the clockwise fill rule are converted to clockwise on a best-effort basis; worth checking for visual differences\r\n- Edges bleed out by about half a pixel, which is most noticeable on thin strokes.\r\n- It doesn't apply when using the shared offscreen renderer (`useOffscreenRenderer: true`).\r\n\r\n## Other additions\r\n- Angular (sweep) gradients\r\n- Painting with an artboard (artboard as a paint source)\r\n- String template data binding converter\r\n- Text input now blurs when pressing outside the focused field\r\n\r\n# Fixes\r\n\r\n- Deferred / GPU Canvas: only replay a canvas's last frame per session frame, and back a canvas before a paint samples its image\r\n- Mesh buffers now sync when a mesh samples a canvas image\r\n- Scripts without pointer handlers no longer block pointer hits\r\n- Variable font cache is cleared when the base font is null\r\n- Backwards states entered at their forward twin's end now play correctly\r\n- GL storage-texture polyfill fixes on Mali GPUs\r\n\r\n# Performance\r\n\r\n- Several renderer improvements: pixel bounds, cubic chopping, stroke cusps, per-verb path counts, draw sort ties\r\n- Text layout is solved once per change; runtime advance and keyframe apply are cheaper\r\n\r\n# Commits\r\n\r\n- fix(artemis): kit lanes build harfbuzz again (#14919) f6f6162502 [`28e6804`](https://github.com/rive-app/rive-wasm/commit/28e6804e66ff8dd966be45731ce1e7cec2c03a1a)\r\n- fix(rasc): deep review fixes across the compiler, frame gc, hosts and aot (#14805) 0964d166c2 [`c2239ea`](https://github.com/rive-app/rive-wasm/commit/c2239eab94346bb833312125408262e946f9f8ae)\r\n- fix(ore): run animascript in the web test player and take anisotropic samplers on webgpu (#14924) fb3c617552 [`c3de725`](https://github.com/rive-app/rive-wasm/commit/c3de725d0d836da18dbb1c7202302e8b01c6c016)\r\n- fix(housekeeping): Reformat with clang-format 19.1.7 (#14927) 49c42f3a86 [`fabeea4`](https://github.com/rive-app/rive-wasm/commit/fabeea4f3c88bc036b248cc473bc7f9378986fd9)\r\n- perf(renderer): Make a ShaderFeature for angular gradients (#14826) 2fc1a52418 [`b2a926a`](https://github.com/rive-app/rive-wasm/commit/b2a926abf46b57512ce007bfd0fb716222912a6b)\r\n- chore(c++): clang-format changes (#14883) c87e67374e [`ce87cb1`](https://github.com/rive-app/rive-wasm/commit/ce87cb117bb0abdd4d5682bea0de131b8fef8030)\r\n- feat(d3d/12): inkbleed (#14855) e8230e6d6c [`aa2ea34`](https://github.com/rive-app/rive-wasm/commit/aa2ea345855c7ecba777d2695baf4e64f78b5184)\r\n- fix(deferred): replay only a canvas's last frame per session frame (#14913) d3495be515 [`839cbff`](https://github.com/rive-app/rive-wasm/commit/839cbff53acfafece1e40c48015b70f6998079e5)\r\n- fix(ore): derive automatic layouts from a pipeline's own entry points (#14918) 0c99e9ed71 [`d2d0165`](https://github.com/rive-app/rive-wasm/commit/d2d01655c4adfe313ee2a3887c024e678db03eb4)\r\n- feat(text input): blur on a press outside the focused field (#14687) 315f0f8aa9 [`bf309ed`](https://github.com/rive-app/rive-wasm/commit/bf309ed5fdb1b26677e2f11bd7b1ccf89d89af63)\r\n- perf(layout): make a stack's cell the stack (`minmax(0, 1fr)`) (#14914) 5237e87d45 [`012d48a`](https://github.com/rive-app/rive-wasm/commit/012d48a48fb107720ca0a1d4b7b758f7a5b39350)\r\n- perf(runtime): solve a text's layout once per change (#14905) ed4257407e [`1b52c0b`](https://github.com/rive-app/rive-wasm/commit/1b52c0b070b92c5a882679dbc1fb3045a9dafc9c)\r\n- feat: base support for Angular (sweep) gradients (#14841) 82759fe334 [`d0ea1ca`](https://github.com/rive-app/rive-wasm/commit/d0ea1ca93fa99b0c33cab75bc198e2622513866f)\r\n- fix(vulkan): stop aborting when the loader fails extension enumeration (#14832) b04bcf8b50 [`7f4735b`](https://github.com/rive-app/rive-wasm/commit/7f4735b750c49c4320cff8ce665f041aafb7b6ae)\r\n- fix(web): sync mesh buffers when a mesh samples a canvas image (#14894) f89f0962e1 [`7510399`](https://github.com/rive-app/rive-wasm/commit/7510399e8190d9b6db019414bcc1b6b7a5fc081f)\r\n- perf(ore): stop stalling android frames on gpu canvas waits (#14879) ac444ea724 [`78100c3`](https://github.com/rive-app/rive-wasm/commit/78100c3321e78694523e3a776141ea472fd22cf2)\r\n- perf(renderer): Track per-verb counts in RawPath (#14858) 8f26372882 [`f47103c`](https://github.com/rive-app/rive-wasm/commit/f47103c3d041d3f968c4378d7eb0467a88c4696e)\r\n- perf(renderer): Skip the full chop search for cubics that definitely don't need chops (#14859) 3054bea6d1 [`42a37c8`](https://github.com/rive-app/rive-wasm/commit/42a37c855e1dc4abf0514bd51547a9e33ed9e168)\r\n- perf(renderer): Draw stroke cusps as full round joins (#14857) fddb30d8c4 [`0eebd28`](https://github.com/rive-app/rive-wasm/commit/0eebd281a3d8fc5c7f514adf76d80ea5f1065f7a)\r\n- perf(math): SIMD helpers, and faster float min/max on 32-bit ARM (#14860) eacb8fd4c6 [`5ae131e`](https://github.com/rive-app/rive-wasm/commit/5ae131eeb6298a57c3af33605aca995a7051beb2)\r\n- fix(runtime): stop scripts without pointer handlers blocking pointer hits (#14650) 86830a1eaa [`f801525`](https://github.com/rive-app/rive-wasm/commit/f8015259caabd2949595544682ab468d6fbb3dec)\r\n- perf(renderer): Pixel bounds calculation perf improvements (#14856) 68469c17f4 [`d3db11b`](https://github.com/rive-app/rive-wasm/commit/d3db11b805063f54f9fe1caa215b27619ca8c8f4)\r\n- fix (runtime) Ensure that when a variable font is updated, if the base font is null the variable font cache is cleared. (#14861) 39d02d9083 [`7493154`](https://github.com/rive-app/rive-wasm/commit/7493154217205503c65ee95279980d510b2b3460)\r\n- CLI: add optional native REV authoring (#14708) 2690b5c2e6 [`1aba97f`](https://github.com/rive-app/rive-wasm/commit/1aba97f0265587ef75a5ca9633f00314c0c87bc1)\r\n- fix(renderer): rotate and fence the GL storage-texture polyfill on Mali (#14846) cde30f8817 [`95b13f0`](https://github.com/rive-app/rive-wasm/commit/95b13f08328475a0d05f41687e87a252db8154df)\r\n- fix(scripting): stop the editor piling up script property wrappers, make untracking O(1) (#14854) b338e46bf8 [`6fe233b`](https://github.com/rive-app/rive-wasm/commit/6fe233bf3e81d0d147b4e18a68abde72124765f4)\r\n- feat(unreal) Rhi inkbleed support (#14796) 34aabd1345 [`b3a87d8`](https://github.com/rive-app/rive-wasm/commit/b3a87d8220701ce3d4646e2e13bcf55252a4f607)\r\n- chore(renderer): Add ubershader pre-creation to GL render context (#14849) f652c01305 [`8692640`](https://github.com/rive-app/rive-wasm/commit/86926403da2c6df2f03b49a8c8102a44c58ab855)\r\n- feat(runtime): add support for painting with an artboard (#14661) 7e93df692d [`715388c`](https://github.com/rive-app/rive-wasm/commit/715388c8dc012ad951a0d75061eded2259773936)\r\n- feat(renderer): Expose RenderContext::selectInterlockMode() (#14844) 7f0f87751a [`0aaaf83`](https://github.com/rive-app/rive-wasm/commit/0aaaf83315f84f3505d9b758f18f577d736a9efc)\r\n- fix(core, runtime): stop script undo at its starting text and build editor runtimes again (#14836) ef0f2d25b2 [`742d4ac`](https://github.com/rive-app/rive-wasm/commit/742d4acf49375a175ee6b6d778c4d8c1d28be38b)\r\n- feat(data-binding): string template converter (#14752) f00868b041 [`ff04f05`](https://github.com/rive-app/rive-wasm/commit/ff04f05c1a0e742cb1e1705dd9313f854594ef15)\r\n- fix(deferred): back a canvas before a paint samples its image (#14819) 767340d959 [`59060e4`](https://github.com/rive-app/rive-wasm/commit/59060e4949589b060f9fbbd70c89dabe4a516b89)\r\n- feat(renderer): Angular Gradients (#14792) 5700c26022 [`2a08e64`](https://github.com/rive-app/rive-wasm/commit/2a08e640de9f9d43befa1f6e26db7598861f3c1a)\r\n- fix(CLI): library view models broke in the CLI (#14821) ee15f4de7a [`ccf8e74`](https://github.com/rive-app/rive-wasm/commit/ccf8e74355e69266f38d8eda0cb03e2fe203d3ad)\r\n- perf(renderer): Break draw sort ties by draw index (#14755) 4efcefbc3c [`239ee3a`](https://github.com/rive-app/rive-wasm/commit/239ee3ab8f3f8cf2e2c773f5dfa355b681a4b46d)\r\n- fix(ore): refuse empty bind group entries and skip comments when placing entry points (#14804) 9e3eda5d8f [`3cc71b2`](https://github.com/rive-app/rive-wasm/commit/3cc71b29a2fb2b3345dd6c9817491404d6108269)\r\n- CLI: add a font viewer with interactive character previews (#14788) 4827c3f7bf [`594c0a2`](https://github.com/rive-app/rive-wasm/commit/594c0a2ad91e90ad2c89c2dcf05e662fe0460ce6)\r\n- feat(ore): catch what WebGPU rejects before it reaches the web (#14802) 280ddfd23e [`1a56eb1`](https://github.com/rive-app/rive-wasm/commit/1a56eb1ceba3d6c8ec8fdfa825cd9230aed80396)\r\n- fix(runtime): play a backwards state entered at its forward twin's en\u2026 (#14795) 33cd3ae5c8 [`3ab3976`](https://github.com/rive-app/rive-wasm/commit/3ab3976e07b98e8cfec3932e9294b03a0df096a2)\r\n- fix(scripting): release reaped handles after the frame collection (#14760) 8ba2c2772f [`589b787`](https://github.com/rive-app/rive-wasm/commit/589b787c8a50b528db0071d9bc22e6b21ab13604)\r\n- perf(runtime): sync selectable text over drawables, not every object (#14772) 22c7218f9b [`ebe5f02`](https://github.com/rive-app/rive-wasm/commit/ebe5f027048db08c096206fb87c86c0b046b8553)\r\n- fix(runtime): drop draw targets whose drawable doesn't resolve (#14771) 0c128612bf [`0bcb5ac`](https://github.com/rive-app/rive-wasm/commit/0bcb5acf96261a92d1f0d57e729e5ea7741e2f42)\r\n- fix(runtime): reclaim large script buffers at the next frame and pace chained async work (#14769) 4a48578cdd [`1e36ddc`](https://github.com/rive-app/rive-wasm/commit/1e36ddc3e0ec8a91e1e2edd357d42f0500fafea7)\r\n- perf(runtime): collapsed components and keyframe applies (#14764) 815caccd33 [`2e48a85`](https://github.com/rive-app/rive-wasm/commit/2e48a855cbb149bbccc0bb83bb602ab96f37d6e5)\r\n- feat(interpolators): Instance scripted interpolators per owner, shared down layout inherit\u2026 (#14732) 60a83e153a [`85c09cc`](https://github.com/rive-app/rive-wasm/commit/85c09cc2114e5d25f7b11216d66ed078d9038966)\r\n- perf(runtime): runtime performance improvements (#14761) fde0fe1f7b [`0ae84d6`](https://github.com/rive-app/rive-wasm/commit/0ae84d6922ae855452414f94de236d489ca92f5d)"
+    },
+    {
+      "html_url": "https://github.com/mrdoob/three.js/releases/tag/r186",
+      "tag_name": "r186",
+      "published_at": "2026-09-24T14:35:44Z",
+      "body": "https://github.com/mrdoob/three.js/wiki/Migration-Guide#185--186\r\nhttps://github.com/mrdoob/three.js/milestone/99?closed=1\r\n\r\n- Global\r\n  - Add linting for tsl/. #34488 (@ycw)\r\n  - Clean up. #34499 (@Mugen87)\r\n- AnimationObjectGroup\r\n  - Fix stale index bookkeeping in uncache() and unsubscribe_(). #34035 (@sean-kim05, @Mugen87)\r\n- Backend\r\n  - `Renderer`: Add `resetState()` function. #33877 (@pepperoni505, @Mugen87)\r\n- Backends\r\n  - Don't scale render target viewports by the pixel ratio. #34333 (@mrdoob, @claude)\r\n- BatchedMesh\r\n  - Mark visibility dirty in setGeometryIdAt(). #34096 (@wrangelvid)\r\n- BezierInterpolant\r\n  - Make `interpolate_()` more robust. #33934 (@Mugen87)\r\n- Bindings\r\n  - Remove cached bind groups in `_destroyBindings()`. #33954 (@Mugen87)\r\n  - Fix `_destroyBindings()`. #34014 (@Mugen87)\r\n  - Fix stale storage buffer attributes. #34388 (@Mugen87)\r\n- BufferGeometry\r\n  - Clean up serialization/deserilization. #34044 (@Mugen87)\r\n- Core\r\n  - Fix some `copy()` and `toJSON()` implementations. #34083 (@Mugen87)\r\n  - Don't check against default values in `toJSON()`. #34178 (@Mugen87)\r\n  - Initialize render targets with valid dimensions. #34380 (@204a, @Mugen87)\r\n- Frustum\r\n  - Improve docs. #34093 (@Mugen87)\r\n- Geometries\r\n  - Delete the disposed geometry's own attributes. #33939 (@sashankaryal, @Mugen87)\r\n- ImageBitmapLoader\r\n  - Fix regression in `load()`. #34151 (@Mugen87)\r\n  - Avoid mutating loader options. #34500 (@cuishuang, @Mugen87)\r\n- KeyframeTrack\r\n  - Serialize/deserialize tangent data. #34400 (@Mugen87)\r\n- Material\r\n  - Add serialization/deserialization support for clipping planes. #34084 (@Mugen87)\r\n- MathUtils\r\n  - Fix large isPowerOfTwo values. #34459 (@lprnmns, @Mugen87)\r\n- MeshPhysicalMaterial\r\n  - Add support for retroreflectivity. #33949 (@bhouston)\r\n  - Fix diffuse Fresnel blend for `retroreflective`. #34057 (@Mugen87)\r\n- Object3D\r\n  - Add `intersectsFrustum()`. #34065 (@Mugen87)\r\n  - Add `dispose()`. #34141 (@Mugen87)\r\n- PMREMGenerator\r\n  - Replace separable blur with spiral blur on both renderers. #32367 (@mrdoob, @claude)\r\n- QuadMesh\r\n  - Optimize rendering by bypassing MVP transforms. #33917 (@sunag)\r\n- Ray\r\n  - New watertight intersectTriangle(). #33661 (@Mugen87)\r\n  - Handle empty spheres in intersectSphere(). #34016 (@sean-kim05)\r\n- Renderer\r\n  - Don't use MSAA for fullscreen-passes. #33936 (@Mugen87)\r\n  - Fix operator-precedence bug. #33943 (@Mugen87)\r\n  - Fix computation of `_projScreenMatrix`. #33947 (@Mugen87)\r\n  - Clear inactive render lists. #33941 (@Mugen87)\r\n  - Warn when using removed PCFSoftShadowMap. 1b7d5f7aed0bef0303ccceeb036f977584c84330 (@mrdoob, @claude)\r\n  - Remove remaining PCFSoftShadowMap code. #33987 (@mrdoob, @claude)\r\n  - Clarify PCFSoftShadowMap warning. 4d0de92db18c49a44a821762a43420dbdb7c29e8 (@mrdoob, @claude)\r\n  - Use `WeakMap` in `Info`. #34045 (@Mugen87)\r\n  - Simplify `_getFrameBufferTarget()`. #34157 (@Mugen87)\r\n  - Introduce `dispose()` async. #34364 (@sunag)\r\n- Renderers\r\n  - honor renderOrder with reversed depth buffer. #33945 (@LLiJJing, @claude)\r\n  - Refactor sort key negate. #33948 (@Mugen87)\r\n  - Optimize multi-scattering energy compensation. #34046 (@Mugen87)\r\n  - Optimize DFG LUT sampling. #34055 (@Mugen87)\r\n- RenderTarget\r\n  - Introduce storage flags for MSAA. #33974 (@Mugen87)\r\n- RenderTarget3D\r\n  - Fix texture setup. #34117 (@Mugen87)\r\n- Shaders\r\n  - Fix multi-scattering energy compensation, remove BRDF_GGX_Multiscatter. #33983 (@mrdoob, @claude)\r\n  - Fix iridescence IBL multiscattering and transposed XYZ_TO_REC709. #33984 (@mrdoob, @claude)\r\n  - Improve energy conservation for diffuse and sheen lighting. #33985 (@mrdoob, @claude)\r\n  - Make comments more explicit. #34038 (@WestLangley)\r\n  - Add environment lighting support for retroreflective materials. #33995 (@mrdoob, @bhouston, @claude)\r\n- Source\r\n  - Reanme to `TextureSource`. #34202 (@Mugen87)\r\n- src\r\n  - Remove deprecated code. #33886 (@linbingquan)\r\n- Src\r\n  - Improve retroreflection nomenclature. #34079 (@WestLangley)\r\n  - Clean up. #34161 (@WestLangley)\r\n  - Clean up. #34272 (@WestLangley)\r\n- SunLight\r\n  - Clean up. #34258 (@mrdoob, @claude)\r\n  - Reduce cascade count to 2. 52184ab39216913eb2984cbcffaf0efe1b677378 (@mrdoob, @claude)\r\n- TimestampQueryPool\r\n  - Clear timestamps Map on query resolution and dispose. #34243 (@sunag)\r\n- TorusGeometry\r\n  - Forward thetaStart and thetaLength in fromJSON(). #34034 (@sean-kim05, @Mugen87)\r\n- Tour\r\n  - Add Playground Projects and Templates. #34437 (@sunag)\r\n- Vector3\r\n  - Clean up comments. #34037 (@WestLangley)\r\n- WebGLAnimation\r\n  - Schedule next frame before the loop callback. #34448 (@aktanazat, @Mugen87)\r\n- WebGLBackend\r\n  - Fix usage of `storeMultisampledDepthBuffer`. #34142 (@Mugen87)\r\n  - Add support for MinEquation and MaxEquation. #34146 (@tonybart1337)\r\n  - Make clear of default framebuffer more consistent. #34502 (@WilliamLiu-1997, @Mugen87)\r\n- WebGLOutput\r\n  - Match depth texture format to stencil setting. #34008 (@sawa-zen, @Mugen87)\r\n  - Optimize MSAA support. #34030 (@Mugen87)\r\n- WebGLRenderer\r\n  - Fix `clearLayerUpdates()` call. #33989 (@Mugen87)\r\n  - Tighten multi-scattering check. #34047 (@Mugen87)\r\n  - Fix color texture check for `BatchedMesh`. #34056 (@Mugen87)\r\n  - Optimize readRenderTargetPixels capability checks. #34183 (@dli7319, @Mugen87)\r\n  - Support Node Materials in `compile()`. #34232 (@Mugen87)\r\n  - Add SunLight with cascaded shadow maps. #34221 (@mrdoob, @claude)\r\n  - Make GL init more robust. #34299 (@Mugen87)\r\n  - Unbind PIXEL_PACK_BUFFER after async readback. #34321 (@TheBlek, @cursoragent)\r\n  - fix compileAsync() crashing when a tracked material is disposed mid-flight. #34378 (@kvvasuu, @Mugen87)\r\n  - Honor clipping in `compile()`. #34507 (@Mugen87)\r\n- WebGLTextures\r\n  - Improve max textures warning. 7cab421ee0a0790bfc45e672fdf1702ff401e5f6 (@Mugen87)\r\n- WebGLTextureUtils\r\n  - Delete `PIXEL_PACK_BUFFER` after copy. #34323 (@Mugen87)\r\n- WebGPU\r\n  - Allow read_write storage buffers and atomic ops in non-compute stages. #33626 (@SebastianBaltes, @claude)\r\n- WebGPUAttributeUtils\r\n  - Fix interleaved buffer handling for integer attributes. #34098 (@Ryan-G7, @Mugen87)\r\n- WebGPUBackend\r\n  - WebGPUBackend - Fix type of _getDefaultRenderPassDescriptor. #33969 (@cmhhelgeson)\r\n  - Check for render bundle/occlusion query combination. #34286 (@Mugen87)\r\n  - compare GPU bind groups by handle in _draw(). #34276 (@jjmhalew, @Mugen87, @claude)\r\n- WebGPURenderer\r\n  - Use `UnfilterableFloat` for NORM16 textures. #33910 (@Mugen87)\r\n  - Do not render shadow maps when precompile. #33924 (@Mugen87)\r\n  - Honor resolve flags in WebGPU backend. #33946 (@Mugen87)\r\n  - Fix stale occlusion queries. #33959 (@Mugen87)\r\n  - Make occlusion queries more robust. #33972 (@Mugen87)\r\n  - Add support for `TRANSIENT_ATTACHMENT`. #33977 (@Mugen87)\r\n  - Add missing `layerUpdates` support to `CompressedArrayTexture`. #33996 (@Mugen87)\r\n  - Support shared depth texture between multiple passes. #34042 (@sunag)\r\n  - Support dynamic swapping of the lighting system. #34050 (@sunag)\r\n  - Fix XR shadows. #34088 (@cabanier, @Mugen87)\r\n  - Introduce compileComputeAsync(). #32551 (@RenaudRohlinger)\r\n  - Fix native WebGPU XR camera selection. #34112 (@cabanier)\r\n  - Fix `copyTextureToBuffer()` 3D and array textures when using WebGL. #34129 (@Mugen87)\r\n  - Fix transmission during WebXR rendering. #34114 (@cabanier)\r\n  - Enable MSAA for native XR layers. #34143 (@cabanier)\r\n  - Add MSAA support to WebXR WebGPU. #34120 (@cabanier)\r\n  - Support material blend color and alpha. #34154 (@Mugen87)\r\n  - Introduce refresh types for render objects. #34162 (@Mugen87)\r\n  - Add DirectRenderPipeline. #34166 (@cabanier, @Mugen87, @sunag)\r\n  - Fix draw offsets of `BatchedMesh`. #34212 (@Mugen87)\r\n  - Fix timestamp query limits. #34236 (@sunag)\r\n  - Refresh shared uniform buffers. #34283 (@cabanier, @Mugen87)\r\n  - Make cache key for bind groups more robust. #34288 (@Mugen87)\r\n  - Add clipping + stencil demo. #34325 (@Mugen87)\r\n  - Dispose render objects when the renderer is disposed. #34327 (@wcandillon, @Mugen87)\r\n  - Add missing material properties to state checks. #34406 (@Mugen87)\r\n  - Fix viewport regression with array cameras. #34424 (@Mugen87)\r\n  - Fix integer array texture bindings. #34422 (@WilliamLiu-1997, @Mugen87)\r\n  - Add `packed_4x8_integer_dot_product` support. #34451 (@Mugen87)\r\n- WebGPUUtils\r\n  - Refactor `getTextureSampleData()`. #34121 (@Mugen87)\r\n- WebXR\r\n  - Restore camera properties at session end. #34152 (@Mugen87)\r\n\r\n**Nodes**\r\n\r\n- Nodes\r\n  - Make node buffer binding labels deterministic. #34069 (@RenaudRohlinger)\r\n  - Add `renderer.debug.onNodeBuilderCreated` callback. #34068 (@RenaudRohlinger)\r\n  - Remove top-level side effects for better tree-shaking. #34332 (@mrdoob, @claude)\r\n  - Add `updateBefore` and `updateAfter` support for compute stage. #34401 (@sunag)\r\n- Batch\r\n  - Support `positionPrevious`. #34100 (@Mugen87)\r\n- BitcountNode\r\n  - Fix GLSL Bitcount + add test coverage for BRDF/BSDF, depth, color space, type constructors, and bit operations. #34350 (@bhouston, @Mugen87)\r\n- ContextNode\r\n  - Avoid redundant calls. #34251 (@sunag)\r\n- DFGLUT\r\n  - Mention direct lighting use in headers, fix generator output path. d60e5bd8688dbef0c0efab901cb2ddae2ecd447b (@mrdoob, @claude)\r\n- GLSLNodeBuilder\r\n  - TSL Bug: Fix bitcast(uint, 'int')'s GLSL polyfill return type. #34429 (@bhouston)\r\n  - TSL Bug: bitcast() fails unnecessary between int and uint vector types. #34430 (@bhouston, @Mugen87)\r\n- LightsNode\r\n  - Introduce `getBuiltinLights`. #33909 (@sunag)\r\n  - Detect dynamic shadow map size changes. #34360 (@Mugen87)\r\n- Line2NodeMaterial\r\n  - Implement `setupPosition()`. #34005 (@Mugen87, @sunag)\r\n- MathNode\r\n  - Fix integer `min()`/`max()` on the WebGL backend. #34018 (@mrcljx, @Mugen87)\r\n  - TSL Unit Tests - Fix determinant() type inference reporting the matrix's own type instead of float. #34341 (@bhouston, @Mugen87)\r\n- MathUtils\r\n  - TSL Unit Tests - Fix sinc() removable singularity computing a literal 0/0. #34337 (@bhouston, @Mugen87)\r\n  - TSL Unit Tests - Fix gain() JS-ternary-on-a-Node bug and wrong base formula; fix pcurve() NaN exponent. #34340 (@bhouston, @Mugen87)\r\n- MeshPhysicalNodeMaterial\r\n  - Fix specular nodes. #34164 (@Mugen87)\r\n- ModelNode\r\n  - Support `ArrayCamera` in highp matrix nodes. #34384 (@Mugen87)\r\n- MRTNode\r\n  - Fix blend modes bug in `merge()`. #34248 (@Mugen87)\r\n  - Allow clear colors per attachment. #34250 (@Mugen87)\r\n- NodeBuilder\r\n  - Check for reserved keywords. #33871 (@Mugen87)\r\n- NodeFunction\r\n  - Filter initial spaces and comments. #34363 (@sunag)\r\n- NodeManager\r\n  - Correctly dispose of background mesh. #34108 (@Mugen87)\r\n- NodeMaterial\r\n  - Improve scene lighting enabled check. #34052 (@sunag)\r\n- NodeMaterialObserver\r\n  - Honor `retroreflective` and fix updates with nested render calls. #33992 (@mrdoob, @claude)\r\n  - Add geometry  version check. #34064 (@Mugen87)\r\n  - Fix stale render object cache. #34076 (@Mugen87)\r\n  - Monitor dispose for geometries and textures. #34287 (@Mugen87)\r\n  - Track shadow map sizes. #34361 (@Mugen87)\r\n- PMREMNode\r\n  - Handle unresolved PMREM during setup. #33881 (@jure)\r\n- ReferenceElementNode\r\n  - Move into own file. #34245 (@Mugen87)\r\n- RotateNode\r\n  - TSL Unit Tests - Fix rotate() 3D Euler-angle path rotating in the wrong direction. #34338 (@bhouston, @Mugen87)\r\n  - Add support for Euler Order. #34348 (@WestLangley)\r\n- RTTNode\r\n  - Add `autoUpdate`, `resolutionScale` and preserve default `type`. #34307 (@sunag)\r\n  - Fix reset and restore renderer state. #34385 (@sunag)\r\n  - Keep the renderer state per instance. #34508 (@mrdoob, @claude)\r\n- ScreenNode\r\n  - Refactor DPR handling. #34186 (@Mugen87)\r\n- ShadowNode\r\n  - Fix `WeakMap` usage. #33964 (@Mugen87)\r\n  - Move shadow material and render object helpers to base class. #34312 (@sunag)\r\n- Skinning\r\n  - Support bone counts exceeding UBO limit. #34200 (@Mugen87)\r\n- StorageTextureNode\r\n  - Preserve integer store values. #34423 (@WilliamLiu-1997)\r\n- SubgroupFunctionNode\r\n  - TSL Unit Tests: Workgroups, StorageBuffer Atomics, Compute builtins, Barriers and Subgroups. #34431 (@bhouston)\r\n  - TSL Bug: Fix `subgroupAll()`/`subgroupAny()` parameter length. #34432 (@bhouston)\r\n  - TSL Bug: Fix subgroup broadcast first param length. #34433 (@bhouston, @Mugen87)\r\n- TextureNode\r\n  - Add `isPlainGather()`. #34119 (@Mugen87)\r\n  - Refactor `isPlainGather()`. #34201 (@Mugen87)\r\n- ToonLightingModel\r\n  - Use the view space normal for the gradient irradiance. #34247 (@lazerg)\r\n- TSL\r\n  - Respect texture format when sampling textures. #33875 (@sunag)\r\n  - Make `textureSize()` more robust. #33925 (@Mugen87)\r\n  - Inline transform of normal and tangent. #33938 (@WestLangley)\r\n  - Do not export `PMREMUtils`. #33986 (@sunag)\r\n  - Fixing rbmax / rbmin calculation of `getParallaxCorrectNormal()`. #34007 (@Mugen87)\r\n  - Fix update range clear bug in `Instance`. #34022 (@explodi, @Mugen87)\r\n  - Support individual `lighting` per `pass()`. #34051 (@sunag)\r\n  - Add `OnAfterObjectUpdate()`. #34101 (@Mugen87)\r\n  - Fix update of previous instance matrix data. #34107 (@Mugen87)\r\n  - Add `batchIndirectIndex`. #34111 (@Mugen87)\r\n  - Support primitive values in custom `struct` constructors. #34113 (@sunag)\r\n  - Build CodeNode includes as references. #34132 (@Ryan-G7, @Mugen87, @sunag)\r\n  - Remove export of 'append'. #34156 (@Methuselah96)\r\n  - Add `horizontalRotation` option to `billboarding()`. #34197 (@sunag)\r\n  - Add `4x8` pack/unpack functions. #34263 (@Mugen87)\r\n  - Update exports in Three.TSL. #34310 (@sunag)\r\n  - Honor type in `toAttribute()`. #34347 (@Mugen87)\r\n  - Add TSL GPU unit test coverage for LTC area lights, point light, SH irradiance, equirect/spritesheet UV, and post-processing utils. #34358 (@bhouston)\r\n  - Add warnings to GPGPU Nodes. #34291 (@cmhhelgeson)\r\n  - Add atomic workgroup array support. #34428 (@WilliamLiu-1997, @bhouston)\r\n  - Add missing clamp to `V_Neubelt()`. #34449 (@Mugen87)\r\n- UniformArrayNode\r\n  - Fix `update()` overwrite. #33962 (@Mugen87)\r\n- WGSLNodeBuilder\r\n  - TSL Unit Tests - Fix faceForward() WGSL capitalization bug. #34342 (@bhouston, @Mugen87)\r\n- WGSLNodeFunction\r\n  - Add missing WGSL-TSL type entry. #34099 (@Mugen87)\r\n\r\n**Addons**\r\n\r\n- Addons\r\n  - Disable depth buffer when possible. #34043 (@Mugen87)\r\n  - Fix typos. #34105 (@pailhead)\r\n  - Gaussian Splat renderer / loader using TSL for WebGPU/WebGL + glTF import. #33950 (@bhouston, @Mugen87)\r\n- 3DMLoader\r\n  - add views, namedViews, and strings to userData. #34498 (@YCoCg)\r\n- 3MFLoader\r\n  - Basic support of Beam Lattice. #34267 (@Mugen87)\r\n- AST\r\n  - TSL & Transpiler: Support parameterless loops (do ... while). #34209 (@sunag)\r\n- BufferGeometryUtils\r\n  - Let `toTrianglesDrawMode()`modify geometries in-place. #33878 (@Mugen87)\r\n  - avoid vertex hash overflow at zero tolerance. #34390 (@hamedrabah, @Mugen87)\r\n- CityGenerator\r\n  - Improved city example. #33906 (@mrdoob, @claude)\r\n- CSS2DRenderer\r\n  - Support Rotation. #33474 (@WestLangley)\r\n- FBXLoader\r\n  - Support multiple clips in single timeline. #34167 (@Mugen87)\r\n  - Fix missing `userData` copy. #34302 (@Mugen87)\r\n  - Use global `URL` instead of `window.URL`. #34328 (@hybridherbst)\r\n- FirstPersonControls\r\n  - Make keyboard movement world axis aligned. f88964a17e29a61e26ad4981754bb68ebf62264d (@mrdoob, @claude)\r\n  - Restore R/F shortcuts and unify example look speed. #34485 (@mrdoob)\r\n- GaussianSplatMesh\r\n  - Fix sort invalidation for transforms. #34233 (@gqfx, @Mugen87)\r\n  - Add support for per-mesh bounding box, frustum culling. #34254 (@gkjohnson)\r\n  - Inline splat data reads to improve bounding box generation performance. #34262 (@gkjohnson)\r\n  - Pack RGBA8 colors in storage buffers. #34255 (@gqfx)\r\n  - Add support for raycasting. #34284 (@gkjohnson, @bhouston)\r\n- GaussianSplatPLYLoader\r\n  - PLYGaussianSplatLoader -> GaussianSplatPLYLoader. #34292 (@WestLangley)\r\n- GaussianSplatUtils\r\n  - Simplify GaussianSplatUtils via ThreeJS math classes. #34223 (@bhouston)\r\n- Global\r\n  - Remove deprecated code. #33880 (@Mugen87)\r\n- GLTFExporter\r\n  - Cache normal maps. #33940 (@Mugen87)\r\n  - Implement ability to export with a copyright notice. #34138 (@Mirei3D, @Mugen87)\r\n- GLTFGaussianSplatLoaderExtension\r\n  - Optimize Gaussian Splat loading. #34205 (@bhouston)\r\n  - View-dependent Gaussian Splatting via Spherical Harmonics. #34215 (@bhouston)\r\n- GLTFLoader\r\n  - Fix EXT_mesh_gpu_instancing custom instance attributes shared across nodes. #33927 (@sebgoubier, @Mugen87)\r\n  - Skip skinning without skin attributes. #33988 (@0b5vr, @Mugen87)\r\n  - Fix KHR_texture_transform support when rotation is specified. #34033 (@zeux)\r\n- HTMLMesh\r\n  - Improve form controls support. #34172 (@Mugen87)\r\n- Inspector\r\n  - Stop keyboard events from leaking into the app. 0696807d586ab1c04b8fcedc71079559c07f1ddf (@mrdoob, @claude)\r\n  - Add `debounce()`. #33932 (@Mugen87)\r\n  - resolve bare three imports in TSL graph loader. #33965 (@bhushan6)\r\n  - Fix `TSLGraphEditor` raycasting and refactor primary pass retrieval. #34133 (@sunag)\r\n  - Use absolute positioning and add alignment configuration. #34137 (@sunag)\r\n  - Add split screen, list grid mode and revisions. #34140 (@sunag)\r\n  - Fix split screen overlay alignment on sub-window canvases. #34203 (@sunag)\r\n  - Add Color Grading extension and improve lifecycle API. #34216 (@sunag)\r\n  - Optimize Timeline tab rendering with virtual scrolling. #34230 (@sunag)\r\n  - Polish split screen divider and select dark theme. #34318 (@sunag)\r\n  - Implement disposal support and improve split screen handling. #34383 (@sunag)\r\n  - Support nonce and CSP compliance. #34396 (@sunag)\r\n- LightProbeGrid\r\n  - Rename to LightProbeGridWebGL. #33911 (@mrdoob, @claude)\r\n  - Add WebGPURenderer version. #33913 (@mrdoob, @claude)\r\n  - Support incremental baking. #34486 (@mrdoob)\r\n- LightProbeGridWebGL\r\n  - Fix SunLight integration. #34370 (@Mugen87)\r\n- MaterialXLoader\r\n  - Materialx upgrade. #33485 (@bhouston, @cursoragent, @sunag)\r\n- OrbitControls\r\n  - Improve `disconnect()`. #34504 (@Mugen87)\r\n- PCDLoader\r\n  - Fix regex to remove comments. #34199 (@Virtycle, @Mugen87)\r\n- PLYGaussianSplatLoader\r\n  - a dedicated loader for Gaussian splat PLYs. #34278 (@bhouston)\r\n- Rename\r\n  - GaussianSplatMesh -> GaussianSplat. #34306 (@WestLangley)\r\n- Rhino3dmLoader\r\n  - performance, PBR materials, editor import. #34180 (@fraguada)\r\n- SimplifyModifier\r\n  - Refactor implementation. #34021 (@Mugen87)\r\n- Sky\r\n  - Sky, SkyMesh: More realistic clouds. #33942 (@mrdoob, @claude)\r\n  - Fix FP16 overflow. #34058 (@Mugen87)\r\n  - Sky, SkyMesh: Slow down default cloud speed. 04679755feb07e1d7ad256307d5c4a7bb8043f92 (@mrdoob, @claude)\r\n- Sky/SkyMesh\r\n  - Remove `up` uniform. #34354 (@Mugen87)\r\n- SkyscraperGenerator\r\n  - Cheaper weathering noise. #33900 (@mrdoob, @claude)\r\n- SPZLoader\r\n  - add support for SPZ version 4 in SPZLoader and add new SPZ v4 example. #34222 (@bhouston)\r\n- SunLight\r\n  - Move to addons. #34326 (@mrdoob, @claude)\r\n- TrackballControls\r\n  - Avoid updating `_movePrev` too often. #34173 (@Mugen87)\r\n  - Implemented multi-touch rotate. #34249 (@surdu, @Mugen87)\r\n- Transpiler\r\n  - Add GLSL preprocessor directives and macro support. #34206 (@sunag)\r\n  - Add `array` support. #34208 (@sunag)\r\n- TubePainter\r\n  - Properly transform normals. #34061 (@WestLangley)\r\n- UnrealBloomPass\r\n  - Don't request depth buffer. #34036 (@Mugen87)\r\n  - Merge adjacent taps into bilinear fetches. #34479 (@mrdoob, @claude)\r\n- USDLoader\r\n  - Resolve connected attribute values. #34309 (@cabanier)\r\n- VolumeSlice\r\n  - Move property declarations. #34130 (@Mugen87)\r\n- WebGLXRFallback\r\n  - Detect WebGPU XR support upfront. #34080 (@cabanier)\r\n- WebGPURenderer\r\n  - Add SunLight support. #34259 (@mrdoob, @claude)\r\n- XRControllerModelFactory\r\n  - Fix profile hot-swap. #34266 (@Mugen87)\r\n\r\n**Addons / Nodes**\r\n\r\n- TSL\r\n  - Add `softParticles()`. #33887 (@Mugen87)\r\n  - Support primitive values in `array()`. #33929 (@sunag)\r\n  - Introduce `OnBeforeRenderPipeline` and `OnAfterRenderPipeline` and update context directly on material. #34025 (@sunag)\r\n  - Fix angle bug in `hashBlur()`. #34077 (@Mugen87)\r\n  - Pass `stepSize` to `RaymarchingBox` callback. #34257 (@sunag)\r\n- Addons\r\n  - Add `TAAUtils` for shared functions. #34458 (@Mugen87)\r\n- BloomNode\r\n  - Add faster blur strategy. #33923 (@Mugen87)\r\n- ClusteredLightsNode\r\n  - Add `dispose()`, optimize `create()`. #34375 (@204a, @Mugen87)\r\n- CSMShadowNode\r\n  - Fix frame-late bug. #34213 (@Mugen87)\r\n- DenoiseNode\r\n  - Dispose internal noise texture. #34418 (@204a)\r\n- DepthOfFieldNode\r\n  - Fix render target leak on repeated setup. #34188 (@cl0nazepamm, @Mugen87)\r\n- DotScreenNode/RGBShiftNode\r\n  - Make ctor more flexible. #34417 (@Mugen87)\r\n- DualKawaseBloomNode\r\n  - Added DualKawaseBloomNode. #33920 (@mrdoob, @claude)\r\n  - Remove DualKawaseBloomNode. #33979 (@mrdoob, @claude)\r\n- GTAONode\r\n  - Add Quadratic ray stepping, smooth sphere falloff. #33895 (@Mugen87)\r\n  - Improve code example. #33902 (@Mugen87)\r\n  - Clip-space ray marching and loop micro-optimizations. #33903 (@mrdoob, @Mugen87, @claude)\r\n  - Fix banding issue. #33919 (@marcofugaro, @Mugen87)\r\n  - Optimize code. #33930 (@Mugen87)\r\n  - Bake sample count into the shader. #33931 (@Mugen87)\r\n  - Dispose internal noise texture. #34369 (@204a, @Mugen87)\r\n- Nodes\r\n  - More consistent `dispose()` usage. #34419 (@Mugen87)\r\n- OITPassNode\r\n  - Add node for Order Independent Transparency. #34253 (@Mugen87)\r\n  - Improve MSAA support. #34274 (@Mugen87)\r\n- PassNode\r\n  - Fix pixel ratio in derived passes. #34453 (@Mugen87)\r\n- SMAANode\r\n  - Fix and simplification. #34031 (@sunag)\r\n- SSAAPassNode\r\n  - Use single-sample render targets. #34367 (@204a, @Mugen87)\r\n- SSAONode\r\n  - Add `SSAONode` and `depthAwareBlur`. #33921 (@mrdoob, @claude)\r\n- SSRNode\r\n  - Clean up. #34377 (@Mugen87)\r\n- VXGINode\r\n  - Voxel Cone Tracing for Diffuse GI. #34402 (@Mugen87)\r\n- WebGLNodesHandler\r\n  - Reuse collected lights and preparation data. #34219 (@hybridherbst)\r\n  - Fix error with `getCanvasTarget` in WebGLRenderer. #34303 (@hybridherbst)\r\n- WoodNodeMaterial\r\n  - Specialize single-octave noise. #33970 (@mrdoob, @claude)\r\n\r\n**Docs**\r\n\r\n- Fix heading typo in CONTRIBUTING.md. 6cac81241961e3b68b0a5992cf325b4e9db8b3af (@mrdoob)\r\n- Improve descriptions. #34027 (@Mugen87)\r\n- Resolve reamining TODOs. #34029 (@Mugen87)\r\n- Matrix4: Improve inline documentation. #34067 (@WestLangley)\r\n- Fix typos and a wrong parameter name in JSDoc comments. #34169 (@xdroberto)\r\n- fix broken TSL anchor links for roughnessNode and metalnessNode. #34170 (@latent-9)\r\n- Drop JSDoc params the functions no longer take. #34226 (@darkdi)\r\n- Drop three more JSDoc params in WGSLNodeBuilder. #34237 (@darkdi)\r\n- Fix usage of `@class` tag. #34244 (@Mugen87)\r\n- Fix broken cross-links to texture utils pages. #34271 (@FirmaSpring)\r\n- Improve `BundleGroup`. #34305 (@Mugen87)\r\n- Tour of TSL. #34085 (@sunag)\r\n- IndexNode - Update JSDoc. #34413 (@cmhhelgeson, @Mugen87)\r\n- LoopNode - Update JSDoc. #34415 (@cmhhelgeson, @Mugen87)\r\n\r\n**Manual**\r\n\r\n- Remove `i18n`. #33997 (@Mugen87)\r\n- Add Addons section anchor. #34017 (@zackabrah)\r\n- Add anchors to headings. #34020 (@zackabrah)\r\n- Slowed down colourshift effect in scenegraph tutorial. #34048 (@chesterblack)\r\n\r\n**Examples**\r\n\r\n- Improve performance of clustered lights demo. #33901 (@Mugen87)\r\n- webgl_postprocessing_pixel: Snap Objects to Pixel Grid. #33908 (@zalo, @claude)\r\n- Add SSAO blur toggle in webgpu_postprocessing_ao. 70820b8d96b7cb2221a24c8170429b4169745a01 (@mrdoob, @claude)\r\n- Optimise PNGs across the repo. #33882 (@Chubercik)\r\n- Skip TRAA for SSAO in webgpu_postprocessing_ao. 84569eb27a3e070e6a4844e59e906ea0ee26c4cb (@mrdoob, @claude)\r\n- Use FXAA in clustered light demo. #33935 (@Mugen87)\r\n- Removed (wip) from webgpu. d51eb061e673cb9ec7f22c0277eefe925d7e2f05 (@mrdoob)\r\n- Clean up. #33981 (@WestLangley)\r\n- Clean up. #33994 (@Mugen87)\r\n- Refresh external links in /examples. #34001 (@bhouston)\r\n- Clean up. #34010 (@Mugen87)\r\n- Properly transform normal vectors. #34015 (@WestLangley)\r\n- Clean up. #34026 (@Mugen87)\r\n- More clean up. #34028 (@Mugen87)\r\n- Properly transform normal. #34039 (@WestLangley)\r\n- Add `webgpu_deferred` example. #34049 (@sunag)\r\n- Optimize backdrop water demo. #34086 (@Mugen87)\r\n- Refined the `webgl_volume_perlin` with bisection based refinement. #34090 (@mmmovania, @Mugen87)\r\n- Refined the `webgpu_volume_perlin` with bisection based refinement. #34094 (@mmmovania, @Mugen87)\r\n- Update webgl_volume_perlin.html. be6469cce5f91576c9efc8dc984c7ae3970197d3 (@Mugen87)\r\n- Eliminate branch divergence in volume refinement loops. #34097 (@WestLangley)\r\n- Clean up. #34148 (@Mugen87)\r\n- Clean up. #34185 (@Mugen87)\r\n- Change preset in backdrop area. #34195 (@Mugen87)\r\n- Make example links clickable in title & info. #34207 (@bhouston, @Mugen87)\r\n- Make material arrays demo more interesting. #34220 (@Mugen87)\r\n- Optimize rain demo. #34229 (@Mugen87)\r\n- Replace sun-like DirectionalLights with SunLight. #34228 (@mrdoob, @claude)\r\n- Clean up. #34273 (@WestLangley)\r\n- Update tags.json. 04008d6f255b9e2c92244244f484bd4508a14908 (@Mugen87)\r\n- Rename Gaussian Splat Example. #34293 (@WestLangley, @Mugen87)\r\n- Update webgl_lightprobes_sponza screenshot for two sun cascades. 5c81184a805495f5394aa50ad4c33d5f332a4b37 (@mrdoob, @claude)\r\n- Add post-processing volumetric fog example. #34319 (@sunag)\r\n- Remove `ecsy` . #34359 (@Mugen87)\r\n- Clean up. #34408 (@Mugen87)\r\n- Update tags. #34411 (@Mugen87)\r\n- Optimize glTF asset. #34435 (@Mugen87)\r\n- Optimize glTF asset. #34436 (@Mugen87)\r\n- Improve tags. #34472 (@Mugen87)\r\n- Clean up tags. #34473 (@Mugen87)\r\n- Add Sculptor addon. #33164 (@mrdoob, @claude)\r\n- Improve fog scattering trees and performance. #34491 (@mrdoob)\r\n- Refine custom fog terrain and resource handling. 511de1d2ee7c89f534b457d72e4ea4a7b20b50d4 (@mrdoob)\r\n- Update custom fog screenshot. e0119d1b87122d74701db34a04354e8979aff98e (@mrdoob)\r\n- Use SunLight in WebGPU examples. #34476 (@mrdoob, @claude)\r\n- Improve webgpu_materials_retroreflective. #33990 (@mrdoob, @claude)\r\n\r\n**Devtools**\r\n\r\n- Clean up, light count and 1.17. #34387 (@mrdoob, @claude)\r\n- Object details, box highlight and 1.18. #34399 (@mrdoob, @claude)\r\n\r\n**Editor**\r\n\r\n- Don't use picker object with skeletons. #34062 (@Mugen87)\r\n- Fix animation selection. #34322 (@Mugen87)\r\n- Add group selection. #34144 (@Mugen87)\r\n\r\n**Tests**\r\n\r\n- Try to fix the webgpu async timeouts. #34225 (@pailhead, @claude)\r\n- GPU-native unit tests for TSL. #34331 (@bhouston)\r\n- fix lint error. #34345 (@linbingquan)\r\n- Update screenshots. #34346 (@Mugen87)\r\n- Add TSL GPU unit test coverage for math, packing, conversion, vector/matrix, logic/bitwise, color, tone mapping, and procedural helpers. #34349 (@bhouston, @Mugen87)\r\n- Unit tests: import unbuilt source instead of build/ output. #34362 (@bhouston)\r\n- Remove empty QUnit.module scaffolding. #34409 (@samuel7james)\r\n- TSL Tests: Give each GPU unit test kernel its own random canary value. #34427 (@bhouston)\r\n- Stabilize input and video screenshots. #34474 (@mrdoob)\r\n\r\n**Utils**\r\n\r\n- Dev: Improve `preview.js`. #34407 (@Mugen87)\r\n- Support branches in changelog.js. f64ed0d50506064c99445e4b72ff0f82b387968e (@mrdoob, @claude)\r\n- Improve changelog.js. 16e1f0369b3ea976a581ca651de868818c9f0a9b (@mrdoob, @claude)\r\n- Rename Tour of TSL to TSL Guide. #34457 (@mrdoob, @claude)\r\n- Update TSL links in llms build. c4ffe022f2a4f982b42b7da5af79a87066a138ae (@mrdoob, @claude)\r\n\r\n**Build**\r\n\r\n- Deprecate CommonJS build. #33891 (@mrdoob, @claude)\r\n- Remove minified builds. #33893 (@mrdoob, @claude)\r\n\r\n**CI**\r\n\r\n- Comment on PRs with E2E screenshot failures. #33971 (@mrdoob, @claude)\r\n- Add Core to bundle size report. #34330 (@mrdoob, @claude)\r\n- fix grammar. #34482 (@linbingquan, @Mugen87)"
+    },
+    {
+      "html_url": "https://github.com/playcanvas/supersplat/releases/tag/v3.6.0",
+      "tag_name": "v3.6.0",
+      "published_at": "2026-10-21T15:05:18Z",
+      "body": "## What's Changed\r\n* Update all npm dependencies by @renovate[bot] in https://github.com/playcanvas/supersplat/pull/1074\r\n* Support 2-point vertical alignment in the orient tool by @slimbuck in https://github.com/playcanvas/supersplat/pull/1075\r\n* Update dependency @playcanvas/splat-transform to v3.10.2 by @renovate[bot] in https://github.com/playcanvas/supersplat/pull/1076\r\n* Export the selected SH band count, zero-padding missing bands by @Yang-SyZng in https://github.com/playcanvas/supersplat/pull/1063\r\n\r\n## New Contributors\r\n* @Yang-SyZng made their first contribution in https://github.com/playcanvas/supersplat/pull/1063\r\n\r\n**Full Changelog**: https://github.com/playcanvas/supersplat/compare/v3.5.2...v3.6.0"
+    },
+    {
+      "html_url": "https://github.com/playcanvas/splat-transform/releases/tag/v3.10.3",
+      "tag_name": "v3.10.3",
+      "published_at": "2026-10-21T19:09:28Z",
+      "body": "## What's Changed\n* Update dependency @playcanvas/supersplat-viewer to v1.39.0 by @renovate[bot] in https://github.com/playcanvas/splat-transform/pull/359\n\n\n**Full Changelog**: https://github.com/playcanvas/splat-transform/compare/v3.10.2...v3.10.3"
+    }
+  ],
+  "npm": [
+    {
+      "package": "motion",
+      "version": "14.6.0",
+      "time.modified": "2026-10-22T08:17:20.959Z"
+    },
+    {
+      "package": "@rive-app/webgl2",
+      "version": "2.45.0",
+      "time.modified": "2026-10-17T19:50:55.499Z"
+    },
+    {
+      "package": "@splinetool/runtime",
+      "version": "2.0.103",
+      "time.modified": "2026-10-21T22:06:09.336Z"
+    },
+    {
+      "package": "@theatre/core",
+      "version": "0.7.2",
+      "time.modified": "2024-05-19T14:29:57.804Z"
+    },
+    {
+      "package": "p5",
+      "version": "2.3.4",
+      "time.modified": "2026-10-20T12:40:11.366Z"
+    },
+    {
+      "package": "gsap",
+      "version": "3.15.0",
+      "time.modified": "2026-04-13T13:15:35.906Z"
+    },
+    {
+      "package": "@sparkjsdev/spark",
+      "version": "2.4.0",
+      "time.modified": "2026-10-20T11:06:59.374Z"
+    },
+    {
+      "package": "three",
+      "version": "0.186.1",
+      "time.modified": "2026-09-24T14:42:21.613Z"
+    }
+  ],
+  "unreachable": [
+    {
+      "url": "https://jamesturrell.com/work/type/skyspace/",
+      "result": "curl HTTP 000; no page contents reviewed"
+    },
+    {
+      "url": "https://olafureliasson.net/artwork/the-weather-project-2003/",
+      "result": "curl HTTP 000; no page contents reviewed"
+    },
+    {
+      "url": "https://www.teamlab.art/e/borderless-azabudai/",
+      "result": "curl HTTP 000; no page contents reviewed"
+    },
+    {
+      "url": "https://www.ryojiikeda.com/project/data-verse/",
+      "result": "curl HTTP 000; no page contents reviewed"
+    },
+    {
+      "url": "https://tympanus.net/codrops/",
+      "result": "curl HTTP 000; no page contents reviewed"
+    },
+    {
+      "url": "https://docs.spline.design/",
+      "result": "curl HTTP 000; no page contents reviewed"
+    },
+    {
+      "url": "https://rive.app/docs/runtimes/data-binding",
+      "result": "curl HTTP 000; no page contents reviewed"
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/WebGPU_API",
+      "result": "curl HTTP 000; no page contents reviewed"
+    }
+  ],
+  "codropsRepositoryMetadata": [
+    {
+      "full_name": "codrops/OnScrollColumnsRows",
+      "description": "Scroll-driven animations for columns and rows powered by GSAP.",
+      "html_url": "https://github.com/codrops/OnScrollColumnsRows",
+      "pushed_at": "2026-10-22T08:49:14Z"
+    },
+    {
+      "full_name": "codrops/RainEffect",
+      "description": "Some experimental rain and water drop effects in different scenarios using WebGL, by Lucas Bebber.",
+      "html_url": "https://github.com/codrops/RainEffect",
+      "pushed_at": "2022-09-12T15:45:45Z"
+    },
+    {
+      "full_name": "codrops/SidebarTransitions",
+      "description": "Some inspiration for transition effects for off-canvas navigations.",
+      "html_url": "https://github.com/codrops/SidebarTransitions",
+      "pushed_at": "2024-08-05T18:26:26Z"
+    },
+    {
+      "full_name": "codrops/LineMenuStyles",
+      "description": "An open collection of menu styles that use the line as creative design element.",
+      "html_url": "https://github.com/codrops/LineMenuStyles",
+      "pushed_at": "2018-03-16T18:09:32Z"
+    },
+    {
+      "full_name": "codrops/interlude",
+      "description": "A starter for custom page transitions in Astro, built on Astro's ClientRouter and GSAP, with WebGL transitions in three.js.",
+      "html_url": "https://github.com/codrops/interlude",
+      "pushed_at": "2026-10-07T10:28:21Z"
+    },
+    {
+      "full_name": "codrops/isle-thorne-collective",
+      "description": "A free furniture shop template for Astro, with content collections, Tailwind CSS and page transitions.",
+      "html_url": "https://github.com/codrops/isle-thorne-collective",
+      "pushed_at": "2026-10-07T10:34:15Z"
+    },
+    {
+      "full_name": "codrops/atelier-north",
+      "description": "A minimal landing page for a fictional architecture studio, built with Astro and GSAP. Demo for a Codrops tutorial.",
+      "html_url": "https://github.com/codrops/atelier-north",
+      "pushed_at": "2026-10-09T15:43:00Z"
+    }
+  ],
+  "limitations": [
+    "Official source/README research, not a hands-on audit of hosted product demos.",
+    "Moving main references have content hashes; pinned tags/revisions are used for implementation-critical references.",
+    "No claims of physical GPU performance from software Chromium."
+  ]
+}

@@ -82,6 +82,31 @@ async function open(page, url) {
   await expect(page.locator("#capture-note")).toBeVisible();
   await expect(page.locator("#unravel-toggle")).toBeVisible();
   await expect(page.locator("#unravel-toggle")).toBeDisabled();
+  await expect(page.locator("#threshold-tools")).not.toBeVisible();
+}
+async function threshold(page, url, imagePath) {
+  await page.goto(url);
+  await page
+    .getByRole("button", { name: "Enter the lens", exact: true })
+    .click();
+  await expect(page.locator("#scene canvas")).toHaveAttribute(
+    "data-threshold",
+    "open",
+    { timeout: 45000 },
+  );
+  if (imagePath) await page.screenshot({ path: imagePath });
+  await page
+    .getByRole("button", { name: "Step into Nocturne", exact: true })
+    .click();
+  await expect(page.locator("#scene canvas")).toHaveAttribute(
+    "data-room-id",
+    "nocturne",
+    { timeout: 45000 },
+  );
+  await expect(page.locator("#room-view")).toBeFocused();
+  await expect(page).toHaveURL(/space=nocturne/);
+  if (imagePath)
+    await page.screenshot({ path: "/tmp/FORM-threshold-arrival.png" });
 }
 try {
   await mkdir(dirname(screenshot), { recursive: true });
@@ -125,6 +150,25 @@ try {
     throw Error(
       `Portable file requested external assets: ${JSON.stringify(portableRequests)}`,
     );
+  await single.close();
+  const doorway = await browser.newPage({
+    viewport: { width: 1000, height: 760 },
+    reducedMotion: "reduce",
+  });
+  doorway.setDefaultTimeout(90000);
+  watch(doorway);
+  await threshold(
+    doorway,
+    `${base}${prefix}?room=1&threshold=1&renderer=webgl`,
+    "/tmp/FORM-threshold-production.png",
+  );
+  await threshold(
+    doorway,
+    `${base}/portable.html?room=1&threshold=1&renderer=webgl`,
+  );
+  console.log(
+    "Nested and portable threshold opening, crossing, URL and focus passed.",
+  );
   if (errors.length || external.length)
     throw Error(JSON.stringify({ errors, external }));
   console.log(

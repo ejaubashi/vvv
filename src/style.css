@@ -1379,3 +1379,48 @@ body.reduced *:after {
     top: 78px;
   }
 }
+
+.threshold-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.threshold-actions button {
+  pointer-events: auto;
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 24px;
+  background: #f7f5edee;
+  color: #303733;
+  border: 1px solid #ffffffc0;
+  font-size: 12px;
+  box-shadow: 0 4px 18px #12201812;
+}
+.threshold-actions button[aria-pressed="true"] {
+  background: #273b32ed;
+  color: #f9f5e9;
+}
+.threshold-actions button:disabled {
+  opacity: 0.65;
+}
+#threshold-cross[hidden] {
+  display: none;
+}
+#threshold-hint {
+  padding: 7px 12px;
+  background: #f7f5eddf;
+  color: #303733;
+  border-radius: 16px;
+  font-size: 10px;
+  line-height: 1.5;
+}
+@media (max-height: 500px) {
+  .threshold-tools {
+    top: 70px;
+    gap: 4px;
+  }
+  #threshold-hint {
+    max-width: 300px;
+  }
+}

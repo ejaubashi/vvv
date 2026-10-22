@@ -2,6 +2,7 @@ import {
   WebGPURenderer,
   ACESFilmicToneMapping,
   SRGBColorSpace,
+  Vector3,
 } from "three/webgpu";
 import { createArchitecture, disposeArchitecture } from "./architecture";
 import { createRoomSurfaces } from "./materials";
@@ -11,8 +12,130 @@ import { roomDefinition, type RoomId } from "./catalog";
 import { roomFrameSize } from "./visit";
 import type { CapturedRoom } from "./capture";
 import type { UnravelFrame } from "./unravel";
+import { RoomThreshold } from "./threshold";
+import {
+  ThresholdApproach,
+  THRESHOLD_Z,
+  THRESHOLD_SHIFT,
+} from "./threshold-math";
 
 export class PortalRoom {
+  thresholdState: "closed" | "loading" | "open" | "crossing" | "error" =
+    "closed";
+  thresholdDestination: "gallery" | "nocturne" | "veil" = "nocturne";
+  private threshold: RoomThreshold | null = null;
+  private thresholdTask: Promise<void> | null = null;
+  private thresholdToken = 0;
+  private approach = new ThresholdApproach();
+  private cameraOffset = new Vector3();
+  private lookTarget = new Vector3(0, 1.65, -5.5);
+  private approachStart = new Vector3();
+  private lastApproach = 0;
+  async openThreshold() {
+    if (
+      !this.engine ||
+      !this.model ||
+      this.status !== "ready" ||
+      this.switching ||
+      this.thresholdTask ||
+      this.threshold
+    )
+      return;
+    const token = ++this.thresholdToken,
+      engine = this.engine;
+    this.thresholdDestination =
+      this.kind === "gallery"
+        ? "nocturne"
+        : this.kind === "nocturne"
+          ? "veil"
+          : "gallery";
+    this.thresholdState = "loading";
+    this.loss();
+    this.thresholdTask = (async () => {
+      let candidate: RoomThreshold | null = null;
+      let adopted = false;
+      try {
+        candidate = new RoomThreshold(this.thresholdDestination);
+        await engine.compileAsync(
+          candidate.model.scene,
+          candidate.model.camera,
+        );
+        if (
+          token !== this.thresholdToken ||
+          this.status !== "ready" ||
+          this.engine !== engine
+        )
+          return;
+        candidate.attach(this.model!.scene);
+        this.model!.sun.shadow.needsUpdate = true;
+        this.threshold = candidate;
+        adopted = true;
+        this.thresholdState = "open";
+        this.lastPose.x = Infinity;
+      } catch (error) {
+        if (token === this.thresholdToken) {
+          this.thresholdState = "error";
+          console.info("Threshold unavailable:", String(error));
+        }
+      } finally {
+        if (!adopted) candidate?.dispose();
+      }
+    })().finally(() => {
+      this.thresholdTask = null;
+      this.loss();
+    });
+    await this.thresholdTask;
+  }
+  closeThreshold() {
+    if (this.thresholdState === "closed" && !this.thresholdTask) return;
+    const visible = this.threshold !== null || this.approach.active;
+    ++this.thresholdToken;
+    this.approach.cancel();
+    this.threshold?.dispose();
+    if (this.threshold && this.model) this.model.sun.shadow.needsUpdate = true;
+    this.threshold = null;
+    this.thresholdState = "closed";
+    this.lastApproach = 0;
+    if (visible) this.lastPose.x = Infinity;
+    this.loss();
+  }
+  crossThreshold() {
+    if (this.thresholdState !== "open" || !this.model) return;
+    this.approachStart.copy(this.model.camera.position);
+    this.approach.start();
+    this.thresholdState = "crossing";
+    this.loss();
+  }
+  get thresholdProgress() {
+    return this.approach.progress;
+  }
+  private finishCrossing() {
+    const threshold = this.threshold;
+    if (!threshold || !this.model) return;
+    const camera = this.model.camera;
+    const arrival = new Vector3(0, 1.63, THRESHOLD_Z + 0.12);
+    const direction = this.lookTarget.clone().sub(arrival).normalize();
+    arrival.z += THRESHOLD_SHIFT;
+    this.cameraOffset
+      .copy(arrival)
+      .sub(new Vector3(this.pose.x, this.pose.y, this.pose.z));
+    this.lookTarget.copy(arrival).addScaledVector(direction, 12);
+    const destination = threshold.takeDestination();
+    threshold.dispose();
+    this.threshold = null;
+    disposeArchitecture(this.model);
+    this.surfaces!.dispose();
+    this.model = destination.model;
+    this.surfaces = destination.surfaces;
+    this.model.camera.copy(camera, false);
+    this.kind = this.requested = threshold.destination;
+    this.approach.cancel();
+    this.thresholdState = "closed";
+    this.lastPose.x = Infinity;
+    this.lastLight = Infinity;
+    this.loss();
+  }
+
   setUnravel(frame: UnravelFrame) {
     this.capture?.setUnravel(frame);
   }
@@ -148,8 +271,14 @@ export class PortalRoom {
   }
   /** Keep one renderer. Compile at most one replacement; newer requests supersede it. */
   async select(id: RoomId) {
+    this.closeThreshold();
+    if (this.thresholdTask) await this.thresholdTask;
     if (id !== this.requested) this.captureLoad?.abort();
     this.requested = id;
+    const resetView = this.cameraOffset.lengthSq() > 0;
+    this.cameraOffset.set(0, 0, 0);
+    this.lookTarget.set(0, 1.65, -5.5);
+    if (resetView) this.lastPose.x = Infinity;
     if (this.status === "loading") await this.pending;
     if (this.status === "disposed" || this.status === "idle") return;
     if (this.status === "fallback") {
@@ -298,15 +427,17 @@ export class PortalRoom {
   }
   /** Called only by the studio's existing animation clock. */
   step(dt: number, reduced = false) {
+    if (this.approach.step(dt, reduced)) this.finishCrossing();
     if (this.blend < 1)
       this.blend = reduced
         ? 1
         : Math.min(1, this.blend + Math.min(dt, 0.25) / 0.85);
   }
   get moving() {
-    return this.blend < 1;
+    return this.blend < 1 || this.approach.active;
   }
   private release() {
+    this.closeThreshold();
     this.capture?.dispose();
     this.capture = null;
     const engine = this.engine;
@@ -364,7 +495,11 @@ export class PortalRoom {
     immersion = 0,
   ) {
     if (this.status !== "ready" && this.status !== "fallback") return;
-    const dimensions = roomFrameSize(size, aspect, immersion > 0);
+    const dimensions = roomFrameSize(
+      this.approach.active ? Math.min(size, 768) : size,
+      aspect,
+      immersion > 0,
+    );
     const w = dimensions.width,
       h = dimensions.height;
     size = dimensions.longEdge;
@@ -373,6 +508,7 @@ export class PortalRoom {
     roomPose(this.pose, lookX, lookY, lensX, lensY, pressure, depth, immersion);
     const changedPose =
       changedSize ||
+      this.lastApproach !== this.approach.progress ||
       Math.abs(this.pose.x - this.lastPose.x) >= 0.00025 ||
       Math.abs(this.pose.y - this.lastPose.y) >= 0.00025 ||
       Math.abs(this.pose.z - this.lastPose.z) >= 0.00025 ||
@@ -391,8 +527,18 @@ export class PortalRoom {
           model.camera.aspect = w / h;
           model.camera.updateProjectionMatrix();
         }
-        model.camera.position.set(this.pose.x, this.pose.y, this.pose.z);
-        model.camera.lookAt(0, 1.65, -5.5);
+        model.camera.position
+          .set(this.pose.x, this.pose.y, this.pose.z)
+          .add(this.cameraOffset);
+        if (this.approach.active)
+          model.camera.position
+            .copy(this.approachStart)
+            .lerp(
+              new Vector3(0, 1.63, THRESHOLD_Z + 0.12),
+              this.approach.eased,
+            );
+        model.camera.lookAt(this.lookTarget);
+        model.camera.updateMatrixWorld(true);
       }
       try {
         if (changedPose) {
@@ -403,6 +549,7 @@ export class PortalRoom {
               model!.sun.position.x = 3.2 + Math.sin(lightTime * 0.22) * 1.2;
               model!.sun.shadow.needsUpdate = true;
             }
+            this.threshold?.render(engine!, model!.camera, w, h);
             engine!.render(model!.scene, model!.camera);
             source = engine!.domElement;
           }
@@ -439,6 +586,7 @@ export class PortalRoom {
     this.resolution = size;
     Object.assign(this.lastPose, this.pose);
     this.lastBlend = this.blend;
+    this.lastApproach = this.approach.progress;
     this.submitMs = performance.now() - start;
     this.draws++;
     this.frame.version++;
@@ -529,6 +677,8 @@ export class PortalRoom {
     this.status = "disposed";
     this.captureLoad?.abort();
     if (loading) await this.pending;
+    this.closeThreshold();
+    await this.thresholdTask;
     await this.switchTask;
     await this.release();
   }

@@ -1,0 +1,100 @@
+{
+  "date": "2026-10-22",
+  "build": {
+    "command": "npm run build",
+    "status": "passed",
+    "typecheck": true,
+    "productionFiles": 11,
+    "initialJsBytes": 1385871,
+    "initialJsGzipBytes": 374513,
+    "portableBytes": 18267905,
+    "portalTargetLongEdgeCap": 1024,
+    "approachViewLongEdgeCap": 768,
+    "newRuntimeDependencies": 0
+  },
+  "units": {
+    "command": "npm test",
+    "passed": 27,
+    "failed": 0
+  },
+  "browser": {
+    "distinctCasesPassed": 54,
+    "finalUnresolvedFailures": 0,
+    "runs": [
+      {
+        "scope": "capture.spec.ts, living-rooms.spec.ts, threshold.spec.ts",
+        "passed": 17
+      },
+      {
+        "scope": "room.spec.ts, studio.spec.ts, unravel.spec.ts, visit.spec.ts",
+        "passed": 36,
+        "needsFocusedRerun": 1
+      },
+      {
+        "scope": "threshold.spec.ts: entered controls (final accessibility and cancellation assertions)",
+        "passed": 1
+      },
+      {
+        "scope": "visit.spec.ts: Escape reverses entry",
+        "passed": 1,
+        "note": "Existing five-second focus wait exceeded once in software rendering. Focus wait set to 20 seconds; cancellation assertions retained. Focused rerun passed in 13.5 seconds."
+      }
+    ],
+    "rendererCoverage": [
+      "Three WebGPURenderer with WebGL2 backend",
+      "Three WebGPURenderer with WebGPU over software Vulkan",
+      "Spark captured room over WebGL2",
+      "Canvas/architectural illustration fallback"
+    ],
+    "inputCoverage": [
+      "pointer",
+      "real touch events",
+      "keyboard",
+      "reduced motion",
+      "rotation",
+      "Escape",
+      "Studio cancellation",
+      "return",
+      "disposal"
+    ]
+  },
+  "specificEvidence": [
+    "View rays align and entrance clipping works with both WebGL and WebGPU NDC conventions.",
+    "Actual portal pixels differ from source-only pixels; a sampled foreground column remains unchanged.",
+    "Nocturne metal highlights are required in an actual render-target readback.",
+    "Settled portal views stop drawing; crossing adopts the existing candidate model and renderer.",
+    "Cancellation restores the camera and disposes the portal target once.",
+    "Cancelled preparation does not reopen; room change and disposal retain ownership.",
+    "Existing captured-room GPU test restores the original PNG bytes after Unravel."
+  ],
+  "resolvedFindings": [
+    "A closed threshold cancellation is a no-op; routine studio/selection actions do not force another room draw.",
+    "sRGB unsigned-byte portal intermediate and non-tone-mapped aperture preserve displayed metal detail.",
+    "Crossing/cancellation restore keyboard focus after clearing inert state; live hints update only when text changes."
+  ],
+  "research": {
+    "primarySourceReceipts": 25,
+    "releaseRecords": 11,
+    "npmVersionChecks": 8
+  },
+  "deployment": {
+    "status": "passed",
+    "command": "node scripts/check-capture-deployment.mjs /tmp/FORM-thresholds.html /tmp/form-thresholds-preview/capture.png",
+    "nestedPrefix": "/revision/preview/",
+    "captureEntryReturn": "passed",
+    "normalAndPortableThresholdCrossing": "passed",
+    "crossingURLAndFocus": "passed",
+    "portableAssetRequests": 0,
+    "pageErrors": [],
+    "externalRequests": [],
+    "screenshots": [
+      "previews/threshold-opening.png",
+      "previews/threshold-arrival.png"
+    ],
+    "cdnVerification": "Deployed Git-tree hash verification is recorded in the PR; CDN endpoint is inaccessible from this environment."
+  },
+  "limits": [
+    "Software Chromium validates rendering correctness, not physical desktop/mobile GPU performance.",
+    "One nonrecursive doorway between authored rooms; capture portals and physical light transport are future work."
+  ]
+}

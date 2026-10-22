@@ -89,7 +89,7 @@ test("Escape reverses an entry in progress and a cancelled initialization cannot
   await page.keyboard.press("Escape");
   await expect(
     page.getByRole("button", { name: "Enter the lens", exact: true }),
-  ).toBeFocused();
+  ).toBeFocused({ timeout: 20000 });
   await page.waitForTimeout(1500);
   await expect(canvas(page)).toHaveAttribute("data-immersion", "0");
   await page
