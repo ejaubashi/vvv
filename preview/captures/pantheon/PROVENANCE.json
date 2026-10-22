@@ -7,5 +7,5 @@
   "license": "CC-BY-4.0",
   "retrieved": "2026-10-21",
   "sha256": "bb8c454d78197ae9077215b9e1386af5d3cf8d922c3f983beb33817a9b846185",
-  "modifications": "No changes to the mirrored SOG. Runtime orientation and bounded camera movement only. Upstream reductions are listed in UPSTREAM-ATTRIBUTION.txt. The source creator reconstructed the floor; this is a hybrid reconstruction, not a survey."
+  "modifications": "No changes to the mirrored SOG. Runtime orientation, bounded camera movement and optional reversible GPU splat deformation only. Upstream reductions are listed in UPSTREAM-ATTRIBUTION.txt. The source creator reconstructed the floor; this is a hybrid reconstruction, not a survey."
 }
