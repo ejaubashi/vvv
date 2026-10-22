@@ -10,8 +10,12 @@ import type { PortalFrame } from "../render/portal-frame";
 import { roomDefinition, type RoomId } from "./catalog";
 import { roomFrameSize } from "./visit";
 import type { CapturedRoom } from "./capture";
+import type { UnravelFrame } from "./unravel";
 
 export class PortalRoom {
+  setUnravel(frame: UnravelFrame) {
+    this.capture?.setUnravel(frame);
+  }
   frame: PortalFrame = { canvas: document.createElement("canvas"), version: 0 };
   status: "idle" | "loading" | "ready" | "fallback" | "disposed" = "idle";
   backend = "Not started";

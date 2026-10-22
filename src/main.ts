@@ -15,6 +15,7 @@ import { MediaManager } from "./media";
 import { PerformanceMonitor } from "./performance";
 import { PortalRoom } from "./room/room";
 import { visitBounds, RoomViewInputs, type VisitBounds } from "./room/visit";
+import { Unravel, UnravelInputs } from "./room/unravel";
 import {
   ROOMS,
   parseRoomId,
@@ -38,6 +39,7 @@ const lens = $<HTMLButtonElement>("#lens"),
   actions = $("#actions");
 const workspace = new WorkspaceState(),
   motion = new Motion(),
+  unravel = new Unravel(motion),
   media = new MediaManager(),
   monitor = new PerformanceMonitor(),
   scene = new SceneTexture(),
@@ -135,7 +137,10 @@ function wake() {
 function reduced() {
   motion.reduced = systemReduced.matches || userReduced;
   document.body.classList.toggle("reduced", motion.reduced);
-  if (motion.reduced) journey.pause();
+  if (motion.reduced) {
+    journey.pause();
+    stopUnravel();
+  }
   wake();
 }
 function resize() {
@@ -190,6 +195,7 @@ function tick(now: number) {
   const living = ambient && !motion.reduced;
   const continuous =
     motion.moving ||
+    unravel.active ||
     room.moving ||
     journey.playing ||
     media.playing ||
@@ -221,6 +227,8 @@ function tick(now: number) {
       ? 1
       : 0;
   motion.step(dt);
+  unravel.step(dt);
+  room.setUnravel(unravel.frame);
   if (reveal < 1) reveal = motion.reduced ? 1 : Math.min(1, reveal + dt * 1.8);
   const m = clamp(motion.morph.x, 0, 1),
     energy = motion.audio.x,
@@ -304,6 +312,9 @@ function tick(now: number) {
   renderer.canvas.dataset.roomSwitching = String(room.switching);
   renderer.canvas.dataset.roomBlend = String(room.blend);
   renderer.canvas.dataset.immersion = String(immersion);
+  renderer.canvas.dataset.unravelMode = String(unravel.enabled);
+  renderer.canvas.dataset.unravelAmount = String(unravel.frame.amount);
+  renderer.canvas.dataset.unravelHolding = String(unravel.holding);
   lens.style.left = `${motion.x.x - radius}px`;
   lens.style.top = `${motion.y.x - radius}px`;
   lens.style.width = lens.style.height = `${radius * 2}px`;
@@ -327,6 +338,7 @@ function tick(now: number) {
   }
   if (
     motion.moving ||
+    unravel.active ||
     (roomEnabled && !dialog.open && (room.moving || journey.playing)) ||
     media.playing ||
     media.demo ||
@@ -365,6 +377,7 @@ async function enterLens() {
   wake();
 }
 function returnToLens() {
+  stopUnravel();
   ++visitToken;
   enterPending = entered = studioOpen = false;
   journey.pause();
@@ -400,6 +413,29 @@ function updateVisitChrome() {
   $("#visit-bar").hidden = !active;
   roomView.hidden = !active || dialog.open;
   roomView.inert = !entered || motion.immersion.moving;
+  const captureReady =
+    entered &&
+    room.kind === "pantheon" &&
+    room.status === "ready" &&
+    !room.switching;
+  if (unravel.enabled && (!captureReady || dialog.open || motion.reduced))
+    stopUnravel();
+  $("#unravel-tools").hidden = !captureReady || dialog.open || studioOpen;
+  const sculptButton = $<HTMLButtonElement>("#unravel-toggle");
+  sculptButton.disabled = motion.reduced || motion.immersion.moving;
+  sculptButton.setAttribute("aria-pressed", String(unravel.enabled));
+  $("#unravel-hint").textContent = motion.reduced
+    ? "Available when reduced motion is off. Looking around stays available."
+    : unravel.enabled
+      ? "Hold + drag · release to restore · Space + arrows on keyboard"
+      : "Loosen the stone. Shape its movement. Let it return.";
+  roomView.classList.toggle("sculpting", unravel.enabled);
+  roomView.setAttribute(
+    "aria-label",
+    unravel.enabled
+      ? "Unravel room. Hold and drag, or hold Space and use arrow keys. Release to restore. Escape returns to looking."
+      : "Room view. Drag or use arrow keys to look around. Escape returns to the lens.",
+  );
   const dock = $("#studio-dock");
   dock.hidden = active && !studioOpen;
   $("#visit-studio").setAttribute("aria-expanded", String(studioOpen));
@@ -411,7 +447,9 @@ function updateVisitChrome() {
       ? room.kind === "pantheon"
         ? "CAPTURE UNAVAILABLE · CHOOSE ANOTHER ROOM"
         : "ARCHITECTURAL ILLUSTRATION · DRAG TO LOOK AROUND"
-      : "DRAG OR USE ARROW KEYS TO LOOK AROUND";
+      : unravel.enabled
+        ? "HOLD TO UNRAVEL · RELEASE TO RESTORE"
+        : "DRAG OR USE ARROW KEYS TO LOOK AROUND";
   const nav = $("#room-nav");
   nav.style.opacity = String(Math.abs(2 * p - 1));
   nav.inert = active && (enterPending || motion.immersion.moving);
@@ -425,8 +463,16 @@ enterButton.addEventListener("click", () => {
   void enterLens();
 });
 $("#return-to-lens").addEventListener("click", returnToLens);
+$("#unravel-toggle").addEventListener("click", () => {
+  unravelInputs.cancel();
+  unravel.setEnabled(!unravel.enabled);
+  if (unravel.enabled) roomView.focus({ preventScroll: true });
+  updateVisitChrome();
+  wake();
+});
 $("#visit-studio").addEventListener("click", () => {
   studioOpen = !studioOpen;
+  if (studioOpen) stopUnravel();
   updateVisitChrome();
 });
 async function startRoom() {
@@ -513,6 +559,7 @@ function leaveRooms() {
   resize();
 }
 async function chooseRoom(id: RoomId, automatic = false) {
+  stopUnravel();
   selectedRoom = id;
   if (!automatic) journey.go(id);
   motion.viewX.target = motion.viewY.target = 0;
@@ -737,6 +784,7 @@ function title(name: string, description: string, no: number) {
   $("#workspace-eyebrow").textContent = `THE STUDIO / 0${no}`;
 }
 function openWorkspace(type: Workspace, trigger: HTMLElement) {
+  stopUnravel();
   const wasOpen = dialog.open;
   workspace.open(type);
   closeActions();
@@ -1101,9 +1149,26 @@ const gestures = new Gestures({
 const viewInputs = new RoomViewInputs(
   roomView,
   motion,
-  () => entered && !dialog.open && !motion.immersion.moving,
+  () => entered && !dialog.open && !motion.immersion.moving && !unravel.enabled,
   wake,
 );
+const unravelInputs = new UnravelInputs(
+  roomView,
+  unravel,
+  () =>
+    entered &&
+    roomEnabled &&
+    room.kind === "pantheon" &&
+    room.status === "ready" &&
+    !room.switching &&
+    !dialog.open &&
+    !motion.immersion.moving,
+  wake,
+);
+function stopUnravel() {
+  unravelInputs.cancel();
+  unravel.setEnabled(false);
+}
 const roomInputs = new AbortController();
 window.addEventListener(
   "pointermove",
@@ -1114,6 +1179,7 @@ window.addEventListener(
       dialog.open ||
       motion.reduced ||
       viewInputs.dragging ||
+      unravel.enabled ||
       (entered && event.pointerType === "touch")
     )
       return;
@@ -1142,6 +1208,7 @@ systemReduced.addEventListener("change", reduced);
 document.addEventListener("visibilitychange", () => {
   last = 0;
   if (document.hidden) {
+    stopUnravel();
     cancelAnimationFrame(frame);
     frame = 0;
     media.player?.pause();
@@ -1163,6 +1230,7 @@ window.addEventListener(
     frameExport.dispose();
     roomInputs.abort();
     viewInputs.dispose();
+    unravelInputs.dispose();
     void room.dispose();
     renderer.dispose();
     window.removeEventListener("resize", resize);

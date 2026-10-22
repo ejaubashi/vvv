@@ -60,7 +60,9 @@ test("a failed capture preserves the room; retry loads real splats, supports ent
   expect(Buffer.compare(before, await scene(page).screenshot())).not.toBe(0);
   await page.getByRole("button", { name: "Studio", exact: true }).click();
   await page.getByRole("button", { name: "Media", exact: true }).click();
-  await expect(page.locator(".workspace-content")).toHaveClass(/revealed/);
+  await expect(page.locator(".workspace-content")).toHaveClass(/revealed/, {
+    timeout: 30000,
+  });
   await expect(page.locator('[data-room="pantheon"]')).toHaveAttribute(
     "aria-pressed",
     "true",

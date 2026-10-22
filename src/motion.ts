@@ -50,6 +50,9 @@ export class Motion {
   viewY = new Spring(0, 85, 20);
   portal = new Spring(0, 85, 19);
   immersion = new Spring(0, 65, 17);
+  unravel = new Spring(0, 24, 11);
+  unravelX = new Spring(0, 45, 14);
+  unravelY = new Spring(0, 45, 14);
   reduced = false;
   readonly springs = [
     this.x,
@@ -64,6 +67,9 @@ export class Motion {
     this.viewY,
     this.portal,
     this.immersion,
+    this.unravel,
+    this.unravelX,
+    this.unravelY,
   ];
   step(dt: number) {
     for (const spring of this.springs)

@@ -1,11 +1,12 @@
 import { createServer } from "node:http";
 import { readFile, mkdir } from "node:fs/promises";
-import { resolve, extname } from "node:path";
+import { resolve, extname, dirname } from "node:path";
 import { chromium, expect } from "@playwright/test";
 
 const root = resolve("dist");
 const portable = resolve(process.argv[2] || "/tmp/FORM-capture.html");
 const prefix = "/revision/preview/";
+const screenshot = process.argv[3] || "docs/previews/capture-desktop.png";
 const types = {
   ".html": "text/html",
   ".js": "text/javascript",
@@ -79,9 +80,11 @@ async function open(page, url) {
     { timeout: 45000 },
   );
   await expect(page.locator("#capture-note")).toBeVisible();
+  await expect(page.locator("#unravel-toggle")).toBeVisible();
+  await expect(page.locator("#unravel-toggle")).toBeDisabled();
 }
 try {
-  await mkdir("docs/previews", { recursive: true });
+  await mkdir(dirname(screenshot), { recursive: true });
   const page = await browser.newPage({
     viewport: { width: 1100, height: 850 },
     reducedMotion: "reduce",
@@ -90,7 +93,7 @@ try {
   watch(page);
   await open(page, `${base}${prefix}?room=1&space=pantheon&renderer=webgl`);
   await page.waitForTimeout(3700);
-  await page.screenshot({ path: "docs/previews/capture-desktop.png" });
+  await page.screenshot({ path: screenshot });
   await page
     .getByRole("button", { name: "Return to lens", exact: true })
     .click();

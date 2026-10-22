@@ -1,0 +1,90 @@
+{
+  "date": "2026-10-22",
+  "build": "passed",
+  "unitTests": {
+    "passed": 23
+  },
+  "browserCases": {
+    "passed": 48,
+    "fullRunPassed": 47,
+    "focusedCaptureRerunPassed": 1,
+    "note": "The existing capture panel case exceeded its 5-second software-GPU wait. It passed with the wait aligned to the 30-second graphics timeout; no application change was needed for the rerun."
+  },
+  "newCases": {
+    "unit": 4,
+    "browser": 5
+  },
+  "gpuProof": {
+    "realCapture": true,
+    "substantialPixelChange": true,
+    "restoredPngByteIdentical": true,
+    "fixedCamera": true
+  },
+  "release": {
+    "nestedPath": "/revision/preview/",
+    "captureEntryAndReturn": "passed",
+    "reducedMotionControl": "passed",
+    "portableBytes": 18257399,
+    "portableExternalAssetRequests": 0,
+    "browserErrors": [],
+    "externalHosts": []
+  },
+  "graphics": "Chromium / SwiftShader; physical GPUs and Safari/Firefox unmeasured",
+  "buildFiles": [
+    {
+      "path": "THIRD-PARTY-LICENSES.txt",
+      "bytes": 2550,
+      "sha256": "39ff275aebc1e3347aeadc10f1d2ed38c8d198a9160c5c75272ced3de6e904c5"
+    },
+    {
+      "path": "assets/capture-DDLtquBd.js",
+      "bytes": 2732123,
+      "sha256": "2f7eee64bdcec6e017df9f3d71ce5d40b62a901adc45cce28019092f5e5051c6"
+    },
+    {
+      "path": "assets/index--otR7zSY.js",
+      "bytes": 786277,
+      "sha256": "a6c797cb1e96b4b1d9060f477e6feb1d1ae58ac45311715a56602940b0a05c1c"
+    },
+    {
+      "path": "assets/index-CaGLq9lR.css",
+      "bytes": 20321,
+      "sha256": "1c99dcd0aa9a64fcdecc699e861136add6d75e27fab72d16f5aec563f5a68992"
+    },
+    {
+      "path": "assets/pantheon-m1QjEi82.webp",
+      "bytes": 24262,
+      "sha256": "0bc2190df82d60d5759f66881b35032ad8b01cb17290b69dd7401c658e2885ff"
+    },
+    {
+      "path": "assets/three.module-DsSdJ_fD.js",
+      "bytes": 589698,
+      "sha256": "fcde2c761e4cd97a24920515309c34114150d4afd061b968cd90bae7a237b395"
+    },
+    {
+      "path": "captures/pantheon/PROVENANCE.json",
+      "bytes": 686,
+      "sha256": "f716e7ea939852e6c5fd2d0663a9f700dec2063f50615207488db781ebb133cd"
+    },
+    {
+      "path": "captures/pantheon/UPSTREAM-ATTRIBUTION.txt",
+      "bytes": 1166,
+      "sha256": "1fe5f1b99894b59b54d47703a6a531bf05c6f387caace72bdc0aabaf4adee7ad"
+    },
+    {
+      "path": "captures/pantheon/pantheon.sog",
+      "bytes": 10577976,
+      "sha256": "bb8c454d78197ae9077215b9e1386af5d3cf8d922c3f983beb33817a9b846185"
+    },
+    {
+      "path": "captures/pantheon/thumb.webp",
+      "bytes": 24262,
+      "sha256": "0bc2190df82d60d5759f66881b35032ad8b01cb17290b69dd7401c658e2885ff"
+    },
+    {
+      "path": "index.html",
+      "bytes": 957,
+      "sha256": "b26421f473c5525b2b1d6647a31a222b4f1f9a98e61735601d447a9d2611180f"
+    }
+  ]
+}
