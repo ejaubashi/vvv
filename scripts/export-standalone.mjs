@@ -44,11 +44,20 @@ html = html.replace(
   "</body>",
   `<script type="text/plain" id="form-licenses">${notices.replace(/<\/script/gi, "<\\/script")}</script></body>`,
 );
-const capture = await readFile(resolve(root, "captures/pantheon/pantheon.sog"));
-html = html.replace(
-  "</body>",
-  `<script id="form-capture-data" type="application/octet-stream">${capture.toString("base64")}</script></body>`,
-);
+for (const id of ["pantheon", "apartment", "small-garden", "la-night"]) {
+  const capture = await readFile(resolve(root, `captures/${id}/${id}.sog`));
+  const thumbnail = await readFile(resolve(root, `captures/${id}/thumb.webp`));
+  // The normal gallery uses self-hosted thumbnails. Override its inline URLs
+  // in the offline edition, before the gallery is created.
+  html = html.replace(
+    "</head>",
+    `<style>.room-edition-${id} .room-mini{background-image:url(data:image/webp;base64,${thumbnail.toString("base64")})!important}</style></head>`,
+  );
+  html = html.replace(
+    "</body>",
+    `<script data-capture="${id}" type="application/octet-stream">${capture.toString("base64")}</script></body>`,
+  );
+}
 if (
   /<script\b[^>]*src=|<link\b[^>]*rel="(?:stylesheet|modulepreload)"/.test(html)
 )

@@ -1,6 +1,6 @@
 import { test, expect, type Page } from "@playwright/test";
 const canvas = (page: Page) => page.locator("#scene canvas");
-async function enter(page: Page, path = "/?room=1&renderer=webgl") {
+async function enter(page: Page, path = "/?studies=1&room=1&renderer=webgl") {
   await page.goto(path);
   await page
     .getByRole("button", { name: "Enter the lens", exact: true })
@@ -16,7 +16,7 @@ test("entering coordinates the view, studio panels and return to the original le
   test.setTimeout(60000);
   const errors: string[] = [];
   page.on("pageerror", (e) => errors.push(e.message));
-  await page.goto("/?room=1&renderer=webgl");
+  await page.goto("/?studies=1&room=1&renderer=webgl");
   await expect(canvas(page)).toHaveAttribute("data-room-status", "ready", {
     timeout: 45000,
   });
@@ -55,7 +55,7 @@ test("the ordinary entry URL initializes the room explicitly and returns to the 
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.goto("/?renderer=webgl");
+  await page.goto("/?studies=1&renderer=webgl");
   await expect(canvas(page)).toHaveAttribute("data-room-status", "idle");
   const initial = await page.locator("#lens").boundingBox();
   await page
@@ -74,7 +74,7 @@ test("the ordinary entry URL initializes the room explicitly and returns to the 
 test("Escape reverses an entry in progress and a cancelled initialization cannot reopen it", async ({
   page,
 }) => {
-  await page.goto("/?renderer=webgl");
+  await page.goto("/?studies=1&renderer=webgl");
   await page.evaluate(async () => {
     const { PortalRoom } = await import("/src/room/room.ts");
     const original = PortalRoom.prototype.init;
@@ -172,7 +172,7 @@ test("the expanded architectural illustration retains its label and exit when gr
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await enter(page, "/?renderer=canvas&roomRenderer=none");
+  await enter(page, "/?studies=1&renderer=canvas&roomRenderer=none");
   await expect(canvas(page)).toHaveAttribute("data-room-status", "fallback");
   await expect(page.locator("#room-count")).toContainText("ILLUSTRATED ROOMS");
   await page
@@ -183,7 +183,7 @@ test("the expanded architectural illustration retains its label and exit when gr
 test("room cameras render rectangular frames without stretching and stop when the view settles", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/?studies=1");
   const result = await page.evaluate(async () => {
     const { PortalRoom } = await import("/src/room/room.ts");
     const room = new PortalRoom(() => {});

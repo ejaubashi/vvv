@@ -1,5 +1,7 @@
 # Captured-reality experiment: Pantheon
 
+This documents the original prototype. The current public gallery is the [four-scene captured collection](CAPTURED-COLLECTION.md); authored studies remain available separately.
+
 FORM now has a fourth, explicitly selected space: **Pantheon**. Open
 `?room=1&space=pantheon&renderer=webgl` and choose **Enter the lens**. It can also
 be selected through Studio → Media, or Previous from Limestone. The automatic

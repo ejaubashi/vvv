@@ -1,0 +1,66 @@
+{
+  "date": "2026-10-22",
+  "unitChecksPassed": 30,
+  "newCollectionBrowserCasesPassed": 5,
+  "fullBrowserSuite": {
+    "command": "npm run test:browser -- --reporter=line",
+    "passed": 59,
+    "failed": 0,
+    "elapsed": "15.6 minutes, software Chromium"
+  },
+  "sceneIds": [
+    "pantheon",
+    "apartment",
+    "small-garden",
+    "la-night"
+  ],
+  "sceneBytes": 42823382,
+  "assetEvidence": "Asset-specific CC BY 4.0 mirror attribution and official PlayCanvas example credits; per-scene SHA-256, source revision and provenance retained.",
+  "specificChecks": [
+    "The main gallery contains the four captured scenes; authored studies are separate.",
+    "Only a selected scene is downloaded.",
+    "A new capture can supersede the initial download without leaving loading stuck.",
+    "Failed replacement preserves the current scene and retries the failed asset with its own credit.",
+    "All three additions render distinct pixels, reveal viewpoint change, deform on the GPU and restore exact original PNG bytes.",
+    "Mobile touch, rotation, reduced motion, entry and return work in a replacement scene."
+  ],
+  "deployment": {
+    "command": "node scripts/check-collection-deployment.mjs /tmp/FORM-collection.html",
+    "normalNestedPath": "/revision/preview/",
+    "normalScenes": [
+      "apartment",
+      "small-garden",
+      "la-night"
+    ],
+    "portableScenes": [
+      "apartment",
+      "small-garden"
+    ],
+    "portableEmbeddedThumbnails": 4,
+    "portableExternalAssetRequests": 0,
+    "pageErrors": [],
+    "externalRequests": [],
+    "status": "passed",
+    "screenshots": [
+      "previews/collection-apartment.png",
+      "previews/collection-small-garden.png",
+      "previews/collection-la-night.png",
+      "previews/collection-gallery.png"
+    ]
+  },
+  "limits": [
+    "Software Chromium tests rendering and interactions; no physical GPU performance claim is made.",
+    "Captured scenes retain source lighting and bounded coverage; no free walking or new physical lighting.",
+    "Apartment's original capture method is not independently verified; it is described as a source Gaussian-splat scene.",
+    "The geometric threshold remains in the separate authored studies; captured-scene portals need dedicated depth integration."
+  ],
+  "build": {
+    "command": "npm run build",
+    "status": "passed",
+    "productionFiles": 23,
+    "portableBytes": 61398937,
+    "initialJsBytes": 1390174,
+    "initialJsGzipBytes": 376581,
+    "productionBytes": 47101637
+  }
+}

@@ -17,7 +17,7 @@ test("a failed capture preserves the room; retry loads real splats, supports ent
       await route.fulfill({ status: 503, body: "unavailable" });
     else await route.continue();
   });
-  await page.goto("/?room=1&renderer=webgl");
+  await page.goto("/?studies=1&room=1&renderer=webgl");
   await expect(scene(page)).toHaveAttribute("data-room-status", "ready", {
     timeout: 45000,
   });
@@ -108,7 +108,7 @@ test("superseding an in-flight capture aborts the download and keeps the latest 
     await pending;
     await route.abort().catch(() => {});
   });
-  await page.goto("/?room=1&renderer=webgl");
+  await page.goto("/?studies=1&room=1&renderer=webgl");
   await expect(scene(page)).toHaveAttribute("data-room-status", "ready", {
     timeout: 45000,
   });
@@ -139,11 +139,11 @@ test("a corrupt capture cannot masquerade as a ready captured room", async ({
       body: Buffer.alloc(10577976, 42),
     }),
   );
-  await page.goto("/?room=1&space=pantheon&renderer=webgl");
-  await expect(scene(page)).toHaveAttribute("data-room-status", "ready", {
+  await page.goto("/?studies=1&room=1&space=pantheon&renderer=webgl");
+  await expect(scene(page)).toHaveAttribute("data-room-status", "fallback", {
     timeout: 45000,
   });
-  await expect(scene(page)).toHaveAttribute("data-room-id", "gallery");
+  await expect(scene(page)).toHaveAttribute("data-room-id", "pantheon");
   await expect(scene(page)).toHaveAttribute("data-capture-error", "true");
   await expect(
     page.getByRole("button", { name: "Retry capture" }),
@@ -164,7 +164,7 @@ test("the captured room supports mobile touch exploration, reduced motion and ro
   const page = await context.newPage();
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
-  await page.goto("/?room=1&space=pantheon&renderer=webgl");
+  await page.goto("/?studies=1&room=1&space=pantheon&renderer=webgl");
   await expect(scene(page)).toHaveAttribute("data-room-status", "ready", {
     timeout: 70000,
   });

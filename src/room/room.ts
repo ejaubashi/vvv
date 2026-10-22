@@ -10,6 +10,11 @@ import { roomPose, type RoomPose } from "./pose";
 import type { PortalFrame } from "../render/portal-frame";
 import { roomDefinition, type RoomId } from "./catalog";
 import { roomFrameSize } from "./visit";
+import {
+  isCaptureId,
+  captureDefinition,
+  type CaptureId,
+} from "./capture-source";
 import type { CapturedRoom } from "./capture";
 import type { UnravelFrame } from "./unravel";
 import { RoomThreshold } from "./threshold";
@@ -151,6 +156,7 @@ export class PortalRoom {
   blend = 1;
   captureMessage = "";
   captureError = false;
+  captureFailureId: CaptureId | null = null;
   private capture: CapturedRoom | null = null;
   private captureLoad: AbortController | null = null;
   private forceWebGL = false;
@@ -180,17 +186,18 @@ export class PortalRoom {
     this.pending = this.initialize(forceWebGL);
     return this.pending;
   }
-  private async initialize(forceWebGL: boolean) {
+  private async initialize(forceWebGL: boolean): Promise<void> {
     try {
       if (new URLSearchParams(location.search).get("roomRenderer") === "none")
         throw Error("Room fallback requested");
-      if (this.kind === "pantheon") {
-        const capture = await this.loadCapture();
+      if (isCaptureId(this.kind)) {
+        const id = this.kind;
+        const capture = await this.loadCapture(id);
         if (this.status === "disposed") {
           capture?.dispose();
           return;
         }
-        if (capture && this.requested === "pantheon") {
+        if (capture && this.requested === id) {
           this.capture = capture;
           this.backend = "Spark / Gaussian splats / WebGL 2";
           this.status = "ready";
@@ -198,9 +205,14 @@ export class PortalRoom {
           return;
         }
         capture?.dispose();
-        // Preserve a functioning authored room when an optional asset fails.
-        this.kind = this.requested === "pantheon" ? "gallery" : this.requested;
+        if (this.requested === id) {
+          this.useFallback();
+          return;
+        }
+        this.kind = this.requested;
+        if (isCaptureId(this.kind)) return this.initialize(forceWebGL);
       }
+      if (isCaptureId(this.kind)) return;
       this.surfaces = createRoomSurfaces(this.kind);
       this.model = createArchitecture(this.surfaces.materials, this.kind);
       this.model.scene.environment = this.surfaces.environment;
@@ -282,7 +294,7 @@ export class PortalRoom {
     if (this.status === "loading") await this.pending;
     if (this.status === "disposed" || this.status === "idle") return;
     if (this.status === "fallback") {
-      if (id === "pantheon") {
+      if (isCaptureId(id)) {
         this.pending = null;
         return this.init(this.forceWebGL, id);
       }
@@ -302,7 +314,7 @@ export class PortalRoom {
     });
     return this.switchTask;
   }
-  private async loadCapture() {
+  private async loadCapture(id: CaptureId) {
     const controller = new AbortController();
     this.captureLoad = controller;
     const signal = AbortSignal.any([
@@ -310,6 +322,7 @@ export class PortalRoom {
       AbortSignal.timeout(120_000),
     ]);
     this.captureError = false;
+    this.captureFailureId = null;
     this.captureMessage = "Downloading capture · 0%";
     this.loss();
     try {
@@ -329,13 +342,16 @@ export class PortalRoom {
           }
         },
         () => {
-          if (this.kind === "pantheon") this.useFallback();
+          if (this.kind === id && this.capture?.definition.id === id)
+            this.useFallback();
         },
+        captureDefinition(id),
       );
     } catch (error) {
       if (!controller.signal.aborted && this.status !== "disposed") {
         console.info("Optional capture unavailable:", String(error));
         this.captureError = true;
+        this.captureFailureId = id;
       }
       return null;
     } finally {
@@ -354,8 +370,8 @@ export class PortalRoom {
     while (this.status === "ready" && this.requested !== this.kind) {
       const id = this.requested,
         engine = this.engine;
-      if (id === "pantheon") {
-        const capture = await this.loadCapture();
+      if (isCaptureId(id)) {
+        const capture = await this.loadCapture(id);
         if (this.status !== "ready" || id !== this.requested) {
           capture?.dispose();
           continue;
@@ -469,11 +485,10 @@ export class PortalRoom {
     this.status = "fallback";
     this.kind = this.requested;
     this.blend = 1;
-    this.backend =
-      this.kind === "pantheon"
-        ? "Capture unavailable"
-        : "Architectural illustration · 3D unavailable";
-    if (this.kind === "pantheon") this.captureError = true;
+    this.backend = isCaptureId(this.kind)
+      ? "Capture unavailable"
+      : "Architectural illustration · 3D unavailable";
+    if (isCaptureId(this.kind)) this.captureError = true;
     this.release();
     this.frame.canvas = document.createElement("canvas");
     this.frame.canvas.width = this.frame.canvas.height = 1;
@@ -600,7 +615,7 @@ export class PortalRoom {
     c.translate((width - size) / 2, (height - size) / 2);
     c.fillStyle = "#292929";
     c.fillRect(0, 0, size, size);
-    if (this.kind === "pantheon") {
+    if (isCaptureId(this.kind)) {
       c.fillStyle = "#ded7c8";
       c.textAlign = "center";
       c.font = `${Math.max(12, size * 0.025)}px sans-serif`;

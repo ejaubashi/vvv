@@ -200,7 +200,7 @@ test("entered controls cross with reduced motion, update the room URL, and Escap
   await page.emulateMedia({ reducedMotion: "reduce" });
   const errors: string[] = [];
   page.on("pageerror", (e) => errors.push(e.message));
-  await page.goto("/?room=1&threshold=1&renderer=webgl");
+  await page.goto("/?studies=1&room=1&threshold=1&renderer=webgl");
   await page
     .getByRole("button", { name: "Enter the lens", exact: true })
     .click();
@@ -273,7 +273,7 @@ test("touch controls remain usable after rotation and the illustration has no fa
     reducedMotion: "reduce",
   });
   const mobile = await context.newPage();
-  await mobile.goto("/?room=1&renderer=webgl");
+  await mobile.goto("/?studies=1&room=1&renderer=webgl");
   await mobile
     .getByRole("button", { name: "Enter the lens", exact: true })
     .tap();
@@ -297,7 +297,7 @@ test("touch controls remain usable after rotation and the illustration has no fa
   ).toBe(true);
   await context.close();
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.goto("/?room=1&renderer=canvas&roomRenderer=none");
+  await page.goto("/?studies=1&room=1&renderer=canvas&roomRenderer=none");
   await page
     .getByRole("button", { name: "Enter the lens", exact: true })
     .click();

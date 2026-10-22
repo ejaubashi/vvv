@@ -1,3 +1,4 @@
+import { CAPTURES } from "./capture-source";
 export const AUTHORED_ROOMS = [
   {
     id: "gallery",
@@ -43,26 +44,25 @@ export const AUTHORED_ROOMS = [
   },
 ] as const;
 export type AuthoredRoomId = (typeof AUTHORED_ROOMS)[number]["id"];
-/** The capture is an optional experiment, outside the three-room authored sequence. */
-export const ROOMS = [
-  ...AUTHORED_ROOMS,
-  {
-    ...AUTHORED_ROOMS[0],
-    id: "pantheon",
-    name: "Pantheon",
-    subtitle: "A captured place · 10.6 MB",
-    detail:
-      "Photographed stone, a coffered dome and captured daylight. A Gaussian-splat reconstruction by artfletch; the source includes a reconstructed floor.",
-  },
-] as const;
-export type RoomId = (typeof ROOMS)[number]["id"];
+/** The public collection contains captured places; authored experiments live separately. */
+export const ROOMS = CAPTURES.map((entry) => ({
+  ...AUTHORED_ROOMS[0],
+  id: entry.id,
+  name: entry.id === "pantheon" ? "Pantheon" : entry.name,
+  subtitle: `${(entry.bytes / 1e6).toFixed(1)} MB · ${entry.creator}`,
+  detail: entry.note,
+}));
+export const STUDY_ROOMS = [...AUTHORED_ROOMS, ROOMS[0]];
+export type RoomId = AuthoredRoomId | (typeof CAPTURES)[number]["id"];
 export const roomDefinition = (id: RoomId) =>
-  ROOMS.find((room) => room.id === id)!;
+  [...AUTHORED_ROOMS, ...ROOMS].find((room) => room.id === id)!;
 export const parseRoomId = (value: string | null): RoomId =>
-  ROOMS.find((room) => room.id === value)?.id ?? "gallery";
+  [...ROOMS, ...AUTHORED_ROOMS].find((room) => room.id === value)?.id ??
+  "pantheon";
 
 /** A finite, opt-in exhibition; time is supplied by the application's existing clock. */
 export class RoomJourney {
+  constructor(readonly rooms: readonly { id: RoomId }[] = AUTHORED_ROOMS) {}
   index = 0;
   elapsed = 0;
   playing = false;
@@ -71,22 +71,22 @@ export class RoomJourney {
   go(id: RoomId) {
     this.index = Math.max(
       0,
-      AUTHORED_ROOMS.findIndex((room) => room.id === id),
+      this.rooms.findIndex((room) => room.id === id),
     );
     this.elapsed = 0;
     this.playing = false;
     this.finished = false;
   }
   play() {
-    if (this.finished) this.go("gallery");
+    if (this.finished) this.go(this.rooms[0].id);
     this.playing = true;
-    return AUTHORED_ROOMS[this.index].id;
+    return this.rooms[this.index].id;
   }
   pause() {
     this.playing = false;
   }
   replay() {
-    this.go("gallery");
+    this.go(this.rooms[0].id);
     return this.play();
   }
   step(dt: number): RoomId | null {
@@ -94,11 +94,11 @@ export class RoomJourney {
     this.elapsed += Math.max(0, Math.min(dt, 0.25));
     if (this.elapsed < this.dwell) return null;
     this.elapsed = 0;
-    if (this.index === AUTHORED_ROOMS.length - 1) {
+    if (this.index === this.rooms.length - 1) {
       this.finished = true;
       this.pause();
       return null;
     }
-    return AUTHORED_ROOMS[++this.index].id;
+    return this.rooms[++this.index].id;
   }
 }

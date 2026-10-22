@@ -1,6 +1,6 @@
 # FORM — Optical Interaction Studio
 
-An immersive optical artwork built with TypeScript, Vite, and browser graphics APIs, with authored rooms and an optional captured-reality experiment. No account, API key, backend, or uploaded media is required. Capture assets are served with the site; rendering runs on the device.
+An immersive optical artwork built with TypeScript, Vite, and browser graphics APIs, with four Gaussian-splat scenes and a separate set of authored room studies. No account, API key, backend, or uploaded media is required. Capture assets are served with the site; rendering runs on the device.
 
 ## Run
 
@@ -19,7 +19,7 @@ npm run build
 npm run preview -- --port 4173
 ```
 
-A single-file edition can be generated after building with `node scripts/export-standalone.mjs`. It writes `dist/FORM.html` with JavaScript, CSS, thumbnail and captured room embedded (about 18.2 MB); no external application asset requests are needed. The normal multi-file build keeps Spark and the 10.6 MB capture lazy. Publish all of `dist/`, including `assets/` and `captures/`.
+A single-file edition can be generated after building with `node scripts/export-standalone.mjs`. It writes `dist/FORM.html` with JavaScript, CSS, thumbnail and captured room embedded (about 61 MB for the full collection); no external application asset requests are needed. The normal multi-file build keeps Spark and each scene lazy. Publish all of `dist/`, including `assets/` and `captures/`.
 
 ## Use
 
@@ -27,10 +27,9 @@ A single-file edition can be generated after building with `node scripts/export-
 
 - Press the lens to expose **Scene**, **Sound**, and **Focus**. Drag to a labeled action and release, or activate its button. Release outside the lens and targets to cancel. Enter/Space exposes the same actions; left/right arrows navigate them.
 - Open **Material** to choose water, glass, or crystal; adjust refraction and frost; expand **Depth & lighting** to change optical depth and highlight direction; compare the original scene; or enable inspection. Inspection drags move the lens without triggering actions. Arrow keys move it; Escape exits inspection.
-- **Media → Room** opens **Living Rooms**: Limestone, Nocturne and Veil, three actual 3D spaces inside the glass. Use the arrows beneath the lens or opt into the finite **Play rooms** sequence. Move the pointer to look around, or enable lens inspection for touch/keyboard exploration. Add `?room=1` to the page URL to start there. See [Living Rooms](docs/LIVING-ROOMS.md) and [the prototype notes](docs/ROOM-PROTOTYPE.md).
-- **Pantheon** is a fourth, optional **captured-reality room** using a 700,000-splat reconstruction by artfletch (CC BY 4.0). Start with `?room=1&space=pantheon&renderer=webgl`, then **Enter the lens**. The 10.6 MB scene downloads only on selection and stays outside automatic playback. Its captured light is preserved; the source includes a reconstructed floor. See [capture research, credits and limits](docs/CAPTURED-REALITY.md).
-- **Impossible thresholds** connects the three authored rooms through a live, depth-tested doorway. After entering, choose **Open a threshold**, look around, then **Step into …**. Escape closes the opening first; reduced motion skips the approach. `?room=1&threshold=1&renderer=webgl` prepares it on entry. See [rendering and controls](docs/IMPOSSIBLE-THRESHOLDS.md) and [the 22 October technology/design research](docs/BEYOND-MODERN-RESEARCH-2026-10-22.md).
-- **Unravel the room** lets you sculpt the Pantheon capture from inside the lens: enable the mode, hold and drag, then release to restore. Keyboard: hold Space and use arrows. Reduced motion keeps deformation off. See [the interaction and rendering notes](docs/UNRAVEL-THE-ROOM.md).
+- **Media → Room** opens the default **captured collection**: Pantheon, Apartment, Small Garden and LA Night. Enter the lens, use Previous/Next, or select one of four scene cards in Media. Every scene downloads only when selected, with its own camera and visible CC BY credit. See [the collection, provenance and controls](docs/CAPTURED-COLLECTION.md).
+- **Unravel the room** works in all four scenes: enable it, hold and drag, then release to restore. Keyboard: hold Space and use arrows. Reduced motion disables deformation.
+- **Authored studies · threshold experiment** in Media opens Limestone, Nocturne and Veil separately. Their spatial doorway remains available there; `?room=1&studies=1&space=gallery&threshold=1` opens that experiment. See [Impossible thresholds](docs/IMPOSSIBLE-THRESHOLDS.md).
 - **Media** also offers three generated art environments: **Fold**, **Sculpture**, and **Veil**. It also accepts local images, videos, and audio up to 150 MB. Images and videos cover the viewport in grayscale. Playback, scrubbing, and elapsed time appear for video/audio. Failed replacements preserve the previous selection. Remove restores the generated scene.
 - **Save this moment** in Media closes the workspace and downloads the current optical view as a local PNG, without controls or chrome. An entered room stays expanded for its export.
 - **Interaction** controls magnetic response, optional slowly moving **Living light**, and reduced motion. System reduced motion always takes precedence.

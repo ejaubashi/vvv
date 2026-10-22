@@ -2,7 +2,7 @@ import { test, expect, type Page } from "@playwright/test";
 
 const canvas = (page: Page) => page.locator("#scene canvas");
 async function ready(page: Page, query = "") {
-  await page.goto("/?room=1&renderer=webgl" + query);
+  await page.goto("/?studies=1&room=1&renderer=webgl" + query);
   await expect(canvas(page)).toHaveAttribute("data-room-status", "ready", {
     timeout: 45000,
   });
@@ -119,7 +119,7 @@ test("mobile reduced motion keeps manual keyboard room exploration and disables 
 test("room replacement reuses one renderer, disposes old geometry and cancels during disposal", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/?studies=1");
   const result = await page.evaluate(async () => {
     const { PortalRoom } = await import("/src/room/room.ts");
     const room = new PortalRoom(() => {});
@@ -161,7 +161,7 @@ test("room replacement reuses one renderer, disposes old geometry and cancels du
 test("architectural fallback editions remain selectable and leave room mode cleanly", async ({
   page,
 }) => {
-  await page.goto("/?room=1&renderer=canvas&roomRenderer=none");
+  await page.goto("/?studies=1&room=1&renderer=canvas&roomRenderer=none");
   await expect(canvas(page)).toHaveAttribute("data-room-status", "fallback");
   await page.getByRole("button", { name: "Next room", exact: true }).click();
   await room(page, "nocturne");
