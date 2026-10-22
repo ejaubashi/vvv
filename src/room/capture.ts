@@ -12,6 +12,8 @@ import {
 import { SparkRenderer, SplatMesh, SplatFileType } from "@sparkjsdev/spark";
 import { CAPTURE, downloadCapture } from "./capture-source";
 import type { RoomPose } from "./pose";
+import type { UnravelFrame } from "./unravel";
+import { createUnravelModifier } from "./unravel-shader";
 
 /** An optional WebGL capture adapter. Spark does not target Three's WebGPURenderer. */
 export class CapturedRoom {
@@ -27,6 +29,20 @@ export class CapturedRoom {
   private offset = new Vector3();
   private rotation = new Quaternion();
   private angles = new Euler();
+  private deformation = createUnravelModifier();
+  private deformationVersion = "";
+  setUnravel(frame: UnravelFrame) {
+    const key = `${frame.amount},${frame.phase},${frame.brushX},${frame.brushY},${frame.flowX},${frame.flowY}`;
+    if (key === this.deformationVersion) return;
+    this.deformationVersion = key;
+    const d = this.deformation;
+    d.amount.value = frame.amount;
+    d.phase.value = frame.phase;
+    d.brush.value.set(frame.brushX, frame.brushY);
+    d.flow.value.set(frame.flowX, frame.flowY);
+    if (this.mesh) this.mesh.needsUpdate = true;
+    this.dirty = true;
+  }
   private constructor(wake: () => void, lost: () => void) {
     this.engine = new WebGLRenderer({
       antialias: false,
@@ -76,6 +92,7 @@ export class CapturedRoom {
         fileType: SplatFileType.PCSOGSZIP,
         raycastable: false,
         enableLod: false,
+        worldModifier: room.deformation.modifier,
       });
       // SuperSplat data uses the published viewer's 180-degree Z orientation.
       room.mesh.quaternion.set(0, 0, 1, 0);
@@ -111,6 +128,16 @@ export class CapturedRoom {
     this.camera.quaternion
       .copy(this.orientation)
       .multiply(this.rotation.setFromEuler(this.angles));
+    const d = this.deformation;
+    d.eye.value.copy(this.camera.position);
+    d.right.value.set(1, 0, 0).applyQuaternion(this.camera.quaternion);
+    d.up.value.set(0, 1, 0).applyQuaternion(this.camera.quaternion);
+    d.forward.value.set(0, 0, -1).applyQuaternion(this.camera.quaternion);
+    d.lens.value.set(
+      this.camera.aspect,
+      Math.tan((this.camera.fov * Math.PI) / 360),
+    );
+    if (d.amount.value > 0 && this.mesh) this.mesh.needsUpdate = true;
     this.engine.render(this.scene, this.camera);
     return this.engine.domElement;
   }
