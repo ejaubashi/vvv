@@ -29,6 +29,7 @@ export function mount() {
 <button id="enter-room" class="enter-room chrome">Enter the lens ${icon("arrow")}</button>
 <div id="room-view" tabindex="0" role="region" aria-label="Room view. Drag or use arrow keys to look around. Escape returns to the lens." hidden></div>
 <div id="visit-bar" hidden><button id="return-to-lens">${icon("arrow")}Return to lens</button><span id="visit-hint">DRAG OR USE ARROW KEYS TO LOOK AROUND</span><button id="visit-studio" aria-expanded="false" aria-controls="studio-dock">${icon("material")}Studio</button></div>
+<div id="threshold-tools" class="unravel-tools threshold-tools chrome" hidden><div class="threshold-actions"><button id="threshold-toggle" aria-pressed="false" aria-describedby="threshold-hint">Open a threshold</button><button id="threshold-cross" hidden>Step through</button></div><span id="threshold-hint" role="status" aria-live="polite"></span></div>
 <div id="unravel-tools" class="unravel-tools chrome" hidden><button id="unravel-toggle" aria-pressed="false" aria-describedby="unravel-hint"><span aria-hidden="true">◌</span> Unravel the room</button><span id="unravel-hint"></span></div>
 <div id="actions" hidden role="group" aria-label="Lens actions">${["scene", "sound", "focus"].map((x) => `<button data-action="${x}" aria-label="${x === "sound" ? "Enable sound demonstration" : x === "scene" ? "Cycle scene" : "Enter focus mode"}">${icon(x)}<span>${x[0].toUpperCase() + x.slice(1)}</span></button>`).join("")}</div>
 <button id="exit-focus" hidden>${icon("focus")}<span>Exit focus</span></button>

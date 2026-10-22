@@ -208,7 +208,17 @@ function tick(now: number) {
   last = now;
   if (living) ambientTime += dt;
   if (roomEnabled && !dialog.open) {
+    const beforeStep = room.kind;
     room.step(dt, motion.reduced);
+    if (room.kind !== beforeStep) {
+      selectedRoom = room.kind;
+      journey.go(selectedRoom);
+      const url = new URL(location.href);
+      url.searchParams.set("space", selectedRoom);
+      history.replaceState(null, "", url);
+      roomView.inert = false;
+      roomView.focus({ preventScroll: true });
+    }
     if (
       !room.switching &&
       !room.moving &&
@@ -312,6 +322,8 @@ function tick(now: number) {
   renderer.canvas.dataset.roomSwitching = String(room.switching);
   renderer.canvas.dataset.roomBlend = String(room.blend);
   renderer.canvas.dataset.immersion = String(immersion);
+  renderer.canvas.dataset.threshold = room.thresholdState;
+  renderer.canvas.dataset.thresholdProgress = String(room.thresholdProgress);
   renderer.canvas.dataset.unravelMode = String(unravel.enabled);
   renderer.canvas.dataset.unravelAmount = String(unravel.frame.amount);
   renderer.canvas.dataset.unravelHolding = String(unravel.holding);
@@ -374,10 +386,13 @@ async function enterLens() {
   enterPending = false;
   entered = true;
   motion.immersion.target = 1;
+  if (new URLSearchParams(location.search).get("threshold") === "1")
+    void room.openThreshold();
   wake();
 }
 function returnToLens() {
   stopUnravel();
+  room.closeThreshold();
   ++visitToken;
   enterPending = entered = studioOpen = false;
   journey.pause();
@@ -412,7 +427,47 @@ function updateVisitChrome() {
   enterButton.style.top = `${motion.y.x + radius - 58}px`;
   $("#visit-bar").hidden = !active;
   roomView.hidden = !active || dialog.open;
-  roomView.inert = !entered || motion.immersion.moving;
+  roomView.inert =
+    !entered || motion.immersion.moving || room.thresholdState === "crossing";
+  const thresholdReady =
+    entered &&
+    room.kind !== "pantheon" &&
+    room.status === "ready" &&
+    !room.switching;
+  $("#threshold-tools").hidden = !thresholdReady || dialog.open || studioOpen;
+  const thresholdButton = $<HTMLButtonElement>("#threshold-toggle"),
+    crossButton = $<HTMLButtonElement>("#threshold-cross");
+  const thresholdOpen =
+    room.thresholdState === "open" || room.thresholdState === "crossing";
+  thresholdButton.textContent =
+    room.thresholdState === "loading"
+      ? "Cancel opening"
+      : thresholdOpen
+        ? "Close threshold"
+        : room.thresholdState === "error"
+          ? "Retry threshold"
+          : "Open a threshold";
+  thresholdButton.setAttribute("aria-pressed", String(thresholdOpen));
+  thresholdButton.disabled = motion.immersion.moving;
+  crossButton.hidden = !thresholdOpen;
+  crossButton.disabled =
+    room.thresholdState === "crossing" || motion.immersion.moving;
+  crossButton.textContent =
+    room.thresholdState === "crossing"
+      ? "Crossing…"
+      : `Step into ${roomDefinition(room.thresholdDestination).name}`;
+  const thresholdHint =
+    room.thresholdState === "loading"
+      ? "Opening the space beyond…"
+      : room.thresholdState === "error"
+        ? "The opening could not be prepared. Try again."
+        : room.thresholdState === "crossing"
+          ? "Moving through · Escape to cancel"
+          : thresholdOpen
+            ? `Another room, through the arch. Look around, then step through.${motion.reduced ? " Movement is skipped with reduced motion." : ""}`
+            : `${roomDefinition(room.kind).name} · an opening into another atmosphere.`;
+  if ($("#threshold-hint").textContent !== thresholdHint)
+    $("#threshold-hint").textContent = thresholdHint;
   const captureReady =
     entered &&
     room.kind === "pantheon" &&
@@ -434,7 +489,9 @@ function updateVisitChrome() {
     "aria-label",
     unravel.enabled
       ? "Unravel room. Hold and drag, or hold Space and use arrow keys. Release to restore. Escape returns to looking."
-      : "Room view. Drag or use arrow keys to look around. Escape returns to the lens.",
+      : thresholdOpen
+        ? "Room view. Drag or use arrow keys to look around. Escape closes the threshold."
+        : "Room view. Drag or use arrow keys to look around. Escape returns to the lens.",
   );
   const dock = $("#studio-dock");
   dock.hidden = active && !studioOpen;
@@ -452,7 +509,11 @@ function updateVisitChrome() {
         : "DRAG OR USE ARROW KEYS TO LOOK AROUND";
   const nav = $("#room-nav");
   nav.style.opacity = String(Math.abs(2 * p - 1));
-  nav.inert = active && (enterPending || motion.immersion.moving);
+  nav.inert =
+    active &&
+    (enterPending ||
+      motion.immersion.moving ||
+      room.thresholdState === "crossing");
   if (restoreVisitFocus && !active && !dialog.open) {
     restoreVisitFocus = false;
     enterButton.hidden = false;
@@ -463,6 +524,19 @@ enterButton.addEventListener("click", () => {
   void enterLens();
 });
 $("#return-to-lens").addEventListener("click", returnToLens);
+$("#threshold-toggle").addEventListener("click", () => {
+  journey.pause();
+  if (["open", "loading", "crossing"].includes(room.thresholdState))
+    room.closeThreshold();
+  else void room.openThreshold();
+  wake();
+});
+$("#threshold-cross").addEventListener("click", () => {
+  journey.pause();
+  room.crossThreshold();
+  roomView.focus({ preventScroll: true });
+  wake();
+});
 $("#unravel-toggle").addEventListener("click", () => {
   unravelInputs.cancel();
   unravel.setEnabled(!unravel.enabled);
@@ -472,7 +546,10 @@ $("#unravel-toggle").addEventListener("click", () => {
 });
 $("#visit-studio").addEventListener("click", () => {
   studioOpen = !studioOpen;
-  if (studioOpen) stopUnravel();
+  if (studioOpen) {
+    stopUnravel();
+    room.closeThreshold();
+  }
   updateVisitChrome();
 });
 async function startRoom() {
@@ -590,6 +667,7 @@ $("#capture-retry").addEventListener("click", () => {
 $("#previous-room").addEventListener("click", () => nextRoom(-1));
 $("#next-room").addEventListener("click", () => nextRoom(1));
 $("#journey-play").addEventListener("click", () => {
+  room.closeThreshold();
   if (motion.reduced) return;
   if (journey.playing) journey.pause();
   else {
@@ -745,6 +823,17 @@ document.addEventListener("pointerdown", (e) => {
 });
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {
+    if (
+      !dialog.open &&
+      ["open", "loading", "crossing"].includes(room.thresholdState)
+    ) {
+      e.preventDefault();
+      room.closeThreshold();
+      updateVisitChrome();
+      roomView.focus({ preventScroll: true });
+      wake();
+      return;
+    }
     if (dialog.open) {
       e.preventDefault();
       closeWorkspace();
@@ -785,6 +874,7 @@ function title(name: string, description: string, no: number) {
 }
 function openWorkspace(type: Workspace, trigger: HTMLElement) {
   stopUnravel();
+  room.closeThreshold();
   const wasOpen = dialog.open;
   workspace.open(type);
   closeActions();
@@ -1149,7 +1239,12 @@ const gestures = new Gestures({
 const viewInputs = new RoomViewInputs(
   roomView,
   motion,
-  () => entered && !dialog.open && !motion.immersion.moving && !unravel.enabled,
+  () =>
+    entered &&
+    !dialog.open &&
+    !motion.immersion.moving &&
+    !unravel.enabled &&
+    room.thresholdState !== "crossing",
   wake,
 );
 const unravelInputs = new UnravelInputs(
@@ -1180,6 +1275,7 @@ window.addEventListener(
       motion.reduced ||
       viewInputs.dragging ||
       unravel.enabled ||
+      room.thresholdState === "crossing" ||
       (entered && event.pointerType === "touch")
     )
       return;
@@ -1209,6 +1305,7 @@ document.addEventListener("visibilitychange", () => {
   last = 0;
   if (document.hidden) {
     stopUnravel();
+    room.closeThreshold();
     cancelAnimationFrame(frame);
     frame = 0;
     media.player?.pause();
