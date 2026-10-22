@@ -1,3 +1,20 @@
+FORM captured collection additions
+
+Apartment — Stephane Agullo
+https://superspl.at/view?id=cdcec084
+CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/
+See captures/apartment/ATTRIBUTION.txt and PROVENANCE.json for changes.
+
+Small Garden — scbenoit
+https://superspl.at/scene/108dd868
+CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/
+See captures/small-garden/ATTRIBUTION.txt and PROVENANCE.json for changes.
+
+LA Night — matousekfoto
+https://superspl.at/scene/d1ea0b35
+CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/
+See captures/la-night/ATTRIBUTION.txt and PROVENANCE.json for changes.
+
 FORM runtime notices
 
 Capture asset: The Pantheon Interior by artfletch

@@ -18,11 +18,14 @@ import { visitBounds, RoomViewInputs, type VisitBounds } from "./room/visit";
 import { Unravel, UnravelInputs } from "./room/unravel";
 import {
   ROOMS,
+  STUDY_ROOMS,
+  AUTHORED_ROOMS,
   parseRoomId,
   roomDefinition,
   RoomJourney,
   type RoomId,
 } from "./room/catalog";
+import { isCaptureId, captureDefinition } from "./room/capture-source";
 import { FrameExport } from "./export";
 import { SceneTexture } from "./render/scene";
 import {
@@ -30,7 +33,14 @@ import {
   CanvasRenderer,
   type Renderer,
 } from "./render/renderer";
+const viewParams = new URLSearchParams(location.search);
+const studyMode =
+  viewParams.get("studies") === "1" ||
+  AUTHORED_ROOMS.some((entry) => entry.id === viewParams.get("space")) ||
+  viewParams.get("threshold") === "1";
+const roomList = studyMode ? STUDY_ROOMS : ROOMS;
 mount();
+document.body.classList.toggle("captured-collection", !studyMode);
 const $ = <T extends HTMLElement = HTMLElement>(selector: string) =>
   document.querySelector<T>(selector)!;
 const lens = $<HTMLButtonElement>("#lens"),
@@ -45,7 +55,7 @@ const workspace = new WorkspaceState(),
   scene = new SceneTexture(),
   frameExport = new FrameExport(),
   room = new PortalRoom(wake),
-  journey = new RoomJourney();
+  journey = new RoomJourney(studyMode ? AUTHORED_ROOMS : ROOMS);
 let width = innerWidth,
   height = innerHeight,
   radius = Math.min(128, width * 0.27, height * 0.18),
@@ -72,9 +82,10 @@ let ior = defaults.ior,
   ambientTime = 0,
   pendingExport = false,
   roomEnabled = new URLSearchParams(location.search).get("room") === "1",
-  selectedRoom: RoomId = parseRoomId(
-    new URLSearchParams(location.search).get("space"),
-  ),
+  selectedRoom: RoomId =
+    studyMode && !viewParams.get("space")
+      ? "gallery"
+      : parseRoomId(viewParams.get("space")),
   roomLook = true;
 let entered = false,
   enterPending = false,
@@ -431,7 +442,7 @@ function updateVisitChrome() {
     !entered || motion.immersion.moving || room.thresholdState === "crossing";
   const thresholdReady =
     entered &&
-    room.kind !== "pantheon" &&
+    !isCaptureId(room.kind) &&
     room.status === "ready" &&
     !room.switching;
   $("#threshold-tools").hidden = !thresholdReady || dialog.open || studioOpen;
@@ -470,7 +481,7 @@ function updateVisitChrome() {
     $("#threshold-hint").textContent = thresholdHint;
   const captureReady =
     entered &&
-    room.kind === "pantheon" &&
+    isCaptureId(room.kind) &&
     room.status === "ready" &&
     !room.switching;
   if (unravel.enabled && (!captureReady || dialog.open || motion.reduced))
@@ -483,7 +494,7 @@ function updateVisitChrome() {
     ? "Available when reduced motion is off. Looking around stays available."
     : unravel.enabled
       ? "Hold + drag · release to restore · Space + arrows on keyboard"
-      : "Loosen the stone. Shape its movement. Let it return.";
+      : "Loosen the scene. Shape its movement. Let it return.";
   roomView.classList.toggle("sculpting", unravel.enabled);
   roomView.setAttribute(
     "aria-label",
@@ -501,7 +512,7 @@ function updateVisitChrome() {
   $("#visit-hint").textContent = enterPending
     ? "OPENING THE ROOM…"
     : room.status === "fallback"
-      ? room.kind === "pantheon"
+      ? isCaptureId(room.kind)
         ? "CAPTURE UNAVAILABLE · CHOOSE ANOTHER ROOM"
         : "ARCHITECTURAL ILLUSTRATION · DRAG TO LOOK AROUND"
       : unravel.enabled
@@ -566,7 +577,7 @@ async function startRoom() {
     toast(
       room.status === "ready"
         ? `${roomDefinition(selectedRoom).name} · move to look around`
-        : room.kind === "pantheon"
+        : isCaptureId(room.kind)
           ? "Capture unavailable · choose another room or retry"
           : "3D is unavailable · showing an architectural study",
     );
@@ -576,8 +587,8 @@ function updateRoomChrome() {
   const nav = $("#room-nav");
   document.body.classList.toggle("has-room", roomEnabled);
   nav.hidden = !roomEnabled || dialog.open;
-  const index = ROOMS.findIndex((r) => r.id === selectedRoom);
-  const caption = `${room.status === "fallback" ? (room.kind === "pantheon" ? "CAPTURE UNAVAILABLE" : "ILLUSTRATED ROOMS") : "LIVING ROOMS"} · 0${index + 1} / 0${ROOMS.length}`;
+  const index = roomList.findIndex((r) => r.id === selectedRoom);
+  const caption = `${room.status === "fallback" ? (isCaptureId(room.kind) ? "CAPTURE UNAVAILABLE" : "ILLUSTRATED ROOMS") : studyMode ? "LIVING ROOMS" : "CAPTURED PLACES"} · 0${index + 1} / 0${roomList.length}`;
   if ($("#room-count").textContent !== caption)
     $("#room-count").textContent = caption;
   const label = `${roomDefinition(selectedRoom).name}${room.switching || room.status === "loading" ? " · Opening…" : ""}`;
@@ -585,16 +596,23 @@ function updateRoomChrome() {
   captureNote.hidden =
     !roomEnabled ||
     dialog.open ||
-    !(selectedRoom === "pantheon" || room.captureError || room.captureMessage);
+    !(isCaptureId(selectedRoom) || room.captureError || room.captureMessage);
+  const creditId =
+    room.captureFailureId ??
+    (isCaptureId(selectedRoom) ? selectedRoom : "pantheon");
+  const credit = captureDefinition(creditId);
+  const creditLink = $<HTMLAnchorElement>("#capture-credit");
+  creditLink.textContent = `${credit.id === "pantheon" ? "Pantheon" : credit.name} · ${credit.creator}`;
+  creditLink.href = credit.source;
   $("#capture-state").textContent =
     room.captureMessage ||
     (room.captureError
-      ? room.kind === "pantheon" && room.status === "fallback"
+      ? isCaptureId(room.kind) && room.status === "fallback"
         ? "Capture unavailable. Choose another room or retry."
         : "Capture unavailable. Your room is still open."
       : room.status === "fallback"
         ? "Capture renderer unavailable"
-        : "CAPTURED LIGHT · HYBRID RECONSTRUCTION");
+        : credit.note);
   $("#capture-retry").hidden = !room.captureError;
   if ($("#room-name").textContent !== label)
     $("#room-name").textContent = label;
@@ -643,10 +661,12 @@ async function chooseRoom(id: RoomId, automatic = false) {
   const url = new URL(location.href);
   url.searchParams.set("room", "1");
   url.searchParams.set("space", id);
+  if (studyMode) url.searchParams.set("studies", "1");
   history.replaceState(null, "", url);
   updateRoomChrome();
   wake();
   room.captureError = false;
+  room.captureFailureId = null;
   await room.select(id);
   if (!disposed && selectedRoom === id && room.captureError) {
     selectedRoom = room.kind;
@@ -658,11 +678,16 @@ async function chooseRoom(id: RoomId, automatic = false) {
   if (!disposed) wake();
 }
 function nextRoom(direction: number) {
-  const index = ROOMS.findIndex((r) => r.id === selectedRoom);
-  void chooseRoom(ROOMS[(index + direction + ROOMS.length) % ROOMS.length].id);
+  const index = roomList.findIndex((r) => r.id === selectedRoom);
+  void chooseRoom(
+    roomList[(index + direction + roomList.length) % roomList.length].id,
+  );
 }
 $("#capture-retry").addEventListener("click", () => {
-  void chooseRoom("pantheon");
+  void chooseRoom(
+    room.captureFailureId ??
+      (isCaptureId(selectedRoom) ? selectedRoom : "pantheon"),
+  );
 });
 $("#previous-room").addEventListener("click", () => nextRoom(-1));
 $("#next-room").addEventListener("click", () => nextRoom(1));
@@ -998,7 +1023,7 @@ function renderWorkspace(type: Workspace) {
       "Bring something of your own into the light.",
       1,
     );
-    body.innerHTML = `<div class="stage-gallery" role="group" aria-label="Studio environments">${["Fold", "Sculpture", "Veil", "Room"].map((name, index) => `<button class="stage-preset" data-composition="${index}" aria-pressed="${index === 3 ? roomEnabled : !roomEnabled && composition === index && !media.source}"><span class="stage-mini stage-${index}" aria-hidden="true"></span><span>${name}</span></button>`).join("")}</div><p class="gallery-note">CHOOSE AN ATMOSPHERE, OR BRING YOUR OWN.</p>${roomEnabled ? `<div class="room-note"><span class="badge">LIVING ROOMS / THREE STUDIES + ONE CAPTURE</span><p>Choose a space, or play the three authored studies. Pantheon is a separate captured-reality experiment, downloaded only when selected. Move to look around; lens inspection offers touch and keyboard exploration.</p></div><div class="room-gallery" role="group" aria-label="Choose a room">${ROOMS.map((entry) => `<button class="room-preset room-edition-${entry.id}" data-room="${entry.id}" aria-pressed="${selectedRoom === entry.id}"><span class="room-mini" aria-hidden="true"></span><strong>${entry.name}</strong><small>${entry.subtitle}</small></button>`).join("")}</div><p class="room-description">${roomDefinition(selectedRoom).detail}</p><p class="media-note">Pantheon: a 10.6 MB capture by <a href="https://superspl.at/scene/dac6e508" target="_blank" rel="noopener">artfletch</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>. Captured lighting; reconstructed floor. Small viewpoint movements reveal depth; free walking and relighting are not available.</p><div class="journey-controls"><button id="journey-toggle" class="text-button" ${motion.reduced ? "disabled" : ""}>${icon("play")}${journey.playing ? "Pause rooms" : journey.finished ? "Replay rooms" : "Play rooms"}</button><button id="journey-replay" class="text-button" ${motion.reduced ? "disabled" : ""}>${icon("reset")}Start again</button></div><p class="media-note">${motion.reduced ? "Reduced motion is active. Choose any room to explore it at rest." : "14 seconds in each room. Pause anytime; the sequence ends after Veil."}</p>${toggle("room-look", "Look around", "Gentle perspective movement. Reduced motion keeps it still.", roomLook)}` : ""}<label class="drop-zone" id="drop-zone">${icon("upload")}<strong>Drop a file, or browse</strong><small>IMAGE, VIDEO OR AUDIO · UP TO 150 MB</small><input id="file" type="file" accept="image/*,video/*,audio/*" aria-label="Choose a local media file"/></label><div id="media-info"></div><p class="media-note">Your files stay on this device. Visual media is shown in monochrome, with a cover crop that follows the lens.</p><button id="export-frame" class="export-button">${icon("download")}Save this moment<span>PNG ↗</span></button>`;
+    body.innerHTML = `<div class="stage-gallery" role="group" aria-label="Studio environments">${["Fold", "Sculpture", "Veil", "Room"].map((name, index) => `<button class="stage-preset" data-composition="${index}" aria-pressed="${index === 3 ? roomEnabled : !roomEnabled && composition === index && !media.source}"><span class="stage-mini stage-${index}" aria-hidden="true"></span><span>${name}</span></button>`).join("")}</div><p class="gallery-note">CHOOSE AN ATMOSPHERE, OR BRING YOUR OWN.</p>${roomEnabled ? `<div class="room-note"><span class="badge">${studyMode ? "AUTHORED STUDIES + PANTHEON" : "FOUR CAPTURED PLACES"}</span><p>${studyMode ? "Explore the three authored studies and their spatial thresholds. Pantheon is a separate capture." : "Gaussian-splat scenes with real depth. Each scene downloads only when selected. Play rooms visits all four and may download about 43 MB in total."} Drag or use arrow keys inside the lens to look around.</p></div><div class="room-gallery" role="group" aria-label="Choose a room">${roomList.map((entry) => `<button class="room-preset room-edition-${entry.id}" data-room="${entry.id}" aria-pressed="${selectedRoom === entry.id}"><span class="room-mini" ${isCaptureId(entry.id) ? `style="background-image:url(${new URL(captureDefinition(entry.id).thumbnail, document.baseURI).href})"` : ""} aria-hidden="true"></span><strong>${entry.name}</strong><small>${entry.subtitle}</small></button>`).join("")}</div><p class="room-description">${roomDefinition(selectedRoom).detail}</p><p class="media-note">${isCaptureId(selectedRoom) ? `${captureDefinition(selectedRoom).name} by <a href="${captureDefinition(selectedRoom).source}" target="_blank" rel="noopener">${captureDefinition(selectedRoom).creator}</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>. ${captureDefinition(selectedRoom).note}` : "Authored geometry and lighting."} Small viewpoint movements reveal depth.</p><p class="media-note"><a href="${studyMode ? "?room=1&space=pantheon" : "?room=1&studies=1&space=gallery"}">${studyMode ? "Captured places" : "Authored studies · threshold experiment"}</a></p><div class="journey-controls"><button id="journey-toggle" class="text-button" ${motion.reduced ? "disabled" : ""}>${icon("play")}${journey.playing ? "Pause rooms" : journey.finished ? "Replay rooms" : "Play rooms"}</button><button id="journey-replay" class="text-button" ${motion.reduced ? "disabled" : ""}>${icon("reset")}Start again</button></div><p class="media-note">${motion.reduced ? "Reduced motion is active. Choose any room to explore it at rest." : "14 seconds of viewing in each room. Loading pauses the sequence. Pause anytime; the visit has a final room."}</p>${toggle("room-look", "Look around", "Gentle perspective movement. Reduced motion keeps it still.", roomLook)}` : ""}<label class="drop-zone" id="drop-zone">${icon("upload")}<strong>Drop a file, or browse</strong><small>IMAGE, VIDEO OR AUDIO · UP TO 150 MB</small><input id="file" type="file" accept="image/*,video/*,audio/*" aria-label="Choose a local media file"/></label><div id="media-info"></div><p class="media-note">Your files stay on this device. Visual media is shown in monochrome, with a cover crop that follows the lens.</p><button id="export-frame" class="export-button">${icon("download")}Save this moment<span>PNG ↗</span></button>`;
     for (const button of body.querySelectorAll<HTMLButtonElement>(
       "[data-composition]",
     ))
@@ -1215,7 +1240,7 @@ function updateDetails() {
   $("#room-renderer").textContent = room.backend;
   $("#room-measurement").textContent =
     room.status === "ready"
-      ? `${room.frame.canvas.width} × ${room.frame.canvas.height} · ${room.kind === "pantheon" ? "700,000 splats" : `${room.meshCount} meshes`} · ${room.submitMs.toFixed(1)} ms CPU submit`
+      ? `${room.frame.canvas.width} × ${room.frame.canvas.height} · ${isCaptureId(room.kind) ? `${captureDefinition(room.kind).splats.toLocaleString("en-US")} splats` : `${room.meshCount} meshes`} · ${room.submitMs.toFixed(1)} ms CPU submit`
       : room.status === "fallback"
         ? "Illustration fallback"
         : "On demand";
@@ -1253,7 +1278,7 @@ const unravelInputs = new UnravelInputs(
   () =>
     entered &&
     roomEnabled &&
-    room.kind === "pantheon" &&
+    isCaptureId(room.kind) &&
     room.status === "ready" &&
     !room.switching &&
     !dialog.open &&

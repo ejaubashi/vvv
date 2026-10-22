@@ -10,7 +10,11 @@ import {
   NoToneMapping,
 } from "three";
 import { SparkRenderer, SplatMesh, SplatFileType } from "@sparkjsdev/spark";
-import { CAPTURE, downloadCapture } from "./capture-source";
+import {
+  CAPTURE,
+  downloadCapture,
+  type CaptureDefinition,
+} from "./capture-source";
 import type { RoomPose } from "./pose";
 import type { UnravelFrame } from "./unravel";
 import { createUnravelModifier } from "./unravel-shader";
@@ -24,7 +28,7 @@ export class CapturedRoom {
   private mesh: SplatMesh | null = null;
   private disposed = false;
   dirty = true;
-  private origin = new Vector3(...CAPTURE.position);
+  private origin = new Vector3();
   private orientation = new Quaternion();
   private offset = new Vector3();
   private rotation = new Quaternion();
@@ -43,7 +47,14 @@ export class CapturedRoom {
     if (this.mesh) this.mesh.needsUpdate = true;
     this.dirty = true;
   }
-  private constructor(wake: () => void, lost: () => void) {
+  private constructor(
+    readonly definition: CaptureDefinition,
+    wake: () => void,
+    lost: () => void,
+  ) {
+    this.origin.fromArray(definition.position);
+    this.camera.fov = definition.fov;
+    this.camera.updateProjectionMatrix();
     this.engine = new WebGLRenderer({
       antialias: false,
       alpha: false,
@@ -55,7 +66,7 @@ export class CapturedRoom {
     this.engine.toneMapping = NoToneMapping;
     this.scene.background = new Color(0x171510);
     this.camera.position.copy(this.origin);
-    this.camera.lookAt(new Vector3(...CAPTURE.target));
+    this.camera.lookAt(new Vector3().fromArray(definition.target));
     this.orientation.copy(this.camera.quaternion);
     this.spark = new SparkRenderer({
       renderer: this.engine,
@@ -82,10 +93,11 @@ export class CapturedRoom {
     wake: () => void,
     progress: (ratio: number) => void,
     lost: () => void,
+    definition: CaptureDefinition = CAPTURE,
   ) {
-    const bytes = await downloadCapture(signal, progress);
+    const bytes = await downloadCapture(signal, progress, definition);
     signal.throwIfAborted();
-    const room = new CapturedRoom(wake, lost);
+    const room = new CapturedRoom(definition, wake, lost);
     try {
       room.mesh = new SplatMesh({
         fileBytes: bytes,
@@ -95,7 +107,9 @@ export class CapturedRoom {
         worldModifier: room.deformation.modifier,
       });
       // SuperSplat data uses the published viewer's 180-degree Z orientation.
-      room.mesh.quaternion.set(0, 0, 1, 0);
+      room.mesh.quaternion.fromArray(definition.quaternion);
+      room.mesh.scale.setScalar(definition.scale);
+      room.mesh.position.fromArray(definition.translation);
       await room.mesh.initialized;
       signal.throwIfAborted();
       room.scene.add(room.mesh);

@@ -271,7 +271,7 @@ test("the app exposes deliberate sculpting, honors reduced motion, and cancels b
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
   const canvas = page.locator("#scene canvas");
-  await page.goto("/?room=1&space=pantheon&renderer=webgl");
+  await page.goto("/?studies=1&room=1&space=pantheon&renderer=webgl");
   await expect(canvas).toHaveAttribute("data-room-status", "ready", {
     timeout: 70000,
   });

@@ -8,7 +8,7 @@ async function close(page: Page) {
   await expect(page.locator("dialog")).not.toBeVisible();
   await expect(page.locator("#lens")).toBeVisible();
 }
-async function go(page: Page, path = "/?renderer=canvas") {
+async function go(page: Page, path = "/?studies=1&renderer=canvas") {
   await page.goto(path);
   await expect(page.locator("#scene canvas")).toBeVisible();
 }
@@ -240,7 +240,7 @@ test("WebGL shader renders optical differences and material changes without erro
 }) => {
   const errors: string[] = [];
   page.on("pageerror", (e) => errors.push(e.message));
-  await go(page, "/?renderer=webgl");
+  await go(page, "/?studies=1&renderer=webgl");
   await open(page, "Details");
   await expect(page.locator("#renderer-name")).toHaveText("WebGL 2");
   await close(page);
@@ -285,7 +285,7 @@ test("video playback, elapsed time and scrubbing are functional", async ({
 test("GPU context loss switches to the functional fallback", async ({
   page,
 }) => {
-  await go(page, "/?renderer=webgl");
+  await go(page, "/?studies=1&renderer=webgl");
   await page.evaluate(() => {
     const canvas = document.querySelector("canvas")!;
     canvas

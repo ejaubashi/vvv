@@ -1424,3 +1424,29 @@ body.reduced *:after {
     max-width: 300px;
   }
 }
+
+.captured-collection .room-gallery {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.captured-collection .room-preset {
+  grid-column: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 10px;
+}
+.captured-collection .room-preset .room-mini {
+  height: 100px;
+  width: 100%;
+  margin: 0 0 10px;
+  border-radius: 8px;
+  background-position: center;
+  background-size: cover;
+}
+.captured-collection .room-preset strong,
+.captured-collection .room-preset small {
+  align-self: auto;
+}
+.captured-collection .room-preset small {
+  line-height: 1.5;
+}

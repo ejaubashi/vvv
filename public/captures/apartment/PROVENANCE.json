@@ -1,0 +1,14 @@
+{
+  "sourceRepository": "https://github.com/playcanvas/engine",
+  "revision": "3465f3ebe2ca19d53c7e0b853fc129af20df5811",
+  "path": "examples/assets/splats/apartment.sog",
+  "source": "https://superspl.at/view?id=cdcec084",
+  "creator": "Stephane Agullo",
+  "license": "CC-BY-4.0",
+  "retrieved": "2026-10-22",
+  "bytes": 8379050,
+  "splats": 661466,
+  "sha256": "961aad67c47e6ee236bd3789978745da6b2ae6afe7f1a0863e05617ef03881d5",
+  "modifications": "Unchanged mirrored SOG. FORM applies the credited example transform, a narrower view and bounded navigation; optional reversible deformation changes presentation at runtime. Thumbnail is a rendered FORM view of the credited asset.",
+  "sourceEvidence": "Asset-specific @credit blocks in the pinned PlayCanvas editor and paint examples; original scene capture method is not independently verified."
+}

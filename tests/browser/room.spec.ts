@@ -1,5 +1,5 @@
 import { test, expect, type Page } from "@playwright/test";
-async function ready(page: Page, path = "/?room=1&renderer=webgl") {
+async function ready(page: Page, path = "/?studies=1&room=1&renderer=webgl") {
   await page.goto(path);
   await expect(page.locator("#scene canvas")).toHaveAttribute(
     "data-room-status",
@@ -154,7 +154,7 @@ test("the room retains keyboard/touch inspection and reduced-motion behavior on 
 test("room initialization failure keeps an architectural fallback and functional navigation", async ({
   page,
 }) => {
-  await page.goto("/?room=1&renderer=canvas&roomRenderer=none");
+  await page.goto("/?studies=1&room=1&renderer=canvas&roomRenderer=none");
   await expect(page.locator("#scene canvas")).toHaveAttribute(
     "data-room-status",
     "fallback",
@@ -170,7 +170,7 @@ test("room initialization failure keeps an architectural fallback and functional
 test("disposing during initialization releases room geometry and the graphics renderer", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/?studies=1");
   const state = await page.evaluate(async () => {
     const { PortalRoom } = await import("/src/room/room.ts");
     const room = new PortalRoom(() => {});
@@ -205,7 +205,7 @@ test("WebGPU renders the architectural scene through the WebGPU lens", async ({
   page.on("console", (message) => {
     if (message.type() === "error") errors.push(message.text());
   });
-  await ready(page, "/?room=1");
+  await ready(page, "/?studies=1&room=1");
   await expect(page.locator("#scene canvas")).toHaveAttribute(
     "data-room-renderer",
     "Three.js / WebGPU",
@@ -264,7 +264,7 @@ test("actual GPU unavailability retains the room illustration and studio control
   const page = await browser.newPage({ reducedMotion: "reduce" });
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
-  await page.goto("http://127.0.0.1:5173/?room=1");
+  await page.goto("http://127.0.0.1:5173/?studies=1&room=1");
   await expect(page.locator("#scene canvas")).toHaveAttribute(
     "data-room-status",
     "fallback",
@@ -280,7 +280,7 @@ test("actual GPU unavailability retains the room illustration and studio control
 test("the rendered depth buffer actually hides the back sculpture behind the near column", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/?studies=1");
   const result = await page.evaluate(async () => {
     const { PortalRoom } = await import("/src/room/room.ts");
     const room = new PortalRoom(() => {});
@@ -317,7 +317,7 @@ test("the rendered depth buffer actually hides the back sculpture behind the nea
 test("losing the room graphics context releases geometry and preserves an architectural image", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/?studies=1");
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
   const result = await page.evaluate(async () => {
