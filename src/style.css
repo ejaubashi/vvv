@@ -1,12 +1,12 @@
 @font-face {
-  font-family: "Manrope";
-  src: url("./assets/fonts/manrope-latin.woff2") format("woff2");
+  font-family: "Geist";
+  src: url("./assets/fonts/geist-latin.woff2") format("woff2");
   font-style: normal;
-  font-weight: 200 800;
+  font-weight: 100 900;
   font-display: swap;
 }
 :root {
-  --font-interface: "Manrope", system-ui, sans-serif;
+  --font-interface: "Geist", system-ui, sans-serif;
   --font-display: var(--font-interface);
   --type-micro: 10px;
   --type-label: 11px;

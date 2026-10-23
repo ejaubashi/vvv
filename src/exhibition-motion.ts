@@ -345,14 +345,43 @@ export class ExhibitionMotion {
         ? target.closest<HTMLElement>("[data-workspace]")
         : null;
     if (!button || !this.dock.contains(button)) {
+      if (this.dock.dataset.aim) this.previewIntent(null);
       delete this.dock.dataset.aim;
       return;
     }
+    if (this.dock.dataset.aim === button.dataset.workspace) return;
     this.dock.style.setProperty(
       "--dock-index",
       String(sections.indexOf(button.dataset.workspace as Workspace)),
     );
     this.dock.dataset.aim = button.dataset.workspace;
+    this.previewIntent(button.dataset.workspace as Workspace);
+  }
+
+  private previewIntent(section: Workspace | null) {
+    const intent = document.querySelector<HTMLElement>("#studio-intent")!;
+    const purposes: Record<Workspace, string> = {
+      media: "01 / Discover a place.",
+      material: "02 / Shape the light.",
+      interaction: "03 / Find your rhythm.",
+      details: "04 / Behind the surface.",
+    };
+    this.cancel("intent");
+    intent.textContent = section
+      ? purposes[section]
+      : "Real places. Seen differently.";
+    if (section) intent.dataset.section = section;
+    else delete intent.dataset.section;
+    this.play(
+      intent,
+      [
+        { opacity: 0.2, transform: "translateY(5px)" },
+        { opacity: 1, transform: "translateY(0)" },
+      ],
+      280,
+      0,
+      "intent",
+    );
   }
 
   private press(target: EventTarget | null) {

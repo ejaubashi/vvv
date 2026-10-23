@@ -29,20 +29,20 @@
 #exhibition-title > :nth-child(2) {
   --word-weight: 0.75;
 }
-#exhibition-title > :nth-child(3) {
+#exhibition-title > em {
   --word-weight: 1;
 }
 #exhibition-title em .type-ink {
-  color: var(--accent);
+  color: var(--ink);
 }
 @supports (background-clip: text) {
   #exhibition-title em .type-ink {
     color: transparent;
     background-image: linear-gradient(
       110deg,
-      var(--accent) 28%,
-      #dd8a43 48%,
-      var(--accent) 68%
+      var(--ink) 28%,
+      #85867e 48%,
+      var(--ink) 68%
     );
     background-size: 230% 100%;
     background-position: var(--title-light, 50%) 50%;
@@ -55,28 +55,33 @@
 .workspace-sections {
   position: relative;
   isolation: isolate;
+  padding: 0;
+  gap: 0;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
 }
 .workspace-sections[data-current]::before {
   content: "";
   position: absolute;
   z-index: -1;
   box-sizing: border-box;
-  top: 4px;
-  bottom: 4px;
-  left: 4px;
-  width: calc((100% - 17px) / 4);
-  border: 1px solid #fff;
-  border-radius: 8px;
-  background: linear-gradient(145deg, #fff, #fffefa);
-  box-shadow:
-    0 2px 8px #292d2b12,
-    inset 0 1px 0 #fff;
-  transform: translateX(calc(var(--section-index, 0) * (100% + 3px)));
-  transition: transform 520ms var(--motion-spring);
+  bottom: -1px;
+  left: 0;
+  height: 2px;
+  width: 25%;
+  border: 0;
+  border-radius: 0;
+  background: var(--accent);
+  transform: translateX(calc(var(--section-index, 0) * 100%));
+  transition: transform 480ms var(--motion-out);
   pointer-events: none;
 }
 .workspace-sections[data-current] button {
   background: transparent;
+  border-radius: 0;
+  font-weight: 420;
   transition:
     color 200ms,
     background-color 200ms;
@@ -126,15 +131,14 @@
     color 200ms;
 }
 .dock-number {
-  display: block;
-  position: absolute;
-  right: 8px;
-  bottom: 4px;
-  font-size: 7px;
+  display: inline;
+  position: static;
+  order: -1;
+  font-size: 8px;
   line-height: 1;
   letter-spacing: 0.06em;
-  opacity: 0;
-  transform: translateY(4px);
+  opacity: 0.45;
+  transform: translateY(0);
   transition:
     opacity 200ms,
     transform 400ms var(--motion-out);
@@ -144,7 +148,7 @@
   text-decoration: none;
 }
 .dock button:focus-visible .dock-label {
-  transform: translateY(-3px);
+  transform: translateY(-1px);
 }
 .dock button:focus-visible .dock-number {
   opacity: 0.7;
@@ -165,7 +169,7 @@
 }
 @media (hover: hover) and (pointer: fine) {
   .dock button:hover .dock-label {
-    transform: translateY(-3px);
+    transform: translateY(-1px);
   }
   .dock button:hover .dock-number {
     opacity: 0.7;
@@ -188,10 +192,12 @@
       box-shadow 300ms,
       background-color 200ms;
   }
-  .room-preset:hover,
-  .preset:hover {
+  .room-preset:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 18px #292d2b10;
+  }
+  .preset:hover {
+    color: var(--ink);
   }
 }
 @media (max-width: 999px) {
@@ -205,8 +211,7 @@
     background: none;
   }
   .workspace-sections[data-current]::before {
-    border-color: Highlight;
-    background: Canvas;
+    background: Highlight;
   }
   .dock::after {
     background: Highlight;

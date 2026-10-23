@@ -17,7 +17,7 @@ test("title motion settles; rapid section changes preserve controls, focus and c
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("/?renderer=canvas");
   await expect(
-    page.getByRole("heading", { name: "Light becomes place." }),
+    page.getByRole("heading", { name: "Look closer." }),
   ).toBeVisible();
   await expect(page.locator("#exhibition-title")).toHaveAttribute(
     "data-motion",
@@ -40,7 +40,20 @@ test("title motion settles; rapid section changes preserve controls, focus and c
   await expect
     .poll(() => copy.evaluate((el) => el.style.getPropertyValue("--title-x")))
     .toBe("0px");
-  await page.getByRole("button", { name: "Material", exact: true }).click();
+  const material = page.getByRole("button", { name: "Material", exact: true });
+  await material.hover();
+  await expect(page.locator("#studio-intent")).toHaveText(
+    "02 / Shape the light.",
+  );
+  await page.mouse.move(0, 0);
+  await expect(page.locator("#studio-intent")).toHaveText(
+    "Real places. Seen differently.",
+  );
+  await material.focus();
+  await expect(page.locator("#studio-intent")).toHaveText(
+    "02 / Shape the light.",
+  );
+  await page.keyboard.press("Enter");
   await expect(page.locator(".workspace-content")).toHaveClass(/revealed/);
   await page.locator("#ior").fill("1.78");
   // Immediate changes must not enqueue stale content or wait for a visual exit.
@@ -155,6 +168,13 @@ test("touch section navigation honors application reduced motion and keeps the c
   await expect(
     page.getByRole("button", { name: "Interaction", exact: true }),
   ).toBeFocused();
+  await page.locator("#browse-collection").tap();
+  await expect(page.locator(".workspace-content")).toHaveClass(/revealed/);
+  await expect(
+    page.getByRole("heading", { name: "Scenes & media", exact: true }),
+  ).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(page.locator("#browse-collection")).toBeFocused();
   await context.close();
 });
 
