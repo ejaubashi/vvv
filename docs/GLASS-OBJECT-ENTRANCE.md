@@ -24,6 +24,10 @@ The full regression suite also covers the four captures, Unravel restoration, au
 
 Run `npm test`, `npm run test:browser`, and `npm run build`. The nested production path and real Apartment capture are checked with `node scripts/check-entrance-deployment.mjs`.
 
+Verified on 23 October 2026: production build, 33 unit checks, and all 65 browser cases. The full browser run passed 64 cases; one unchanged three-scene restoration check hit its time limit while another graphics check was running and passed in an isolated rerun. The production entrance and return then passed with normal motion, one selected SOG download, no external asset requests, and no page errors. Run software-GPU checks sequentially. See [the validation record](entrance-validation-results.json).
+
+The source and generated preview are committed locally. GitHub upload and live-preview publication are pending explicit approval after automatic approval review rejected the push, citing the earlier research-only instruction.
+
 ![The glass entrance object beside the captured Apartment courtyard, Stephane Agullo, CC BY 4.0](previews/entrance-object.png)
 
 ![Arrival inside the Apartment courtyard, Stephane Agullo, CC BY 4.0](previews/entrance-arrival.png)

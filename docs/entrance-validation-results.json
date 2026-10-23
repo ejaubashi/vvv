@@ -1,0 +1,59 @@
+{
+  "date": "2026-10-23",
+  "applicationCommit": "7610312c8a1001e9933d73794545910187bc0a37",
+  "build": {
+    "command": "npm run build",
+    "status": "passed",
+    "files": 23,
+    "bytes": 47108480
+  },
+  "unitChecks": {
+    "command": "npm test",
+    "passed": 33,
+    "failed": 0
+  },
+  "browserChecks": {
+    "uniqueCasesPassed": 65,
+    "fullSuite": {
+      "command": "npx playwright test --reporter=line,json",
+      "passed": 64,
+      "timedOut": 1,
+      "durationMs": 1010950
+    },
+    "isolatedRerun": {
+      "case": "each new scene renders distinct pixels, navigates, deforms and restores exactly",
+      "passed": 1,
+      "failed": 0,
+      "durationMs": 127736
+    },
+    "note": "The three-scene restoration check timed out while a second software-GPU production check was running. It passed unchanged when run alone. All six new entrance browser cases passed in the full suite."
+  },
+  "production": {
+    "productionPrefix": "/revision/preview/",
+    "scene": "apartment",
+    "backend": "WebGL 2 / Spark",
+    "motion": "normal",
+    "capturedDownloads": 1,
+    "externalRequests": 0,
+    "pageErrors": 0,
+    "entryAndReturn": "passed",
+    "screenshots": [
+      "docs/previews/entrance-object.png",
+      "docs/previews/entrance-arrival.png"
+    ]
+  },
+  "preparedPreview": {
+    "commit": "a51ad19e11010c94067468e54c98c1f60bee07bd",
+    "exactGitBlobMatches": 23,
+    "status": "committed locally; not uploaded"
+  },
+  "publication": {
+    "status": "awaiting explicit user approval",
+    "sourceBranch": "glass-object-entrance",
+    "reason": "Automatic approval review rejected the GitHub push, citing the earlier research-only instruction. No source or preview push was executed."
+  },
+  "limits": [
+    "Chromium software rendering verifies behavior and pixels; physical-device animation timing and GPU performance are unmeasured.",
+    "Canvas 2D uses an illustrated contact ring instead of the WebGL/WebGPU refractive wave."
+  ]
+}
