@@ -2,6 +2,14 @@
 
 An immersive optical artwork built with TypeScript, Vite, and browser graphics APIs, with four Gaussian-splat scenes and a separate set of authored room studies. No account, API key, backend, or uploaded media is required. Capture assets are served with the site; rendering runs on the device.
 
+## Online preview — PC and phone
+
+[Open FORM online](https://rawcdn.githack.com/ejaubashi/vvv/fc5c8374d6d3048093a949f8081958066dffd06f/preview/index.html?room=1&space=apartment&renderer=webgl).
+
+Use the same HTTPS link on a computer or phone. This published edition includes the liquid glass fragments, amber sun, and animated titles and studio sections. GitHack serves the built files from GitHub; the cloud workspace and development server can be stopped.
+
+The latest source is saved on [glass-object-entrance](https://github.com/ejaubashi/vvv/tree/glass-object-entrance). The published files are on [live-preview](https://github.com/ejaubashi/vvv/tree/live-preview/preview). The link above is pinned to the reviewed release; future editions can have their own links. See [the motion release and checks](docs/EXHIBITION-MOTION.md).
+
 ## Run
 
 Requires Node.js **22.12+** (validated with Node 24.19) and npm.
@@ -98,5 +106,7 @@ npm run preview -- --base=/vvv/ --port 4173
 ```
 
 Use the `/vvv/` path when inspecting that build. The intended Pages URL is `https://ejaubashi.github.io/vvv/`; the URL is not live until a GitHub Pages deployment succeeds. GitHub API access and repository administration permissions are needed to configure Pages automatically.
+
+As of 2026-10-23, Pages is not enabled. An attempt to enable it returned GitHub HTTP 403, “Resource not accessible by integration”: the current connection lacks Pages configuration access. The existing workflow is active and also supports manual deployment of a selected branch after Pages is enabled. Use the published online preview above until a Pages deployment succeeds. The execution proxy blocks the GitHack endpoint, so delivery verification uses GitHub refs and exact file hashes rather than a live-CDN browser audit.
 
 The cloud development server must be restarted in a new session; installed files and the production build can be retained in the environment snapshot.
