@@ -1067,8 +1067,11 @@
     "previews/splash-fit-mobile-courtyard.png"
   ],
   "publication": {
-    "status": "built; awaiting remote verification",
+    "status": "published",
     "previewCommit": "7680a2849be4995fe10f28bfea777360611ece04",
-    "previewUrl": "https://rawcdn.githack.com/ejaubashi/vvv/7680a2849be4995fe10f28bfea777360611ece04/preview/index.html?room=1&space=apartment&renderer=webgl"
-  }
+    "previewUrl": "https://rawcdn.githack.com/ejaubashi/vvv/7680a2849be4995fe10f28bfea777360611ece04/preview/index.html?room=1&space=apartment&renderer=webgl",
+    "matchingRemoteGitBlobs": 28,
+    "deliveryVerification": "GitHub refs and exact file hashes; the execution proxy blocks the CDN endpoint, so this is not a live-CDN browser audit."
+  },
+  "applicationCommit": "e3bd776a45cc502a3656dcc22a07f9d624758da7"
 }
