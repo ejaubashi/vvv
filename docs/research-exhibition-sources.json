@@ -1,0 +1,123 @@
+{
+  "date": "2026-10-23",
+  "method": "GitHub API metadata, original author READMEs, and pinned layout/animation source; no third-party recreation was used.",
+  "recognitionLimit": "Lusion describes its own site as award-winning in the inspected README. Star counts are adoption signals, not visitor/conversion metrics. No unverified award year or measured commercial outcome is asserted.",
+  "sources": [
+    {
+      "repository": "lusionltd/WebGL-Scroll-Sync",
+      "url": "https://github.com/lusionltd/WebGL-Scroll-Sync",
+      "sha": "d2f2c844b449878c760e3f435ab01c85ed5ee072",
+      "commitDate": "2025-04-04T21:41:33Z",
+      "stars": 379,
+      "license": "MIT",
+      "readmePath": "README.md",
+      "readmeSha256": "290c294ebf4547296e87bd5f0936eb90e9f1ed87821557c34b03b465aaafde7b",
+      "readmeUrl": "https://github.com/lusionltd/WebGL-Scroll-Sync/blob/d2f2c844b449878c760e3f435ab01c85ed5ee072/README.md",
+      "inspectedFiles": [
+        {
+          "path": "src/css/style.css",
+          "sha256": "2f2f489b877e271fe663e1790b78fbe2bbd1e2a7d93b6558507b3923219f728c",
+          "url": "https://github.com/lusionltd/WebGL-Scroll-Sync/blob/d2f2c844b449878c760e3f435ab01c85ed5ee072/src/css/style.css"
+        }
+      ]
+    },
+    {
+      "repository": "codrops/ImageExpansionTypography",
+      "url": "https://github.com/codrops/ImageExpansionTypography",
+      "sha": "0d614791f94198bcab655762b26a3cb85da851f4",
+      "commitDate": "2024-04-02T11:56:00Z",
+      "stars": 47,
+      "license": "MIT",
+      "readmePath": "README.md",
+      "readmeSha256": "77a2374d844d0da2a410afbf7f6cb4e959870559fcd8780eb8a3aa2d555d8c0a",
+      "readmeUrl": "https://github.com/codrops/ImageExpansionTypography/blob/0d614791f94198bcab655762b26a3cb85da851f4/README.md",
+      "inspectedFiles": [
+        {
+          "path": "css/base.css",
+          "sha256": "b2e2f7dd175dd76fdbe937f1c105840a84438589e9e39bb02f2c4e3506442fa4",
+          "url": "https://github.com/codrops/ImageExpansionTypography/blob/0d614791f94198bcab655762b26a3cb85da851f4/css/base.css"
+        }
+      ]
+    },
+    {
+      "repository": "codrops/KineticTypePageTransition",
+      "url": "https://github.com/codrops/KineticTypePageTransition",
+      "sha": "ebe926e2f1de42950c36ff8a678321155280c1af",
+      "commitDate": "2025-05-30T03:50:40Z",
+      "stars": 127,
+      "license": "MIT",
+      "readmePath": "README.md",
+      "readmeSha256": "76bf122706e90250f80b53f550e1ab1611f314f8442b11b6ee1b4e012feecbd9",
+      "readmeUrl": "https://github.com/codrops/KineticTypePageTransition/blob/ebe926e2f1de42950c36ff8a678321155280c1af/README.md",
+      "inspectedFiles": [
+        {
+          "path": "src/css/base.css",
+          "sha256": "b45da81fb57aef46ebd6b35b8b856edef9747f42f597a324395bcffb9ce30c1a",
+          "url": "https://github.com/codrops/KineticTypePageTransition/blob/ebe926e2f1de42950c36ff8a678321155280c1af/src/css/base.css"
+        }
+      ]
+    },
+    {
+      "repository": "codrops/interlude",
+      "url": "https://github.com/codrops/interlude",
+      "sha": "3f1a9ce2b27ef724817659236599ecd63062fef2",
+      "commitDate": "2026-10-07T10:28:20Z",
+      "stars": 42,
+      "license": "MIT",
+      "readmePath": "README.md",
+      "readmeSha256": "2a57c107514d16dab6f296a33ea5faa408dd9802ff7018b38badfe0049002132",
+      "readmeUrl": "https://github.com/codrops/interlude/blob/3f1a9ce2b27ef724817659236599ecd63062fef2/README.md",
+      "inspectedFiles": [
+        {
+          "path": "src/scripts/pages/entrance.ts",
+          "sha256": "9a8d3b2b5bd8da2ea5678d789f14078057531c2b793a6c324f51a02333ba7a3b",
+          "url": "https://github.com/codrops/interlude/blob/3f1a9ce2b27ef724817659236599ecd63062fef2/src/scripts/pages/entrance.ts"
+        }
+      ]
+    },
+    {
+      "repository": "codrops/atelier-north",
+      "url": "https://github.com/codrops/atelier-north",
+      "sha": "6703fc3f15ec92979964070814a99855d0baa38f",
+      "commitDate": "2026-10-09T15:42:57Z",
+      "stars": 9,
+      "license": null,
+      "readmePath": "README.md",
+      "readmeSha256": "12e652a15f43b6ee407050d7b085addf4f9184e604d345398b727441e074aae7",
+      "readmeUrl": "https://github.com/codrops/atelier-north/blob/6703fc3f15ec92979964070814a99855d0baa38f/README.md",
+      "inspectedFiles": [
+        {
+          "path": "src/pages/index.astro",
+          "sha256": "0365f55aca42bef331ffa6748bbfe0a4d332b23f55bcbd99c0d06c7fdc5c3aaa",
+          "url": "https://github.com/codrops/atelier-north/blob/6703fc3f15ec92979964070814a99855d0baa38f/src/pages/index.astro"
+        }
+      ]
+    }
+  ],
+  "blockedLivePages": [
+    {
+      "url": "https://www.awwwards.com/sites/lusion",
+      "result": "Proxy CONNECT 403; live page not inspected"
+    },
+    {
+      "url": "https://www.awwwards.com/sites/igloo-inc",
+      "result": "Proxy CONNECT 403; live page not inspected"
+    },
+    {
+      "url": "https://lusion.co/",
+      "result": "Proxy CONNECT 403; live page not inspected"
+    },
+    {
+      "url": "https://unseen.co/",
+      "result": "Proxy CONNECT 403; live page not inspected"
+    },
+    {
+      "url": "https://www.igloo.inc/",
+      "result": "Proxy CONNECT 403; live page not inspected"
+    },
+    {
+      "url": "https://activetheory.net/",
+      "result": "Proxy CONNECT 403; live page not inspected"
+    }
+  ]
+}

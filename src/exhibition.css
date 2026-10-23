@@ -1,0 +1,453 @@
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("./assets/fonts/space-grotesk-latin.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+}
+
+:root {
+  --font-display: "Space Grotesk", var(--font-interface);
+  --accent: #bc501c;
+}
+
+header {
+  align-items: center;
+}
+.wordmark {
+  font-size: 34px;
+  font-weight: 600;
+  letter-spacing: -0.08em;
+}
+.wordmark span {
+  font-size: 9px;
+  top: 1px;
+}
+.edition {
+  gap: 6px;
+  font-size: 12px;
+}
+.edition-no {
+  font-size: 9px;
+  letter-spacing: 0.1em;
+}
+.edition-no i {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  vertical-align: 1px;
+  margin-right: 5px;
+}
+
+.exhibition-copy {
+  position: absolute;
+  left: 5vw;
+  top: 22%;
+  width: 36vw;
+  z-index: 1;
+  transition:
+    opacity 0.3s,
+    visibility 0.3s,
+    transform 0.4s;
+}
+.exhibition-eyebrow {
+  margin: 0 0 24px;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+}
+.exhibition-eyebrow > span {
+  color: var(--accent);
+  font-size: 17px;
+  margin-right: 7px;
+  vertical-align: -1px;
+}
+.exhibition-eyebrow svg {
+  width: 15px;
+  height: 15px;
+  vertical-align: -3px;
+}
+#exhibition-title {
+  font-family: var(--font-display);
+  font-size: clamp(58px, min(8.2vw, 12.5vh), 118px);
+  font-weight: 500;
+  line-height: 0.93;
+  letter-spacing: -0.075em;
+  margin: 0;
+}
+#exhibition-title > * {
+  display: block;
+}
+#exhibition-title em {
+  font-style: normal;
+  color: var(--accent);
+}
+.exhibition-description {
+  margin: 25px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.7;
+  letter-spacing: -0.02em;
+}
+#browse-collection {
+  display: inline-flex;
+  align-items: center;
+  gap: 20px;
+  min-height: 44px;
+  margin-top: 20px;
+  padding: 0;
+  font-size: 12px;
+  font-weight: 550;
+  border-bottom: 1px solid var(--ink);
+}
+#browse-collection svg {
+  width: 16px;
+  height: 16px;
+  transform: none;
+  transition: transform 0.2s;
+}
+#browse-collection:hover svg {
+  transform: translate(2px, -2px);
+}
+#browse-collection:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.optical-reticle {
+  position: fixed;
+  transform: translate(-50%, -50%);
+  border: 1px solid #292d2b1c;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+  color: var(--muted);
+}
+.optical-reticle[hidden] {
+  display: none;
+}
+.optical-reticle::before,
+.optical-reticle::after {
+  content: "";
+  position: absolute;
+  width: 9px;
+  height: 1px;
+  background: #292d2b55;
+  top: 50%;
+}
+.optical-reticle::before {
+  left: -5px;
+}
+.optical-reticle::after {
+  right: -5px;
+}
+.optical-reticle > i {
+  position: absolute;
+  width: 1px;
+  height: 9px;
+  left: 50%;
+  background: #292d2b55;
+}
+.optical-reticle > i:first-of-type {
+  top: -5px;
+}
+.optical-reticle > i:last-of-type {
+  bottom: -5px;
+}
+.reticle-top,
+.reticle-bottom {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 8px;
+  letter-spacing: 0.14em;
+}
+.reticle-top {
+  top: -28px;
+}
+.reticle-bottom {
+  bottom: -27px;
+}
+.enter-room {
+  min-height: 48px;
+  padding: 5px 7px 5px 20px;
+  gap: 14px;
+  font-size: 12px;
+  background: #232723;
+}
+.enter-room svg {
+  width: 30px;
+  height: 30px;
+  padding: 8px;
+  border-radius: 50%;
+  background: #ef7b34;
+  color: #22261f;
+}
+.entry-orb span {
+  font-size: 8px;
+  letter-spacing: 0.12em;
+}
+
+.collection-panel {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+.room-nav {
+  border-top: 1px solid #292d2b38;
+  padding: 12px 0 9px;
+  gap: 6px;
+}
+.room-caption {
+  gap: 5px;
+}
+#room-count {
+  font-size: 9px;
+  letter-spacing: 0.08em;
+}
+#room-name {
+  font-family: var(--font-display);
+  font-size: 21px;
+  font-weight: 500;
+  letter-spacing: -0.045em;
+}
+.capture-note {
+  margin: 0;
+  padding: 0 0 0 50px;
+  border: 0;
+  font-size: 9px;
+  gap: 3px;
+}
+.capture-note a {
+  text-decoration-color: #62666255;
+}
+.dock {
+  background: transparent;
+  border: 0;
+  border-top: 1px solid #292d2b38;
+  border-radius: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+  padding: 6px 0 0;
+  gap: 0;
+}
+.dock button {
+  width: 82px;
+  min-height: 44px;
+  border-radius: 0;
+}
+.dock-icon {
+  display: none;
+}
+.dock-label {
+  font-size: 11px;
+}
+.dock button:hover,
+.dock button:focus-visible {
+  background: #ffffff20;
+  color: var(--accent);
+  transform: none;
+}
+.dock button:hover .dock-label {
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}
+
+.visiting .exhibition-copy {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-16px);
+  pointer-events: none;
+}
+.inspecting .exhibition-copy {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.visiting .dock {
+  border: 1px solid #ffffff80;
+  padding: 5px;
+  border-radius: 16px;
+}
+.visiting .dock button {
+  border-radius: 10px;
+}
+.visit-expanded .collection-panel {
+  background: #f8f7f1ed;
+  border-radius: 16px;
+  padding: 4px 12px 12px;
+  backdrop-filter: blur(12px);
+}
+.visit-expanded .room-nav {
+  border-top: 0;
+}
+body.dark .exhibition-copy {
+  --accent: #ffa467;
+}
+body.dark .optical-reticle {
+  border-color: #ffffff30;
+  color: #e5e6df;
+}
+body.dark .dock {
+  background: transparent;
+  border-color: #ffffff50;
+}
+body.dark .collection-panel {
+  color: var(--ink);
+}
+body.dark .capture-note {
+  color: var(--muted);
+}
+body.dark .room-nav {
+  border-color: #ffffff50;
+}
+body.dark.visit-expanded .collection-panel {
+  color: #292d2b;
+  --muted: #626662;
+}
+
+@keyframes exhibition-entrance {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .exhibition-eyebrow,
+  #exhibition-title > *,
+  .exhibition-description,
+  #browse-collection {
+    animation: exhibition-entrance 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  #exhibition-title > :nth-child(2) {
+    animation-delay: 0.06s;
+  }
+  #exhibition-title > :nth-child(3) {
+    animation-delay: 0.12s;
+  }
+  .exhibition-description,
+  #browse-collection {
+    animation-delay: 0.18s;
+  }
+}
+body.reduced .exhibition-copy * {
+  animation: none;
+}
+
+@media (max-width: 999px) {
+  .exhibition-copy {
+    left: 32px;
+    top: 100px;
+    width: calc(100% - 64px);
+  }
+  .exhibition-eyebrow {
+    margin-bottom: 10px;
+    font-size: 8px;
+  }
+  #exhibition-title {
+    font-size: clamp(40px, 6vw, 56px);
+    line-height: 0.98;
+    letter-spacing: -0.07em;
+  }
+  #exhibition-title > span {
+    display: inline;
+  }
+  .exhibition-description,
+  #browse-collection {
+    display: none;
+  }
+  .reticle-top {
+    display: none;
+  }
+  .reticle-bottom {
+    bottom: -23px;
+    font-size: 7px;
+    letter-spacing: 0.08em;
+  }
+}
+@media (max-width: 600px) {
+  .wordmark {
+    font-size: 30px;
+  }
+  .edition {
+    font-size: 10px;
+  }
+  .edition-no {
+    font-size: 7px;
+    letter-spacing: 0.06em;
+  }
+  .exhibition-copy {
+    left: 20px;
+    width: calc(100% - 40px);
+    top: 94px;
+  }
+  #exhibition-title {
+    font-size: clamp(40px, 10.7vw, 57px);
+  }
+  .collection-panel {
+    width: calc(100vw - 40px);
+  }
+  .room-nav {
+    padding-top: 9px;
+    gap: 4px;
+  }
+  #room-name {
+    font-size: 18px;
+  }
+  .capture-note {
+    padding-left: 48px;
+    font-size: 9px;
+  }
+  #capture-state {
+    display: none;
+  }
+  .dock {
+    width: calc(100vw - 40px);
+    padding: 7px 0 0;
+  }
+  .dock button {
+    min-height: 44px;
+  }
+  .dock-label {
+    font-size: 11px;
+  }
+  .visiting .dock {
+    width: min(340px, calc(100vw - 44px));
+  }
+}
+@media (max-width: 999px) and (max-height: 680px) {
+  .exhibition-copy {
+    display: none;
+  }
+}
+@media (max-width: 600px) and (max-height: 760px) {
+  .reticle-bottom {
+    display: none;
+  }
+}
+@media (min-width: 601px) and (max-width: 999px) and (max-height: 900px) {
+  .reticle-bottom {
+    display: none;
+  }
+}
+@media (min-width: 1000px) and (max-height: 680px) {
+  .exhibition-description {
+    display: none;
+  }
+}
+@media (min-width: 1000px) and (max-height: 599px) {
+  .exhibition-copy {
+    display: none;
+  }
+}

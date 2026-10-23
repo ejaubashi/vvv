@@ -1,4 +1,5 @@
 import "./style.css";
+import "./exhibition.css";
 import { mount, icon, range, toggle } from "./ui";
 import {
   defaults,
@@ -105,7 +106,14 @@ let visitTrigger: HTMLButtonElement = enterButton;
 const viewBounds: VisitBounds = { x: 0, y: 0, width: 1, height: 1, round: 1 };
 journey.go(selectedRoom);
 const systemReduced = matchMedia("(prefers-reduced-motion: reduce)");
-let saved = { x: width * 0.5, y: height * 0.46 },
+function lensHome(w: number, h: number) {
+  const wide = w >= 1000 && h >= 600;
+  return {
+    x: wide ? w * 0.7 : w * 0.5,
+    y: h * (!wide && h > 680 ? 0.5 : 0.46),
+  };
+}
+let saved = lensHome(width, height),
   target = { x: width * 0.5, y: height * 0.5, w: 480, h: 500 };
 const transition = new WorkspaceTransition(dialog, content, motion, lens);
 let toastTimer = 0,
@@ -159,13 +167,27 @@ function reduced() {
   wake();
 }
 function resize() {
+  const viewportChanged = width !== innerWidth || height !== innerHeight;
   width = innerWidth;
   height = innerHeight;
+  const exhibitionLayout = width >= 1000 && height >= 600;
   radius = Math.min(
-    roomEnabled ? 180 : 128,
+    exhibitionLayout ? (roomEnabled ? 260 : 210) : roomEnabled ? 180 : 128,
     width * (roomEnabled ? 0.34 : 0.27),
-    height * (roomEnabled ? 0.24 : 0.18),
+    height *
+      (exhibitionLayout
+        ? 0.3
+        : roomEnabled
+          ? width >= 600 && height <= 900
+            ? 0.21
+            : 0.24
+          : 0.18),
   );
+  if (viewportChanged && !inspect && !visitActive() && !workspace.active) {
+    saved = lensHome(width, height);
+    motion.x.snap(saved.x);
+    motion.y.snap(saved.y);
+  }
   const ratio =
     Math.min(
       devicePixelRatio || 1,
@@ -485,6 +507,12 @@ function updateVisitChrome() {
   orbButton.hidden = active || dialog.open || !actions.hidden || focus;
   orbButton.style.left = `${entrance.frame.x}px`;
   orbButton.style.top = `${entrance.frame.y}px`;
+  const reticle = $("#optical-reticle");
+  reticle.hidden = active || dialog.open || focus || !actions.hidden;
+  reticle.style.left = `${motion.x.x}px`;
+  reticle.style.top = `${motion.y.x}px`;
+  reticle.style.width = reticle.style.height = `${radius * 2 + 36}px`;
+  $(".exhibition-copy").inert = active || focus;
   $("#visit-bar").hidden = !active;
   roomView.hidden = !active || dialog.open;
   roomView.inert =
@@ -616,8 +644,8 @@ $("#visit-studio").addEventListener("click", () => {
   }
   updateVisitChrome();
 });
-async function startRoom() {
-  if (room.status === "idle") toast("Opening the room…");
+async function startRoom(announce = true) {
+  if (announce && room.status === "idle") toast("Opening the room…");
   await room.init(
     renderer.name !== "WebGPU" ||
       new URLSearchParams(location.search).get("roomRenderer") === "webgl",
@@ -626,7 +654,7 @@ async function startRoom() {
   if (!room.captureError) await room.select(selectedRoom);
   if (room.captureError) selectedRoom = room.kind;
   if (disposed) return;
-  if (roomEnabled)
+  if (roomEnabled && announce)
     toast(
       room.status === "ready"
         ? `${roomDefinition(selectedRoom).name} · move to look around`
@@ -934,6 +962,7 @@ document.addEventListener("keydown", (e) => {
 });
 function setInspect(value: boolean) {
   inspect = value;
+  document.body.classList.toggle("inspecting", value);
   lens.setAttribute(
     "aria-label",
     value
@@ -982,6 +1011,9 @@ dialog.addEventListener("cancel", (e) => {
   closeWorkspace();
 });
 $("#close-workspace").addEventListener("click", closeWorkspace);
+$("#browse-collection").addEventListener("click", (event) =>
+  openWorkspace("media", event.currentTarget as HTMLButtonElement),
+);
 dialog.addEventListener("click", (e) => {
   if (e.target === dialog) {
     const r = dialog.getBoundingClientRect();
@@ -1073,7 +1105,7 @@ function renderWorkspace(type: Workspace) {
       lightAngle = defaults.lightAngle;
       compare = false;
       setInspect(false);
-      saved = { x: width * 0.5, y: height * 0.46 };
+      saved = lensHome(width, height);
       motion.reset(saved.x, saved.y);
       renderWorkspace("material");
       toast("Material & position reset");
@@ -1427,4 +1459,4 @@ $("#scene").append(renderer.canvas);
 reduced();
 resize();
 wake();
-if (roomEnabled) void startRoom();
+if (roomEnabled) void startRoom(false);

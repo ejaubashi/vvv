@@ -1,5 +1,7 @@
 # FORM interface
 
+The current presentation adds a larger, offset lens, editorial Space Grotesk typography, fine framing marks, and a direct collection shortcut. See [the exhibition research and current release](EXHIBITION-RESEARCH.md). The utility-system review and preview below record the preceding interface release; its studio switching and interaction improvements remain in use.
+
 The lens and solar glass are the focus. A compact sans-serif identity and a restrained hierarchy replace the decorative serif treatment. The entrance button has a dark, clear action state. Controls wait for their first measured position before becoming visible.
 
 [Open the current preview](https://rawcdn.githack.com/ejaubashi/vvv/1ac4e67f10beea62c1ced240ca1addc4643d53f9/preview/index.html?room=1&space=apartment&renderer=webgl).

@@ -1,11 +1,11 @@
 # FORM typography
 
-FORM uses Manrope throughout: a compact, medium-weight wordmark, clear sans-serif headings, and quieter labels. The interface gives the orange glass and captured architecture the visual emphasis. The previous serif treatment has been removed from the active application and deployment.
+FORM pairs Space Grotesk for expressive display type with Manrope for supporting controls. The large “Light becomes place” heading gives the exhibition an identity beside the lens. The serif experiment remains historical.
 
-Body copy and controls use 13px type, captions 12px, and supporting metadata 10–11px. Studio headings use a restrained 29–32px scale. Room names are 16px rather than competing with the lens. Numeric values use tabular figures.
+Body copy and controls retain their clear scale, while the introductory type scales with both viewport width and height. Desktop uses a three-line composition; phones use two lines, with the introduction omitted on short screens. Studio headings and room names share the display face. Numeric values use tabular figures.
 
-The original Manrope variable Latin WOFF2 file is self-hosted, preloaded, and uses `font-display: swap` with system fallbacks. It contains the full weight range in 24,836 bytes. The portable edition embeds the same file without an external font request. No runtime dependency is added.
+The two original variable Latin WOFF2 files total 47,124 bytes: Manrope 24,836 and Space Grotesk 22,288. They are self-hosted, preloaded, and use `font-display: swap` with system fallbacks. The portable edition embeds both files without an external font request. No runtime dependency is added.
 
-Manrope is distributed under the SIL Open Font License 1.1. Package version, original filename, size, and SHA-256 hash are recorded in [font provenance](../public/fonts/PROVENANCE.json). Full notices accompany the deployment and portable export.
+Both fonts are distributed under the SIL Open Font License 1.1. Package versions, original filenames, sizes, and SHA-256 hashes are recorded in [font provenance](../public/fonts/PROVENANCE.json). Full notices accompany the deployment and portable export.
 
-See [the current interface design and checks](INTERFACE.md). The earlier serif experiment and its verification remain historical in Git and `typography-validation-results.json`.
+See [the exhibition research and current checks](EXHIBITION-RESEARCH.md). Earlier interface and serif experiments remain historical in Git and their respective validation records.

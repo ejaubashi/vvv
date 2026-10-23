@@ -17,6 +17,8 @@ const icons: Record<string, string> = {
   play: '<path d="m8 5 11 7-11 7Z"/>',
   download: '<path d="M12 3v13m-5-5 5 5 5-5M4 17v4h16v-4"/>',
   reset: '<path d="M4 10a8 8 0 1 1 1 8M4 4v6h6"/>',
+  northeast: '<path d="M6 18 18 6M6 6h12v12"/>',
+  turn: '<path d="M5 4v12h14m-5-5 5 5-5 5"/>',
 };
 export function icon(name: string) {
   return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${icons[name] || icons.details}</svg>`;
@@ -24,7 +26,9 @@ export function icon(name: string) {
 export function mount() {
   document.querySelector("#app")!.innerHTML = `
 <div id="scene" aria-hidden="true"></div>
-<header class="chrome"><a class="wordmark" href="./" aria-label="FORM home">form<span>®</span></a><div class="edition"><span>An optical playground</span><span class="edition-no">Light. Matter. Space.</span></div></header>
+<header class="chrome"><a class="wordmark" href="./" aria-label="FORM home">form<span>®</span></a><div class="edition"><span>Independent optical experiments</span><span class="edition-no"><i aria-hidden="true"></i> INTERACTIVE EXHIBITION · VOL. 01</span></div></header>
+<section class="exhibition-copy chrome" aria-labelledby="exhibition-title"><p class="exhibition-eyebrow"><span aria-hidden="true">${icon("turn")}</span> A NEW WAY OF SEEING</p><h2 id="exhibition-title"><span>Light</span> <span>becomes</span> <em>place.</em></h2><p class="exhibition-description">A little glass. An entire world.<br>Find your way through.</p><button id="browse-collection" aria-haspopup="dialog">Explore the collection ${icon("northeast")}</button></section>
+<div id="optical-reticle" class="optical-reticle chrome" aria-hidden="true" hidden><span class="reticle-top">LOOK CLOSER</span><span class="reticle-bottom">DRAG TO CHANGE YOUR POINT OF VIEW</span><i></i><i></i></div>
 <button id="lens" aria-label="Glass lens. Open actions" aria-expanded="false" aria-controls="actions"></button>
 <button id="enter-room" class="enter-room chrome" hidden>Enter the lens ${icon("arrow")}</button>
 <button id="entry-orb" class="entry-orb chrome" aria-label="Enter the lens through the glass object" hidden><span aria-hidden="true">ENTER</span></button>

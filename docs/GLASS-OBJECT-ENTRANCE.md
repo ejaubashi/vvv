@@ -20,7 +20,7 @@ The subtle contact tone plays only when the existing sound demonstration is enab
 
 ## Validation
 
-The current interface uses Manrope, grouped room navigation and credits, labeled studio tools, and direct switching inside studio panels. See [the interface and current live preview](INTERFACE.md) for screenshots and current checks, and [typography](TYPOGRAPHY.md) for font delivery and licensing. The solar appearance results below record an earlier release.
+The current presentation is described in [the exhibition research and live preview](EXHIBITION-RESEARCH.md). It retains grouped room navigation, labeled studio tools, and direct panel switching, with a larger lens and editorial display type. See [typography](TYPOGRAPHY.md) for font delivery and licensing. The solar appearance results below record an earlier release.
 
 The solar-orange appearance update passes the production build and all six existing entrance browser checks, including WebGPU presentation. The built courtyard scene and Canvas fallback were also visually reviewed with zero page errors or external asset requests. See [solar appearance verification](solar-validation-results.json).
 
