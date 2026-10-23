@@ -608,9 +608,12 @@
     "previews/glass-depth-mobile-courtyard.png"
   ],
   "publication": {
-    "status": "built; pending push",
+    "status": "published",
     "previewCommit": "6d5bbd9dacea61c8c537383e67eb44d6626a2755",
-    "previewUrl": "https://rawcdn.githack.com/ejaubashi/vvv/6d5bbd9dacea61c8c537383e67eb44d6626a2755/preview/index.html?room=1&space=apartment&renderer=webgl"
+    "previewUrl": "https://rawcdn.githack.com/ejaubashi/vvv/6d5bbd9dacea61c8c537383e67eb44d6626a2755/preview/index.html?room=1&space=apartment&renderer=webgl",
+    "matchingRemoteGitBlobs": 28,
+    "deliveryVerification": "GitHub refs and exact file hashes; the execution proxy blocks the CDN endpoint, so this is not a live-CDN browser audit."
   },
-  "performanceLimit": "Browser verification uses software Chromium; physical-device frame time is unmeasured."
+  "performanceLimit": "Browser verification uses software Chromium; physical-device frame time is unmeasured.",
+  "applicationCommit": "94a0a82f459c2de082074d9ef639d23210d7e43c"
 }
