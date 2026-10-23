@@ -1,11 +1,13 @@
 /** One liquid aperture. Every island samples the same scene coordinate system. */
 export const SPLASH_DROPS = [
-  { x: -0.88, y: -0.43, rx: 0.085, ry: 0.12, angle: -0.55 },
-  { x: 0.43, y: -0.88, rx: 0.09, ry: 0.06, angle: 0.35 },
-  { x: 0.91, y: 0.12, rx: 0.065, ry: 0.1, angle: -0.2 },
-  { x: 0.75, y: 0.7, rx: 0.1, ry: 0.065, angle: -0.45 },
-  { x: -0.75, y: 0.67, rx: 0.07, ry: 0.1, angle: 0.35 },
-  { x: -0.94, y: 0.1, rx: 0.035, ry: 0.05, angle: -0.3 },
+  // A slender sliver, a dominant island, a bead, a streak, a pebble and a speck.
+  // Each has a distinct area and aspect ratio, within the shared media bounds.
+  { x: -0.88, y: -0.43, rx: 0.055, ry: 0.13, angle: -0.65 },
+  { x: 0.53, y: -0.83, rx: 0.18, ry: 0.105, angle: 0.24 },
+  { x: 0.92, y: 0.12, rx: 0.056, ry: 0.056, angle: 0 },
+  { x: 0.75, y: 0.7, rx: 0.123, ry: 0.045, angle: -0.65 },
+  { x: -0.75, y: 0.67, rx: 0.09, ry: 0.125, angle: 0.35 },
+  { x: -0.94, y: 0.1, rx: 0.024, ry: 0.04, angle: 0.5 },
 ] as const;
 
 export function splashRadius(angle: number) {

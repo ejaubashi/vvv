@@ -1,12 +1,12 @@
 # One image, through a splash of glass
 
-The lens is a liquid silhouette with one larger body and six detached glass droplets. They reveal one shared room or media frame in a common coordinate system. A droplet at the upper right shows the upper-right portion of that frame, rather than repeating a complete miniature image. The gaps reveal the ordinary backdrop.
+The lens is a liquid silhouette with one larger body and six detached glass droplets. The detached pieces have a deliberate hierarchy: a broad upper-right island, a medium pebble, a slender sliver, a diagonal streak, a round bead, and a tiny speck. Their areas span almost twenty to one, with distinct proportions and rotations. They reveal one shared room or media frame in a common coordinate system. A droplet at the upper right shows the upper-right portion of that frame, rather than repeating a complete miniature image. The gaps reveal the ordinary backdrop.
 
 The current fit enlarges the splash by about a quarter at typical desktop and phone sizes, with smaller increases on short screens and more room on large displays. Height and width both bound the scale. The decorative circular frame, ticks, and surrounding labels have been removed. Keyboard focus uses temporary corner marks only. On narrow phones the sun rests higher and its duplicate visible label is omitted so it stays clear of the droplets; its accessible name and both entry controls remain available. The first layout settles immediately at its clamped home position.
 
 The room still renders once. There are no extra cameras, scene downloads, media players, or per-piece textures. The shared scene sample is refracted through the body and droplets. Each droplet has its own smaller curvature profile; the main body's irregular edge shapes its normal and rim. These are screen-space optical approximations, as with the original lens, rather than physical fluid simulation.
 
-[Try the larger splash preview](https://rawcdn.githack.com/ejaubashi/vvv/7680a2849be4995fe10f28bfea777360611ece04/preview/index.html?room=1&space=apartment&renderer=webgl).
+[Try the varied splash preview](https://rawcdn.githack.com/ejaubashi/vvv/4c1fb6380655527e09f6c8e1d0d8d266cff93023/preview/index.html?room=1&space=apartment&renderer=webgl).
 
 ## Rendering and interaction
 
@@ -18,12 +18,12 @@ The Canvas fallback clips a single image through the same islands, with its exis
 
 ## Verification
 
-Three new browser cases verify the central requirement: WebGL and Canvas pixel checks confirm seven sample points correspond to different regions of the same gradient frame, while a gap retains the background. Native hit testing confirms the body and six droplets are one usable control and the empty gap stays open; keyboard actions remain available.
+Three existing browser cases verify the central requirement: WebGL and Canvas pixel checks confirm seven sample points correspond to different regions of the same gradient frame, while a gap retains the background. Native hit testing confirms the body and six droplets are one usable control and the empty gap stays open; keyboard actions remain available.
 
-The current fit is checked with 19 production layouts across nine viewport sizes, eight focused browser cases, and three existing entrance unit cases. The built Apartment courtyard is reviewed on desktop and phone, including shape merging and exact shape-state restoration after return. See [the fit validation record](splash-fit-validation-results.json). The initial splash release's broader checks remain historical in [its original validation record](splash-validation-results.json). Automated graphics checks use software Chromium; physical-device frame time is unmeasured.
+The varied fragments are checked with 19 production layouts across nine viewport sizes and eight focused browser cases. The built Apartment courtyard is reviewed on desktop and phone, including shape merging and exact shape-state restoration after return. See [the fragment validation record](splash-fragments-validation-results.json). The preceding fit checks, including the entrance unit cases, remain in [the fit validation record](splash-fit-validation-results.json). The initial splash release's broader checks remain historical in [its original validation record](splash-validation-results.json). Automated graphics checks use software Chromium; physical-device frame time is unmeasured.
 
 The [preceding exhibition research](EXHIBITION-RESEARCH.md) explains the surrounding composition. That earlier preview and its layout record remain historical. The splash changes the optical mask while retaining the exhibition's layout.
 
-![The larger Apartment splash without a circular frame, Stephane Agullo, CC BY 4.0](previews/splash-fit-courtyard.png)
+![Varied glass fragments around the Apartment splash without a circular frame, Stephane Agullo, CC BY 4.0](previews/splash-fragments-courtyard.png)
 
-![The larger splash lens on a phone](previews/splash-fit-mobile-courtyard.png)
+![Varied glass fragments on a phone](previews/splash-fragments-mobile-courtyard.png)
