@@ -1,0 +1,607 @@
+@font-face {
+  font-family: "Instrument Serif";
+  src: url("./assets/fonts/instrument-serif-italic-latin.woff2") format("woff2");
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+}
+:root {
+  --font-display: "Geist", var(--font-interface);
+  --font-artwork: "Instrument Serif", Georgia, serif;
+  --accent: #bc501c;
+  --ink: #252724;
+  --muted: #646660;
+}
+#lens {
+  border-radius: 0;
+}
+.lens-focus-mark {
+  position: fixed;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 2;
+  display: none;
+  --focus-stroke: linear-gradient(var(--accent), var(--accent));
+  background:
+    var(--focus-stroke) left top / 16px 2px,
+    var(--focus-stroke) left top / 2px 16px,
+    var(--focus-stroke) right top / 16px 2px,
+    var(--focus-stroke) right top / 2px 16px,
+    var(--focus-stroke) left bottom / 16px 2px,
+    var(--focus-stroke) left bottom / 2px 16px,
+    var(--focus-stroke) right bottom / 16px 2px,
+    var(--focus-stroke) right bottom / 2px 16px;
+  background-repeat: no-repeat;
+}
+body:has(#lens:focus-visible) .lens-focus-mark:not([hidden]) {
+  display: block;
+}
+
+/* A sparse masthead: identity, a quiet edition label, one collection entrance. */
+header {
+  align-items: center;
+  min-height: 44px;
+}
+.wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 31px;
+  font-weight: 510;
+  letter-spacing: -0.065em;
+}
+.wordmark svg {
+  width: 19px;
+  height: 19px;
+  color: var(--accent);
+  transition: transform 650ms var(--motion-out, ease);
+}
+.wordmark:is(:hover, :focus-visible) svg {
+  transform: rotate(90deg);
+}
+.edition {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+  font-size: 11px;
+  color: var(--muted);
+}
+.edition-no {
+  font-size: 9px;
+  letter-spacing: 0.07em;
+}
+#browse-collection {
+  display: inline-flex;
+  align-items: center;
+  gap: 21px;
+  min-height: 44px;
+  padding: 0 1px;
+  font-size: 12px;
+  font-weight: 420;
+}
+#browse-collection svg {
+  width: 15px;
+  height: 15px;
+}
+#browse-collection:is(:hover, :focus-visible) {
+  color: var(--accent);
+}
+
+/* One direct invitation; the type gives the glass space to be the artwork. */
+.exhibition-copy {
+  position: absolute;
+  left: 5vw;
+  top: 24%;
+  width: 36vw;
+  z-index: 1;
+  transition:
+    opacity 300ms,
+    visibility 300ms,
+    transform 400ms var(--motion-out, ease);
+}
+#exhibition-title {
+  font-family: var(--font-display);
+  font-size: clamp(56px, min(7.1vw, 11vh), 98px);
+  font-weight: 390;
+  line-height: 0.94;
+  letter-spacing: -0.075em;
+  margin: 0;
+}
+#exhibition-title > * {
+  display: block;
+}
+#exhibition-title em {
+  font-family: var(--font-artwork);
+  font-weight: 400;
+  font-style: italic;
+  font-size: 1.6em;
+  line-height: 0.94;
+  letter-spacing: -0.035em;
+  margin-top: 2px;
+}
+.exhibition-description {
+  margin: 29px 0 0;
+  min-height: 22px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.7;
+  letter-spacing: -0.01em;
+}
+#studio-intent {
+  display: inline-block;
+}
+#studio-intent[data-section] {
+  color: var(--accent);
+}
+
+.enter-room {
+  min-height: 48px;
+  padding: 0 2px;
+  gap: 18px;
+  font-size: 10px;
+  font-weight: 470;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: transparent;
+  color: var(--ink);
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+.enter-room:hover {
+  background: transparent;
+}
+.enter-room svg {
+  width: 31px;
+  height: 31px;
+  padding: 9px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: #f8f7f2;
+}
+.entry-orb span {
+  font-size: 7px;
+  letter-spacing: 0.14em;
+}
+
+/* The collection and studio share an understated footer rhythm. */
+.collection-panel {
+  left: 32px;
+  bottom: max(32px, calc(env(safe-area-inset-bottom) + 16px));
+  transform: none;
+  width: 340px;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+.room-nav {
+  border-top: 1px solid #292d2b28;
+  padding: 8px 0 4px;
+  gap: 4px;
+}
+.room-nav > button {
+  border-radius: 0;
+}
+.room-nav > button svg {
+  width: 17px;
+  height: 17px;
+}
+.room-nav > button:hover {
+  background: #ffffff30;
+}
+.room-caption {
+  gap: 3px;
+}
+#room-count {
+  font-size: 8px;
+  letter-spacing: 0.05em;
+}
+#room-name {
+  font-size: 19px;
+  font-weight: 430;
+  letter-spacing: -0.045em;
+}
+.capture-note {
+  padding: 0 0 0 48px;
+  font-size: 8.5px;
+  line-height: 1.5;
+  gap: 2px;
+  border: 0;
+  margin: 0;
+}
+.capture-note a {
+  text-decoration-color: #62666250;
+}
+.dock-wrap {
+  width: 340px;
+  left: auto;
+  right: 32px;
+  bottom: max(32px, calc(env(safe-area-inset-bottom) + 16px));
+  transform: none;
+  text-align: left;
+}
+.dock-caption {
+  display: block;
+  border-top: 1px solid #292d2b28;
+  padding-top: 13px;
+  margin-bottom: 3px;
+  font-size: 8px;
+  font-weight: 430;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+.dock {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  gap: 0;
+  border-radius: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+.dock button {
+  width: 25%;
+  flex: 1;
+  min-width: 0;
+  min-height: 44px;
+  justify-content: flex-start;
+  gap: 8px;
+  border-radius: 0;
+  padding: 0;
+}
+.dock-icon {
+  display: none;
+}
+.dock-label {
+  font-size: 11px;
+  font-weight: 420;
+}
+.dock button:is(:hover, :focus-visible) {
+  background: transparent;
+  color: var(--accent);
+  transform: none;
+}
+.dock button:hover .dock-label {
+  text-decoration: none;
+}
+
+/* A paper-like studio: expressive headings, precise controls, fewer boxes. */
+dialog {
+  width: min(540px, calc(100vw - 32px));
+  border-radius: 18px;
+}
+.workspace-content {
+  padding: 20px 32px 28px;
+  background: #faf9f5f5;
+}
+.workspace-top {
+  background: #faf9f5fa;
+}
+.icon-button {
+  background: transparent;
+}
+.eyebrow {
+  font-size: 9px;
+  font-weight: 420;
+  letter-spacing: 0.08em;
+}
+h1 {
+  font-family: var(--font-artwork);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 48px;
+  letter-spacing: -0.025em;
+  line-height: 1.08;
+  margin: 27px 0 12px;
+}
+.description {
+  font-size: 12px;
+  font-weight: 400;
+  margin-bottom: 26px;
+  max-width: none;
+}
+.presets {
+  gap: 16px;
+  margin-bottom: 23px;
+}
+.preset {
+  padding: 13px 0;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  background: transparent;
+  color: var(--muted);
+  gap: 4px;
+  font-size: 13px;
+}
+.preset[aria-pressed="true"] {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--accent);
+  box-shadow: 0 1px 0 var(--accent);
+}
+.preset .orb {
+  display: none;
+}
+.preset small {
+  font-size: 10px;
+}
+.control-label {
+  font-size: 12px;
+  font-weight: 420;
+}
+.control-label output {
+  font-size: 11px;
+}
+input[type="range"] {
+  background-size: 100% 1px;
+}
+input[type="range"]::-webkit-slider-thumb {
+  width: 12px;
+  height: 12px;
+  border: 0;
+  background: #343934;
+  box-shadow: 0 0 0 4px #faf9f5;
+}
+input[type="range"]::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border: 0;
+  background: #343934;
+  box-shadow: 0 0 0 4px #faf9f5;
+}
+.room-preset {
+  border-radius: 7px;
+}
+.advanced-optics summary span svg {
+  width: 14px;
+  height: 14px;
+}
+.workspace-footer {
+  letter-spacing: 0.06em;
+  font-size: 8px;
+}
+
+.visiting .exhibition-copy {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-16px);
+  pointer-events: none;
+}
+.inspecting .exhibition-copy {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.visiting .dock-wrap {
+  width: 340px;
+  top: 88px;
+  right: 32px;
+  left: auto;
+  bottom: auto;
+  transform: none;
+}
+.visiting .dock-caption {
+  display: none;
+}
+.visiting .dock {
+  border: 1px solid #ffffff80;
+  padding: 5px;
+  border-radius: 12px;
+  background: #f6f5f0ed;
+}
+.visiting .dock button {
+  width: auto;
+  min-height: 48px;
+  flex-direction: row;
+  justify-content: center;
+  border-radius: 6px;
+}
+.visiting .dock-label {
+  font-size: 11px;
+}
+.visit-expanded .collection-panel {
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: max(24px, calc(env(safe-area-inset-bottom) + 12px));
+  background: #f8f7f1ed;
+  border-radius: 12px;
+  padding: 4px 12px 10px;
+}
+.visit-expanded .room-nav {
+  border-top: 0;
+}
+body.dark .dock {
+  background: transparent;
+}
+body.dark .dock-label {
+  color: inherit;
+}
+body.dark .dock-caption,
+body.dark .room-nav {
+  border-color: #ffffff40;
+}
+body.dark .collection-panel {
+  color: var(--ink);
+}
+body.dark .capture-note {
+  color: var(--muted);
+}
+body.dark.visit-expanded .collection-panel {
+  color: #292d2b;
+  --muted: #626662;
+}
+body.dark.visiting .dock {
+  color: #292d2b;
+  background: #f6f5f0ed;
+}
+
+@media (max-width: 999px) {
+  .edition {
+    display: none;
+  }
+  .exhibition-copy {
+    left: 32px;
+    top: 112px;
+    width: calc(100% - 64px);
+  }
+  #exhibition-title {
+    font-size: 51px;
+    line-height: 1;
+  }
+  #exhibition-title > span,
+  #exhibition-title > em {
+    display: inline-block;
+  }
+  #exhibition-title em {
+    font-size: 1.45em;
+    margin: 0 0 0 0.08em;
+  }
+  .exhibition-description {
+    margin-top: 14px;
+    font-size: 11px;
+  }
+  .collection-panel {
+    width: 320px;
+  }
+  .dock-wrap {
+    width: 320px;
+  }
+}
+@media (max-width: 600px) {
+  header {
+    top: max(20px, calc(env(safe-area-inset-top) + 12px));
+    left: 20px;
+    right: 20px;
+  }
+  .wordmark {
+    font-size: 26px;
+    gap: 8px;
+  }
+  .wordmark svg {
+    width: 16px;
+    height: 16px;
+  }
+  #browse-collection {
+    font-size: 11px;
+    gap: 13px;
+  }
+  #browse-collection svg {
+    width: 14px;
+    height: 14px;
+  }
+  .exhibition-copy {
+    top: 117px;
+    left: 20px;
+    width: calc(100% - 40px);
+  }
+  #exhibition-title {
+    font-size: clamp(38px, 10.5vw, 49px);
+  }
+  #exhibition-title em {
+    font-size: 1.5em;
+  }
+  .exhibition-description {
+    margin-top: 14px;
+  }
+  .entry-orb span {
+    display: none;
+  }
+  .collection-panel {
+    left: 20px;
+    transform: none;
+    bottom: max(112px, calc(env(safe-area-inset-bottom) + 104px));
+    width: calc(100vw - 40px);
+  }
+  .room-nav {
+    padding-top: 8px;
+    gap: 3px;
+  }
+  #room-name {
+    font-size: 18px;
+  }
+  #capture-state {
+    display: none;
+  }
+  .capture-note {
+    padding-left: 47px;
+  }
+  .dock-wrap {
+    left: 20px;
+    right: 20px;
+    transform: none;
+    width: auto;
+    bottom: max(20px, calc(env(safe-area-inset-bottom) + 12px));
+  }
+  .dock {
+    width: 100%;
+  }
+  .dock-caption {
+    padding-top: 11px;
+  }
+  .dock-label {
+    font-size: 10px;
+  }
+  .dock button {
+    gap: 6px;
+  }
+  .workspace-content {
+    padding: 14px 20px 22px;
+  }
+  h1 {
+    font-size: 42px;
+  }
+  .description {
+    font-size: 12px;
+  }
+  .visiting .dock-wrap {
+    width: min(340px, calc(100vw - 40px));
+    left: 20px;
+    right: 20px;
+    top: 80px;
+  }
+  .visiting .dock {
+    width: 100%;
+  }
+}
+@media (max-width: 999px) and (max-height: 680px),
+  (min-width: 1000px) and (max-height: 599px) {
+  .exhibition-copy {
+    display: none;
+  }
+}
+@media (max-height: 600px) and (max-width: 600px) {
+  .collection-panel {
+    bottom: 100px;
+  }
+}
+@media (max-height: 560px) and (min-width: 601px) {
+  header {
+    top: 16px;
+  }
+  .collection-panel {
+    left: 20px;
+    bottom: 16px;
+    width: min(340px, calc(50vw - 30px));
+  }
+  .dock-wrap {
+    left: auto;
+    right: 20px;
+    bottom: 16px;
+    width: min(320px, calc(50vw - 30px));
+  }
+  .dock-caption {
+    padding-top: 8px;
+  }
+  .capture-note {
+    padding-bottom: 0;
+  }
+}

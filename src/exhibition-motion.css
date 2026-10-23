@@ -1,0 +1,219 @@
+:root {
+  --motion-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-spring: cubic-bezier(0.22, 1.12, 0.36, 1);
+}
+
+/* Word masks preserve the font's kerning and the heading's accessible text. */
+.type-mask {
+  display: inline-block;
+  overflow: hidden;
+  overflow: clip;
+  vertical-align: top;
+  padding: 0.1em 0.06em 0.12em;
+  margin: -0.1em -0.06em -0.12em;
+  perspective: 800px;
+}
+.type-ink {
+  display: inline-block;
+  transform-origin: 50% 100%;
+}
+#exhibition-title > * {
+  --word-weight: 0.5;
+  transform: translate3d(
+    calc(var(--title-x, 0px) * var(--word-weight)),
+    calc(var(--title-y, 0px) * var(--word-weight)),
+    0
+  );
+  transition: transform 650ms var(--motion-out);
+}
+#exhibition-title > :nth-child(2) {
+  --word-weight: 0.75;
+}
+#exhibition-title > em {
+  --word-weight: 1;
+}
+#exhibition-title em .type-ink {
+  color: var(--ink);
+}
+@supports (background-clip: text) {
+  #exhibition-title em .type-ink {
+    color: transparent;
+    background-image: linear-gradient(
+      110deg,
+      var(--ink) 28%,
+      #85867e 48%,
+      var(--ink) 68%
+    );
+    background-size: 230% 100%;
+    background-position: var(--title-light, 50%) 50%;
+    background-clip: text;
+    transition: background-position 750ms var(--motion-out);
+  }
+}
+
+/* The selected section moves as one surface beneath stable button hit areas. */
+.workspace-sections {
+  position: relative;
+  isolation: isolate;
+  padding: 0;
+  gap: 0;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+}
+.workspace-sections[data-current]::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  box-sizing: border-box;
+  bottom: -1px;
+  left: 0;
+  height: 2px;
+  width: 25%;
+  border: 0;
+  border-radius: 0;
+  background: var(--accent);
+  transform: translateX(calc(var(--section-index, 0) * 100%));
+  transition: transform 480ms var(--motion-out);
+  pointer-events: none;
+}
+.workspace-sections[data-current] button {
+  background: transparent;
+  border-radius: 0;
+  font-weight: 420;
+  transition:
+    color 200ms,
+    background-color 200ms;
+}
+.workspace-sections[data-current] button[aria-pressed="true"] {
+  color: #292d2b;
+  background: transparent;
+  box-shadow: none;
+}
+.workspace-sections button:focus-visible {
+  outline-offset: -3px;
+}
+#workspace-title .type-mask {
+  padding-top: 0.08em;
+  margin-top: -0.08em;
+}
+
+/* An elastic rail follows pointer and keyboard focus without moving controls. */
+.dock {
+  --dock-inset: 0px;
+  position: relative;
+}
+.visiting .dock {
+  --dock-inset: 5px;
+}
+.dock::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: var(--dock-inset);
+  width: calc((100% - var(--dock-inset) * 2) / 4);
+  height: 2px;
+  background: var(--accent);
+  transform: translateX(calc(var(--dock-index, 0) * 100%)) scaleX(0.7);
+  opacity: 0;
+  transition:
+    transform 480ms var(--motion-spring),
+    opacity 200ms;
+  pointer-events: none;
+}
+.dock[data-aim]::after {
+  opacity: 1;
+}
+.dock-label {
+  transition:
+    transform 400ms var(--motion-out),
+    color 200ms;
+}
+.dock-number {
+  display: inline;
+  position: static;
+  order: -1;
+  font-size: 8px;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  opacity: 0.45;
+  transform: translateY(0);
+  transition:
+    opacity 200ms,
+    transform 400ms var(--motion-out);
+  pointer-events: none;
+}
+.dock button:hover .dock-label {
+  text-decoration: none;
+}
+.dock button:focus-visible .dock-label {
+  transform: translateY(-1px);
+}
+.dock button:focus-visible .dock-number {
+  opacity: 0.7;
+  transform: translateY(0);
+}
+.icon-button svg,
+#enter-room svg,
+#browse-collection svg {
+  transition:
+    transform 450ms var(--motion-spring),
+    background-color 250ms;
+}
+#enter-room:focus-visible svg {
+  transform: rotate(-35deg);
+}
+#browse-collection:focus-visible svg {
+  transform: translate(4px, -4px);
+}
+@media (hover: hover) and (pointer: fine) {
+  .dock button:hover .dock-label {
+    transform: translateY(-1px);
+  }
+  .dock button:hover .dock-number {
+    opacity: 0.7;
+    transform: translateY(0);
+  }
+  .icon-button:hover svg {
+    transform: rotate(90deg);
+  }
+  #enter-room:hover svg {
+    transform: rotate(-35deg);
+    background: #ff9b4d;
+  }
+  #browse-collection:hover svg {
+    transform: translate(4px, -4px);
+  }
+  .room-preset,
+  .preset {
+    transition:
+      transform 400ms var(--motion-out),
+      box-shadow 300ms,
+      background-color 200ms;
+  }
+  .room-preset:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px #292d2b10;
+  }
+  .preset:hover {
+    color: var(--ink);
+  }
+}
+@media (max-width: 999px) {
+  #exhibition-title > span {
+    display: inline-block;
+  }
+}
+@media (forced-colors: active) {
+  #exhibition-title em .type-ink {
+    color: CanvasText;
+    background: none;
+  }
+  .workspace-sections[data-current]::before {
+    background: Highlight;
+  }
+  .dock::after {
+    background: Highlight;
+  }
+}

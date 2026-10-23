@@ -1,0 +1,38 @@
+{
+  "date": "2026-10-23",
+  "sourceBranch": "glass-object-entrance",
+  "applicationCommit": "e77b47ac5dc3cb5c0bbeb30bdc3c9467357f8a1f",
+  "style": "Solar-orange glass with an amber core, golden rim, warm halo, static fine texture, and transmitted room image.",
+  "build": {
+    "status": "passed",
+    "files": 23,
+    "bytes": 47109131
+  },
+  "browserChecks": {
+    "command": "npx playwright test tests/browser/entrance.spec.ts --reporter=json",
+    "passed": 6,
+    "failed": 0,
+    "durationMs": 21452,
+    "scope": "Existing WebGL pixel displacement/restoration, WebGPU presentation, entry/return, reduced motion, touch, keyboard focus, and optional audio lifecycle."
+  },
+  "visualReview": {
+    "productionPrefix": "/release/preview/",
+    "scene": "apartment",
+    "backends": [
+      "WebGL / Spark",
+      "Canvas 2D fallback"
+    ],
+    "captureDownloads": 1,
+    "externalAssetRequests": 0,
+    "pageErrors": 0,
+    "screenshot": "previews/solar-object.png"
+  },
+  "publication": {
+    "status": "published",
+    "previewCommit": "d183167b1562cb9a531586e384e0cd2a567cc988",
+    "previewUrl": "https://rawcdn.githack.com/ejaubashi/vvv/d183167b1562cb9a531586e384e0cd2a567cc988/preview/index.html?room=1&space=apartment&renderer=webgl",
+    "matchingRemoteGitBlobs": 23,
+    "deliveryVerification": "GitHub refs and exact file hashes; the execution proxy blocks the CDN endpoint as recorded in entrance-validation-results.json."
+  },
+  "note": "This appearance update reruns the six entrance browser cases. The original entrance full regression results remain in entrance-validation-results.json; no new runtime dependency, asset, or animation clock is added."
+}
