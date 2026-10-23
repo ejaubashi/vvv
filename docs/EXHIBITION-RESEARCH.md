@@ -1,5 +1,7 @@
 # FORM: a spatial exhibition
 
+The current release uses [a splash-shaped lens with detached droplets](SPLASH-LENS.md). The research, screenshot, and preview below record the preceding exhibition composition, which remains the basis of the surrounding interface.
+
 Research and implementation, 23 October 2026. The design problem is distinction: a small lens in the middle of a large gray stage, with utility controls around it, reads as a tool demonstration. FORM needs a recognizable composition, a reason to enter, and a transition that delivers on that invitation.
 
 [Try the exhibition preview](https://rawcdn.githack.com/ejaubashi/vvv/4217bf882cdd3a0a7ef9e2815f3b5ca69b915ae4/preview/index.html?room=1&space=apartment&renderer=webgl).

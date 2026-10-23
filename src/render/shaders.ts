@@ -1,3 +1,5 @@
+import { splashGLSL, splashWGSL } from "./splash";
+
 export const glVertex = `#version 300 es
 precision highp float;
 const vec2 verts[3]=vec2[3](vec2(-1.,-1.),vec2(3.,-1.),vec2(-1.,3.));
@@ -29,23 +31,24 @@ glass+=vec3(1.,.68,.23)*(.09+rim*.3)+vec3(1.,.91,.63)*shine*.62;
 glass+=vec3(1.,.82,.33)*exp(-pow((r-.94)/.025,2.))*.32;
 return mix(base,glass,g.y*(1.-smoothstep(.97,1.02,r)));
 }
+${splashGLSL}
 void main(){
 vec2 p=vec2(gl_FragCoord.x,a.y-gl_FragCoord.y),local=p-a.zw;
 local/=1.-c.z*.06;
 vec2 axis=normalize(c.xy+vec2(.0001));local-=axis*dot(local,axis)*min(length(c.xy)*.06,.16);
-vec2 q=abs(local)-b.xy+vec2(b.z);float sdf=length(max(q,0.))+min(max(q.x,q.y),0.)-b.z;
+vec4 surface=liquidField(local,b.xy,b.z,h.z);float sdf=surface.x;
 vec3 base=sampleScene(p);float ratio=d.w;
 float shadow=exp(-max(sdf,0.)/(18.*ratio))*.065*smoothstep(-2.*ratio,2.*ratio,sdf);
 vec2 wakeCenter=a.zw+vec2(cos(e.y),sin(e.y))*b.x*.2+c.xy*8.*ratio;
 float wake=exp(-pow((length((p-wakeCenter)/vec2(1.25,.62))-b.x*.95)/(18.*ratio),2.))*.055*(.2+c.z+d.z);
 base=base*(1.-shadow)+vec3(wake);
 if(sdf<1.5*ratio){
-vec2 n=local/max(b.xy,vec2(1.));float r=clamp(length(n),0.,1.);
+vec2 n=surface.yz;float r=clamp(length(n),0.,1.);
 vec2 slope=n*.78*mix(1.,.2,e.w)/max(1.,length(n));float z=sqrt(max(.06,1.-dot(slope,slope)));
 vec3 normal=normalize(vec3(slope,z));vec3 ray=refract(vec3(0.,0.,-1.),normal,1./b.w);
 vec2 offset=clamp(ray.xy/max(.2,-ray.z)*c.w*ratio*e.x*.72,vec2(-c.w*ratio*.5),vec2(c.w*ratio*.5));
 float portalBend=mix(1.,.3+.7*smoothstep(.6,1.,r),e.z);
-vec2 refracted=p+offset*portalBend+c.xy*ratio*2.+ripple(p);float frost=d.x*(3.+e.x*12.)*ratio*mix(1.,.18+.82*smoothstep(.12,.85,d.x),e.z);
+vec2 refracted=p+offset*portalBend*surface.w+c.xy*ratio*2.+ripple(p);float frost=d.x*(3.+e.x*12.)*ratio*mix(1.,.18+.82*smoothstep(.12,.85,d.x),e.z);
 vec3 glass=sampleGlass(refracted)*.4;
 glass+=(sampleGlass(refracted+vec2(frost,0.))+sampleGlass(refracted-vec2(frost,0.))+sampleGlass(refracted+vec2(0.,frost))+sampleGlass(refracted-vec2(0.,frost)))*.15;
 float f0=pow((b.w-1.)/(b.w+1.),2.);float fresnel=b.w<=1.0001?0.:f0+(1.-f0)*pow(1.-normal.z,5.);
@@ -92,20 +95,21 @@ glass+=vec3f(1.,.82,.33)*exp(-pow((r-.94)/.025,2.))*.32;
 return mix(base,glass,u.g.y*(1.-smoothstep(.97,1.02,r)));
 }
 @fragment fn fsBackground(@builtin(position) pos:vec4f)->@location(0) vec4f {return vec4f(sampleScene(pos.xy),1.);}
+${splashWGSL}
 @fragment fn fs(@builtin(position) pos:vec4f)->@location(0) vec4f {
 let p=pos.xy;var local=(p-u.a.zw)/(1.-u.c.z*.06);
 let axis=normalize(u.c.xy+vec2f(.0001));local-=axis*dot(local,axis)*min(length(u.c.xy)*.06,.16);
-let q=abs(local)-u.b.xy+vec2f(u.b.z);let sdf=length(max(q,vec2f(0.)))+min(max(q.x,q.y),0.)-u.b.z;
+let surface=liquidField(local,u.b.xy,u.b.z,u.h.z);let sdf=surface.x;
 var base=sampleScene(p);let ratio=u.d.w;
 let shadow=exp(-max(sdf,0.)/(18.*ratio))*.065*smoothstep(-2.*ratio,2.*ratio,sdf);
 let wakeCenter=u.a.zw+vec2f(cos(u.e.y),sin(u.e.y))*u.b.x*.2+u.c.xy*8.*ratio;
 let wake=exp(-pow((length((p-wakeCenter)/vec2f(1.25,.62))-u.b.x*.95)/(18.*ratio),2.))*.055*(.2+u.c.z+u.d.z);
 base=base*(1.-shadow)+vec3f(wake);
-if(sdf<1.5*ratio){let n=local/max(u.b.xy,vec2f(1.));let r=clamp(length(n),0.,1.);let slope=n*.78*mix(1.,.2,u.e.w)/max(1.,length(n));
+if(sdf<1.5*ratio){let n=surface.yz;let r=clamp(length(n),0.,1.);let slope=n*.78*mix(1.,.2,u.e.w)/max(1.,length(n));
 let z=sqrt(max(.06,1.-dot(slope,slope)));let normal=normalize(vec3f(slope,z));let ray=refract(vec3f(0.,0.,-1.),normal,1./u.b.w);
 let offset=clamp(ray.xy/max(.2,-ray.z)*u.c.w*ratio*u.e.x*.72,vec2f(-u.c.w*ratio*.5),vec2f(u.c.w*ratio*.5));
 let portalBend=mix(1.,.3+.7*smoothstep(.6,1.,r),u.e.z);
-let refracted=p+offset*portalBend+u.c.xy*ratio*2.+ripple(p);let frost=u.d.x*(3.+u.e.x*12.)*ratio*mix(1.,.18+.82*smoothstep(.12,.85,u.d.x),u.e.z);
+let refracted=p+offset*portalBend*surface.w+u.c.xy*ratio*2.+ripple(p);let frost=u.d.x*(3.+u.e.x*12.)*ratio*mix(1.,.18+.82*smoothstep(.12,.85,u.d.x),u.e.z);
 var glass=sampleGlass(refracted)*.4;
 glass+=(sampleGlass(refracted+vec2f(frost,0.))+sampleGlass(refracted-vec2f(frost,0.))+sampleGlass(refracted+vec2f(0.,frost))+sampleGlass(refracted-vec2f(0.,frost)))*.15;
 let f0=pow((u.b.w-1.)/(u.b.w+1.),2.);let fresnel=select(f0+(1.-f0)*pow(1.-normal.z,5.),0.,u.b.w<=1.0001);

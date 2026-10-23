@@ -2,6 +2,7 @@ import { fresnelReflectance, refractedOffset } from "../optics";
 import type { PortalFrame } from "./portal-frame";
 import type { OpticalState } from "../state";
 import { glVertex, glFragment, glBackground, wgsl } from "./shaders";
+import { liquidOutline } from "./splash";
 export interface Renderer {
   name: string;
   maxDimension: number;
@@ -53,6 +54,7 @@ function values(
   target[27] = entry?.rippleStrength ?? 0;
   target[28] = (entry?.impactX ?? 0) * ratio;
   target[29] = (entry?.impactY ?? 0) * ratio;
+  target[30] = s.splash ?? 0;
   return target;
 }
 /** Expensive optics only cover the object plus a 96 CSS-pixel light/shadow halo. */
@@ -472,6 +474,8 @@ export class WebGPURenderer extends Base implements Renderer {
 export class CanvasRenderer extends Base implements Renderer {
   name = "Canvas 2D fallback";
   ctx = this.canvas.getContext("2d", { alpha: false })!;
+  private outlineKey = "";
+  private outline = new Path2D();
   draw(
     s: OpticalState,
     scene: HTMLCanvasElement,
@@ -482,22 +486,26 @@ export class CanvasRenderer extends Base implements Renderer {
       r = this.ratio;
     c.setTransform(r, 0, 0, r, 0, 0);
     c.drawImage(scene, 0, 0, this.canvas.width / r, this.canvas.height / r);
-    c.save();
-    c.beginPath();
-    c.roundRect(
-      s.x - s.width / 2,
-      s.y - s.height / 2,
-      s.width,
-      s.height,
-      s.round,
+    const outlineKey = `${s.width},${s.height},${s.round},${s.splash ?? 0}`;
+    if (outlineKey !== this.outlineKey) {
+      this.outlineKey = outlineKey;
+      this.outline = new Path2D(
+        liquidOutline(s.width, s.height, s.round, s.splash ?? 0),
+      );
+    }
+    const path = new Path2D();
+    path.addPath(
+      this.outline,
+      new DOMMatrix().translate(s.x - s.width / 2, s.y - s.height / 2),
     );
+    c.save();
     c.shadowColor = "rgba(0,0,0,.15)";
     c.shadowBlur = 24;
     c.shadowOffsetY = 12;
     c.fillStyle = "rgba(255,255,255,.08)";
-    c.fill();
+    c.fill(path);
     c.shadowColor = "transparent";
-    c.clip();
+    c.clip(path);
     if (!s.compare || (portal && s.room > 0)) {
       const scale = 1 + Math.abs(refractedOffset(0.7, s.ior, s.depth));
       c.translate(s.x, s.y);
@@ -517,14 +525,6 @@ export class CanvasRenderer extends Base implements Renderer {
       }
     }
     c.restore();
-    c.beginPath();
-    c.roundRect(
-      s.x - s.width / 2,
-      s.y - s.height / 2,
-      s.width,
-      s.height,
-      s.round,
-    );
     const shine = c.createLinearGradient(
       s.x + (Math.cos(s.lightAngle) * s.width) / 2,
       s.y + (Math.sin(s.lightAngle) * s.height) / 2,
@@ -539,19 +539,11 @@ export class CanvasRenderer extends Base implements Renderer {
     shine.addColorStop(1, "rgba(255,255,255,.22)");
     c.strokeStyle = shine;
     c.lineWidth = 1;
-    c.stroke();
+    c.stroke(path);
     const entry = s.entrance;
     if (entry && entry.rippleStrength > 0) {
       c.save();
-      c.beginPath();
-      c.roundRect(
-        s.x - s.width / 2,
-        s.y - s.height / 2,
-        s.width,
-        s.height,
-        s.round,
-      );
-      c.clip();
+      c.clip(path);
       c.beginPath();
       c.arc(entry.impactX, entry.impactY, entry.rippleRadius, 0, Math.PI * 2);
       c.lineWidth = 3;

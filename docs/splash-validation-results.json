@@ -1,0 +1,226 @@
+{
+  "date": "2026-10-23",
+  "sourceBranch": "glass-object-entrance",
+  "design": "A single liquid body and six detached droplets reveal one continuous room/media frame. Shared coordinates; per-piece curvature; common Canvas and hit-test outline; coalescence on entry.",
+  "build": {
+    "status": "passed",
+    "files": 28,
+    "bytes": 47190314,
+    "manifest": [
+      {
+        "path": "THIRD-PARTY-LICENSES.txt",
+        "bytes": 12001,
+        "gitBlob": "4624bb86f59a657ac8e6c950a23800ce5fb3b7c7"
+      },
+      {
+        "path": "assets/capture-CsDUnzI9.js",
+        "bytes": 2731097,
+        "gitBlob": "e07153b4cc386396ef47af38781a8e31b17b4425"
+      },
+      {
+        "path": "assets/capture-source-Drn4nOE-.js",
+        "bytes": 594399,
+        "gitBlob": "d61ddeb74f00c3ec8f4858e710ce69e673b245a2"
+      },
+      {
+        "path": "assets/index-Bv8Fi-vI.js",
+        "bytes": 808823,
+        "gitBlob": "5bbaceaa0218861ac3c8ac8586ab5a4a65dd5e08"
+      },
+      {
+        "path": "assets/index-KBdBetFa.css",
+        "bytes": 31180,
+        "gitBlob": "241ebe188cbf9fa5f5ddf207f532aad9380f2fcd"
+      },
+      {
+        "path": "assets/manrope-latin-DHIcAJRg.woff2",
+        "bytes": 24836,
+        "gitBlob": "71eb731d558046199aa7f985adbf812890a093a1"
+      },
+      {
+        "path": "assets/pantheon-m1QjEi82.webp",
+        "bytes": 24262,
+        "gitBlob": "147d19c908289a384add6faa333716d24a53c5cf"
+      },
+      {
+        "path": "assets/space-grotesk-latin-BhU9QXUp.woff2",
+        "bytes": 22288,
+        "gitBlob": "0f3474ee8af2f8253225f3b41bf79be986a1ae13"
+      },
+      {
+        "path": "captures/apartment/ATTRIBUTION.txt",
+        "bytes": 745,
+        "gitBlob": "f10f5375e46baff6f9d699dfc34c8337be01ac9d"
+      },
+      {
+        "path": "captures/apartment/PROVENANCE.json",
+        "bytes": 851,
+        "gitBlob": "83b8d6a157091017752d51c4bd979685420513ff"
+      },
+      {
+        "path": "captures/apartment/apartment.sog",
+        "bytes": 8379050,
+        "gitBlob": "543c77c696efe384c0f2cea31efaea5c6a025e73"
+      },
+      {
+        "path": "captures/apartment/thumb.webp",
+        "bytes": 39296,
+        "gitBlob": "fb901d376f687cde18fbbb7c3dbad5ee856c085b"
+      },
+      {
+        "path": "captures/la-night/ATTRIBUTION.txt",
+        "bytes": 1152,
+        "gitBlob": "a8780cf7aeefdec654b4e68fb8bb26870a1f1a99"
+      },
+      {
+        "path": "captures/la-night/PROVENANCE.json",
+        "bytes": 624,
+        "gitBlob": "4376e767c5ff32bec990530b6354ea438a809f19"
+      },
+      {
+        "path": "captures/la-night/la-night.sog",
+        "bytes": 10784806,
+        "gitBlob": "3b373884930f722a2cedaf9272cb5b6a4de0de8e"
+      },
+      {
+        "path": "captures/la-night/thumb.webp",
+        "bytes": 17298,
+        "gitBlob": "b5ea7e1e3d17df9c050545c60154b2e6018e3d9f"
+      },
+      {
+        "path": "captures/pantheon/PROVENANCE.json",
+        "bytes": 686,
+        "gitBlob": "c58ef0514613890f447eb87c1598d44a529fc9e5"
+      },
+      {
+        "path": "captures/pantheon/UPSTREAM-ATTRIBUTION.txt",
+        "bytes": 1166,
+        "gitBlob": "ff5116a48b0681204e4d33d6a8c4735694ca7e83"
+      },
+      {
+        "path": "captures/pantheon/pantheon.sog",
+        "bytes": 10577976,
+        "gitBlob": "d45fa6bd93ee509997a109a39e8f96f2a43165eb"
+      },
+      {
+        "path": "captures/pantheon/thumb.webp",
+        "bytes": 24262,
+        "gitBlob": "147d19c908289a384add6faa333716d24a53c5cf"
+      },
+      {
+        "path": "captures/small-garden/ATTRIBUTION.txt",
+        "bytes": 2134,
+        "gitBlob": "84d32e39eb6fc325a20b4e077d055afbc61bff00"
+      },
+      {
+        "path": "captures/small-garden/PROVENANCE.json",
+        "bytes": 624,
+        "gitBlob": "fc3f4eb70579e8b0383447ee51922d90156e466c"
+      },
+      {
+        "path": "captures/small-garden/small-garden.sog",
+        "bytes": 13081550,
+        "gitBlob": "d8182f404f63e9612ae76bb47668006129030a2c"
+      },
+      {
+        "path": "captures/small-garden/thumb.webp",
+        "bytes": 18270,
+        "gitBlob": "32678de8d8b887e01b43cdf1a49e7434027942da"
+      },
+      {
+        "path": "fonts/PROVENANCE.json",
+        "bytes": 870,
+        "gitBlob": "3ce7a19c89edde23aec8a9eed4eb373d36fa6043"
+      },
+      {
+        "path": "fonts/manrope-OFL.txt",
+        "bytes": 4383,
+        "gitBlob": "462280f3e4037df1839fba6cdee11d0980d3f0a9"
+      },
+      {
+        "path": "fonts/space-grotesk-OFL.txt",
+        "bytes": 4401,
+        "gitBlob": "d5666d70873cb905b4421d2c0d2e60747aae8573"
+      },
+      {
+        "path": "index.html",
+        "bytes": 1284,
+        "gitBlob": "437baa2fabca5d5e0eb85a81e3e112ae8cb1b6ae"
+      }
+    ]
+  },
+  "focusedBrowserChecks": {
+    "command": "npx playwright test tests/browser/splash.spec.ts --reporter=json",
+    "stats": {
+      "startTime": "2026-10-23T09:16:56.507Z",
+      "duration": 7098.224,
+      "expected": 3,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "errors": [],
+    "scope": "WebGL and Canvas gradient pixel samples at body and all six droplet centers; unchanged background in a gap; native body/droplet hit areas, open gaps, and keyboard actions."
+  },
+  "browserRegression": {
+    "command": "npx playwright test tests/browser/entrance.spec.ts tests/browser/studio.spec.ts tests/browser/visit.spec.ts --grep 'the glass object leads|Escape interrupts the effect|the object stays touchable|the entrance presents through WebGPU|the contact sound|the optical shader|material controls, modal containment|inspection drag never|mobile touch, reduced motion, resize|optical depth and light controls persist|lens actions support keyboard|entering coordinates|mobile touch and keyboard explore' --reporter=json",
+    "stats": {
+      "startTime": "2026-10-23T09:19:25.115Z",
+      "duration": 79056.4,
+      "expected": 13,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "errors": []
+  },
+  "capturedProductionReview": {
+    "productionPrefix": "/release/preview/",
+    "scene": "apartment",
+    "renderer": "webgl",
+    "roomRenderer": "spark",
+    "roomStatus": "ready",
+    "shape": "one fluid body and six detached droplets; shared room coordinates; merges during entry and returns intact",
+    "collectionShortcut": "opens Media and restores trigger focus",
+    "fontFaces": [
+      {
+        "family": "Manrope",
+        "style": "normal",
+        "status": "loaded"
+      },
+      {
+        "family": "Space Grotesk",
+        "style": "normal",
+        "status": "loaded"
+      }
+    ],
+    "pageErrors": [],
+    "externalRequests": [],
+    "badResponses": [],
+    "entryAndReturn": "passed",
+    "splashAmountInside": 0,
+    "splashAmountAfterReturn": 1,
+    "sectionSwitchInsideRoom": "passed",
+    "stickyCloseAfterScrolling": "passed",
+    "studioAndOrbFocusRestored": "passed",
+    "freshMobileCourtyard": "passed"
+  },
+  "standalone": {
+    "status": "passed",
+    "bytes": 61493317,
+    "splash": "active",
+    "loadedFontFaces": 2,
+    "externalRequests": [],
+    "pageErrors": []
+  },
+  "screenshots": [
+    "previews/splash-courtyard.png",
+    "previews/splash-mobile-courtyard.png"
+  ],
+  "publication": {
+    "status": "built; awaiting remote verification",
+    "previewCommit": "09d5ae2486b7a6fcaa44c59ceea89d9537bcbbe7",
+    "previewUrl": "https://rawcdn.githack.com/ejaubashi/vvv/09d5ae2486b7a6fcaa44c59ceea89d9537bcbbe7/preview/index.html?room=1&space=apartment&renderer=webgl"
+  },
+  "note": "The preceding 57 layout checks remain historical in exhibition-validation-results.json. This release verifies the changed mask, shared-media mapping, hit areas, entry/return, backends, export and portable execution. Physical-device frame time remains unmeasured."
+}

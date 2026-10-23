@@ -10,6 +10,13 @@
   --font-display: "Space Grotesk", var(--font-interface);
   --accent: #bc501c;
 }
+#lens {
+  border-radius: 0;
+}
+body:has(#lens:focus-visible) .optical-reticle {
+  outline: 2px solid var(--accent);
+  outline-offset: 5px;
+}
 
 header {
   align-items: center;

@@ -30,6 +30,7 @@ import {
 import { isCaptureId, captureDefinition } from "./room/capture-source";
 import { FrameExport } from "./export";
 import { SceneTexture } from "./render/scene";
+import { liquidOutline } from "./render/splash";
 import {
   createRenderer,
   CanvasRenderer,
@@ -322,6 +323,7 @@ function tick(now: number) {
   optical.energy = energy;
   optical.room = clamp(motion.portal.x, 0, 1);
   optical.immersion = immersion;
+  optical.splash = (1 - m) * (1 - immersion);
   optical.entrance = entrance.layout(
     motion.x.x,
     motion.y.x,
@@ -377,6 +379,8 @@ function tick(now: number) {
   renderer.canvas.dataset.roomSwitching = String(room.switching);
   renderer.canvas.dataset.roomBlend = String(room.blend);
   renderer.canvas.dataset.immersion = String(immersion);
+  renderer.canvas.dataset.lensShape = "splash";
+  renderer.canvas.dataset.splash = String(optical.splash);
   renderer.canvas.dataset.entrance = enterPending
     ? "waiting"
     : entered && !entryMoving()
@@ -393,6 +397,7 @@ function tick(now: number) {
   lens.style.left = `${motion.x.x - radius}px`;
   lens.style.top = `${motion.y.x - radius}px`;
   lens.style.width = lens.style.height = `${radius * 2}px`;
+  lens.style.clipPath = `path("${liquidOutline(radius * 2, radius * 2, radius, 1)}")`;
   lens.style.visibility = dialog.open ? "hidden" : "visible";
   transition.update(m, workspace.active !== null);
   updateRoomChrome();
