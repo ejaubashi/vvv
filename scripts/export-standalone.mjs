@@ -22,16 +22,23 @@ html = html.replace(
     `<script type="module">${result.outputFiles[0].text.replace(/<\/script/gi, "<\\/script")}</script>`,
 );
 html = html.replace(/<link\b[^>]*rel="modulepreload"[^>]*>/g, "");
+html = html.replace(
+  /<link\b(?=[^>]*rel="preload")(?=[^>]*as="font")[^>]*>/g,
+  "",
+);
 for (const match of [
   ...html.matchAll(/<link\b[^>]*rel="stylesheet"[^>]*href="([^"]+)"[^>]*>/g),
 ]) {
   let css = await readFile(resolve(root, match[1]), "utf8");
-  for (const image of [...css.matchAll(/url\(([^)]+\.webp)\)/g)]) {
-    const path = image[1].replace(/^["']|["']$/g, "");
+  for (const asset of [
+    ...css.matchAll(/url\(\s*(["']?)([^"')]+\.(webp|woff2))\1\s*\)/g),
+  ]) {
+    const path = asset[2];
     const bytes = await readFile(resolve(root, "assets", basename(path)));
+    const mime = asset[3] === "woff2" ? "font/woff2" : "image/webp";
     css = css.replace(
-      image[0],
-      `url(data:image/webp;base64,${bytes.toString("base64")})`,
+      asset[0],
+      `url(data:${mime};base64,${bytes.toString("base64")})`,
     );
   }
   html = html.replace(match[0], `<style>${css}</style>`);
@@ -62,6 +69,8 @@ if (
   /<script\b[^>]*src=|<link\b[^>]*rel="(?:stylesheet|modulepreload)"/.test(html)
 )
   throw Error("External application asset remains");
+if (/url\(["']?[^)]*\.woff2["']?\)|<link\b[^>]*as="font"/.test(html))
+  throw Error("External font asset remains");
 await mkdir(dirname(target), { recursive: true });
 await writeFile(target, html);
 console.log(

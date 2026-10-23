@@ -35,7 +35,7 @@ export function mount() {
 <div id="actions" hidden role="group" aria-label="Lens actions">${["scene", "sound", "focus"].map((x) => `<button data-action="${x}" aria-label="${x === "sound" ? "Enable sound demonstration" : x === "scene" ? "Cycle scene" : "Enter focus mode"}">${icon(x)}<span>${x[0].toUpperCase() + x.slice(1)}</span></button>`).join("")}</div>
 <button id="exit-focus" hidden>${icon("focus")}<span>Exit focus</span></button>
 <div class="corner-note chrome"><span class="status-dot"></span><span id="scene-label">PAPER</span><span class="note-separator">/</span><span id="mode-label">MOVE TO EXPLORE</span></div>
-<div class="index-note chrome"><span>AN EXPLORATION OF</span><span>LIGHT, IN YOUR HANDS.</span></div>
+<div class="index-note chrome"><span>An exploration of</span><span>Light, in your hands.</span></div>
 <nav id="room-nav" class="room-nav chrome" aria-label="Living rooms" hidden>
 <button id="previous-room" aria-label="Previous room">${icon("arrow")}</button>
 <div class="room-caption"><span id="room-count">LIVING ROOMS · 01 / 04</span><span id="room-name" aria-live="polite" aria-atomic="true">Limestone</span></div>
