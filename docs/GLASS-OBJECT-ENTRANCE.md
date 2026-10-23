@@ -26,7 +26,7 @@ Run `npm test`, `npm run test:browser`, and `npm run build`. The nested producti
 
 Verified on 23 October 2026: production build, 33 unit checks, and all 65 browser cases. The full browser run passed 64 cases; one unchanged three-scene restoration check hit its time limit while another graphics check was running and passed in an isolated rerun. The production entrance and return then passed with normal motion, one selected SOG download, no external asset requests, and no page errors. Run software-GPU checks sequentially. See [the validation record](entrance-validation-results.json).
 
-The source and generated preview are committed locally. GitHub upload and live-preview publication are pending explicit approval after automatic approval review rejected the push, citing the earlier research-only instruction.
+The [published preview](https://rawcdn.githack.com/ejaubashi/vvv/a51ad19e11010c94067468e54c98c1f60bee07bd/preview/index.html?room=1&space=apartment&renderer=webgl) and [source branch](https://github.com/ejaubashi/vvv/tree/glass-object-entrance) are saved on GitHub. All 23 preview files match the tested production build by exact Git blob hash. The execution proxy blocks the CDN endpoint, so this records GitHub delivery verification rather than a live-CDN browser audit.
 
 ![The glass entrance object beside the captured Apartment courtyard, Stephane Agullo, CC BY 4.0](previews/entrance-object.png)
 

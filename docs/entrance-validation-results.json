@@ -42,18 +42,24 @@
       "docs/previews/entrance-arrival.png"
     ]
   },
-  "preparedPreview": {
-    "commit": "a51ad19e11010c94067468e54c98c1f60bee07bd",
-    "exactGitBlobMatches": 23,
-    "status": "committed locally; not uploaded"
-  },
   "publication": {
-    "status": "awaiting explicit user approval",
+    "status": "published",
     "sourceBranch": "glass-object-entrance",
-    "reason": "Automatic approval review rejected the GitHub push, citing the earlier research-only instruction. No source or preview push was executed."
+    "sourceUrl": "https://github.com/ejaubashi/vvv/tree/glass-object-entrance",
+    "previewUrl": "https://rawcdn.githack.com/ejaubashi/vvv/a51ad19e11010c94067468e54c98c1f60bee07bd/preview/index.html?room=1&space=apartment&renderer=webgl",
+    "verification": {
+      "remoteRefs": "verified",
+      "matchingGitBlobs": 23,
+      "cdnProbe": "The execution proxy denied the CONNECT request (403); the live CDN response could not be audited from this environment."
+    }
   },
   "limits": [
     "Chromium software rendering verifies behavior and pixels; physical-device animation timing and GPU performance are unmeasured.",
     "Canvas 2D uses an illustrated contact ring instead of the WebGL/WebGPU refractive wave."
-  ]
+  ],
+  "publishedPreview": {
+    "commit": "a51ad19e11010c94067468e54c98c1f60bee07bd",
+    "exactGitBlobMatches": 23,
+    "status": "published and verified against the tested production bundle"
+  }
 }
