@@ -20,6 +20,8 @@ The subtle contact tone plays only when the existing sound demonstration is enab
 
 ## Validation
 
+The solar-orange appearance update passes the production build and all six existing entrance browser checks, including WebGPU presentation. The built courtyard scene and Canvas fallback were also visually reviewed with zero page errors or external asset requests. See [solar appearance verification](solar-validation-results.json).
+
 Unit coverage checks room visibility before launch, a single contact event, exact completion, cancellation/replay, reduced motion in flight, bounded object placement, and finite temporary distortion. Browser coverage checks the actual WebGL pixel displacement and exact restoration, WebGPU presentation, narrow-screen touch, keyboard focus, cancellation/replay, the optional audio lifecycle, and idle rendering.
 
 The full regression suite also covers the four captures, Unravel restoration, authored thresholds, studio dialogs, export, and renderer fallback. Automated GPU checks use Chromium software rendering; physical desktop/mobile frame rate remains unmeasured.
@@ -28,7 +30,7 @@ Run `npm test`, `npm run test:browser`, and `npm run build`. The nested producti
 
 Verified on 23 October 2026: production build, 33 unit checks, and all 65 browser cases. The full browser run passed 64 cases; one unchanged three-scene restoration check hit its time limit while another graphics check was running and passed in an isolated rerun. The production entrance and return then passed with normal motion, one selected SOG download, no external asset requests, and no page errors. Run software-GPU checks sequentially. See [the validation record](entrance-validation-results.json).
 
-The [published preview](https://rawcdn.githack.com/ejaubashi/vvv/a51ad19e11010c94067468e54c98c1f60bee07bd/preview/index.html?room=1&space=apartment&renderer=webgl) and [source branch](https://github.com/ejaubashi/vvv/tree/glass-object-entrance) are saved on GitHub. All 23 preview files match the tested production build by exact Git blob hash. The execution proxy blocks the CDN endpoint, so this records GitHub delivery verification rather than a live-CDN browser audit.
+The [published preview](https://rawcdn.githack.com/ejaubashi/vvv/d183167b1562cb9a531586e384e0cd2a567cc988/preview/index.html?room=1&space=apartment&renderer=webgl) and [source branch](https://github.com/ejaubashi/vvv/tree/glass-object-entrance) are saved on GitHub. All 23 preview files match the tested production build by exact Git blob hash. The execution proxy blocks the CDN endpoint, so this records GitHub delivery verification rather than a live-CDN browser audit.
 
 ![The solar-orange glass object beside the captured Apartment courtyard, Stephane Agullo, CC BY 4.0](previews/solar-object.png)
 
