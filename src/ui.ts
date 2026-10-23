@@ -24,10 +24,10 @@ export function icon(name: string) {
 export function mount() {
   document.querySelector("#app")!.innerHTML = `
 <div id="scene" aria-hidden="true"></div>
-<header class="chrome"><a class="wordmark" href="./" aria-label="FORM home">form<span>®</span></a><div class="edition"><span>OPTICAL INTERACTION STUDIO</span><span class="edition-no">VOL. 001 — LIGHT & MATTER</span></div></header>
+<header class="chrome"><a class="wordmark" href="./" aria-label="FORM home">form<span>®</span></a><div class="edition"><span>An optical playground</span><span class="edition-no">Light. Matter. Space.</span></div></header>
 <button id="lens" aria-label="Glass lens. Open actions" aria-expanded="false" aria-controls="actions"></button>
-<button id="enter-room" class="enter-room chrome">Enter the lens ${icon("arrow")}</button>
-<button id="entry-orb" class="entry-orb chrome" aria-label="Enter the lens through the glass object"><span aria-hidden="true">ENTER</span></button>
+<button id="enter-room" class="enter-room chrome" hidden>Enter the lens ${icon("arrow")}</button>
+<button id="entry-orb" class="entry-orb chrome" aria-label="Enter the lens through the glass object" hidden><span aria-hidden="true">ENTER</span></button>
 <div id="room-view" tabindex="0" role="region" aria-label="Room view. Drag or use arrow keys to look around. Escape returns to the lens." hidden></div>
 <div id="visit-bar" hidden><button id="return-to-lens">${icon("arrow")}Return to lens</button><span id="visit-hint">DRAG OR USE ARROW KEYS TO LOOK AROUND</span><button id="visit-studio" aria-expanded="false" aria-controls="studio-dock">${icon("material")}Studio</button></div>
 <div id="threshold-tools" class="unravel-tools threshold-tools chrome" hidden><div class="threshold-actions"><button id="threshold-toggle" aria-pressed="false" aria-describedby="threshold-hint">Open a threshold</button><button id="threshold-cross" hidden>Step through</button></div><span id="threshold-hint" role="status" aria-live="polite"></span></div>
@@ -35,7 +35,7 @@ export function mount() {
 <div id="actions" hidden role="group" aria-label="Lens actions">${["scene", "sound", "focus"].map((x) => `<button data-action="${x}" aria-label="${x === "sound" ? "Enable sound demonstration" : x === "scene" ? "Cycle scene" : "Enter focus mode"}">${icon(x)}<span>${x[0].toUpperCase() + x.slice(1)}</span></button>`).join("")}</div>
 <button id="exit-focus" hidden>${icon("focus")}<span>Exit focus</span></button>
 <div class="corner-note chrome"><span class="status-dot"></span><span id="scene-label">PAPER</span><span class="note-separator">/</span><span id="mode-label">MOVE TO EXPLORE</span></div>
-<div class="index-note chrome"><span>An exploration of</span><span>Light, in your hands.</span></div>
+<div class="collection-panel chrome">
 <nav id="room-nav" class="room-nav chrome" aria-label="Living rooms" hidden>
 <button id="previous-room" aria-label="Previous room">${icon("arrow")}</button>
 <div class="room-caption"><span id="room-count">LIVING ROOMS · 01 / 04</span><span id="room-name" aria-live="polite" aria-atomic="true">Limestone</span></div>
@@ -43,8 +43,9 @@ export function mount() {
 <button id="next-room" aria-label="Next room">${icon("arrow")}</button>
 </nav>
 <aside id="capture-note" class="capture-note chrome" aria-label="Captured room" hidden><span id="capture-state" role="status" aria-live="polite"></span><span><a id="capture-credit" href="https://superspl.at/scene/dac6e508" target="_blank" rel="noopener">Pantheon · artfletch</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a><button id="capture-retry" hidden>Retry capture</button></span></aside>
+</div>
 <div class="dock-wrap chrome" id="studio-dock"><span class="dock-caption" id="dock-caption">A STUDY IN REFRACTION</span><nav class="dock" aria-label="Studio workspaces">${["media", "material", "interaction", "details"].map((x, i) => `<button data-workspace="${x}" aria-label="${x[0].toUpperCase() + x.slice(1)}" aria-haspopup="dialog"><span class="dock-icon">${icon(x)}</span><span class="dock-label">${x[0].toUpperCase() + x.slice(1)}</span><span class="dock-number">0${i + 1}</span></button>`).join("")}</nav></div>
-<dialog id="workspace" aria-labelledby="workspace-title"><div class="workspace-content"><div class="workspace-top"><span class="eyebrow" id="workspace-eyebrow">THE STUDIO / 01</span><button class="icon-button" id="close-workspace" aria-label="Close workspace">${icon("close")}</button></div><h1 id="workspace-title"></h1><p id="workspace-description" class="description"></p><div id="workspace-body"></div><footer class="workspace-footer"><span>FORM — OPTICAL STUDIO</span><span>EXPERIMENT FREELY.</span></footer></div></dialog>
+<dialog id="workspace" aria-labelledby="workspace-title"><div class="workspace-content"><div class="workspace-top"><span class="eyebrow" id="workspace-eyebrow">THE STUDIO / 01</span><button class="icon-button" id="close-workspace" aria-label="Close workspace">${icon("close")}</button></div><nav class="workspace-sections" aria-label="Studio sections">${["media", "material", "interaction", "details"].map((x) => `<button data-panel="${x}" aria-label="Show ${x} workspace" aria-pressed="false" aria-controls="workspace-body">${x[0].toUpperCase() + x.slice(1)}</button>`).join("")}</nav><h1 id="workspace-title"></h1><p id="workspace-description" class="description"></p><div id="workspace-body"></div><footer class="workspace-footer"><span>FORM — OPTICAL STUDIO</span><span>EXPERIMENT FREELY.</span></footer></div></dialog>
 <div id="toast" role="status" aria-live="polite"></div>
 `;
 }

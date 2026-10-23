@@ -1,25 +1,11 @@
 # FORM typography
 
-Instrument Serif gives the wordmark, studio headings, room names, and media cards a warmer architectural character beside the solar-orange glass. Its italic cut sets the short line “Light, in your hands.” Manrope handles controls, descriptions, credits, and technical labels, with tabular numerals for changing values.
+FORM uses Manrope throughout: a compact, medium-weight wordmark, clear sans-serif headings, and quieter labels. The interface gives the orange glass and captured architecture the visual emphasis. The previous serif treatment has been removed from the active application and deployment.
 
-The smallest labels increase to 9px, with a shared scale for captions, body copy, and controls. Heading spacing and room navigation widths accommodate the new letterforms. On narrow room views, decorative footer text gives way to the room navigation and creator credits.
+Body copy and controls use 13px type, captions 12px, and supporting metadata 10–11px. Studio headings use a restrained 29–32px scale. Room names are 16px rather than competing with the lens. Numeric values use tabular figures.
 
-[Open the typography preview](https://rawcdn.githack.com/ejaubashi/vvv/7bcf3798114e806976a41a82405e7add2edb5f61/preview/index.html?room=1&space=apartment&renderer=webgl).
+The original Manrope variable Latin WOFF2 file is self-hosted, preloaded, and uses `font-display: swap` with system fallbacks. It contains the full weight range in 24,836 bytes. The portable edition embeds the same file without an external font request. No runtime dependency is added.
 
-## Font delivery
+Manrope is distributed under the SIL Open Font License 1.1. Package version, original filename, size, and SHA-256 hash are recorded in [font provenance](../public/fonts/PROVENANCE.json). Full notices accompany the deployment and portable export.
 
-Three original Latin WOFF2 files total 67,996 bytes. The site hosts them itself, preloads the two regular faces, and uses `font-display: swap` with system fallbacks. No external font service or runtime dependency is added. The standalone exporter embeds all three files so the portable artwork keeps the same typography without network requests.
-
-Manrope and Instrument Serif are distributed under the SIL Open Font License 1.1. Package versions, original filenames, sizes, and SHA-256 hashes are recorded in [font provenance](../public/fonts/PROVENANCE.json). Full notices accompany the deployment and are embedded in the standalone export through [third-party licenses](../public/THIRD-PARTY-LICENSES.txt).
-
-## Verification
-
-The production build and standalone export pass. Six existing browser regression cases cover entrance, return, touch, reduced motion, studio controls, focus containment, resizing, and WebGPU presentation. A separate production review checks 25 layouts across desktop, mobile, narrow portrait, and landscape sizes, including all four studio panels, blocked-font fallback, and the offline edition. All three font faces load; the offline edition makes zero external asset requests. A final production screenshot checks the real Apartment capture through the WebGL lens.
-
-The [validation record](typography-validation-results.json) records this update. Broader original entrance results remain historical; they were not all rerun for the font change.
-
-![Instrument Serif and Manrope around the Apartment courtyard, Stephane Agullo, CC BY 4.0](previews/typography-courtyard.png)
-
-![Material controls with the new heading and interface typography](previews/typography-material.png)
-
-![Mobile room cards and media controls](previews/typography-mobile.png)
+See [the current interface design and checks](INTERFACE.md). The earlier serif experiment and its verification remain historical in Git and `typography-validation-results.json`.

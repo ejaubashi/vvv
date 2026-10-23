@@ -641,7 +641,7 @@ function updateRoomChrome() {
   document.body.classList.toggle("has-room", roomEnabled);
   nav.hidden = !roomEnabled || dialog.open;
   const index = roomList.findIndex((r) => r.id === selectedRoom);
-  const caption = `${room.status === "fallback" ? (isCaptureId(room.kind) ? "CAPTURE UNAVAILABLE" : "ILLUSTRATED ROOMS") : studyMode ? "LIVING ROOMS" : "CAPTURED PLACES"} · 0${index + 1} / 0${roomList.length}`;
+  const caption = `${room.status === "fallback" ? (isCaptureId(room.kind) ? "CAPTURE UNAVAILABLE" : "ILLUSTRATED ROOMS") : studyMode ? "STUDY" : "PLACE"} · 0${index + 1} / 0${roomList.length}`;
   if ($("#room-count").textContent !== caption)
     $("#room-count").textContent = caption;
   const label = `${roomDefinition(selectedRoom).name}${room.switching || room.status === "loading" ? " · Opening…" : ""}`;
@@ -1000,6 +1000,16 @@ for (const button of document.querySelectorAll<HTMLButtonElement>(
   button.addEventListener("click", () =>
     openWorkspace(button.dataset.workspace as Workspace, button),
   );
+for (const button of document.querySelectorAll<HTMLButtonElement>(
+  "[data-panel]",
+))
+  button.addEventListener("click", () => {
+    const type = button.dataset.panel as Workspace;
+    workspace.open(type);
+    renderWorkspace(type);
+    dialog.scrollTop = 0;
+    wake();
+  });
 function bindRange(id: string, callback: (value: number) => void, digits = 2) {
   const input = $<HTMLInputElement>("#" + id);
   input.addEventListener("input", () => {
@@ -1009,13 +1019,13 @@ function bindRange(id: string, callback: (value: number) => void, digits = 2) {
   });
 }
 function renderWorkspace(type: Workspace) {
+  for (const button of document.querySelectorAll<HTMLButtonElement>(
+    "[data-panel]",
+  ))
+    button.setAttribute("aria-pressed", String(button.dataset.panel === type));
   const body = $("#workspace-body");
   if (type === "material") {
-    title(
-      "Matter, made light.",
-      "A change in material. A different way of seeing.",
-      2,
-    );
+    title("Material", "Shape the glass. Find your own way of seeing.", 2);
     body.innerHTML = `<div class="presets" role="group" aria-label="Material presets">${[
       ["Water", 1.33],
       ["Glass", 1.52],
@@ -1072,11 +1082,12 @@ function renderWorkspace(type: Workspace) {
   }
   if (type === "media") {
     title(
-      "A new perspective.",
-      "Bring something of your own into the light.",
+      "Scenes & media",
+      "Choose a place to explore, or bring your own image.",
       1,
     );
-    body.innerHTML = `<div class="stage-gallery" role="group" aria-label="Studio environments">${["Fold", "Sculpture", "Veil", "Room"].map((name, index) => `<button class="stage-preset" data-composition="${index}" aria-pressed="${index === 3 ? roomEnabled : !roomEnabled && composition === index && !media.source}"><span class="stage-mini stage-${index}" aria-hidden="true"></span><span>${name}</span></button>`).join("")}</div><p class="gallery-note">CHOOSE AN ATMOSPHERE, OR BRING YOUR OWN.</p>${roomEnabled ? `<div class="room-note"><span class="badge">${studyMode ? "AUTHORED STUDIES + PANTHEON" : "FOUR CAPTURED PLACES"}</span><p>${studyMode ? "Explore the three authored studies and their spatial thresholds. Pantheon is a separate capture." : "Gaussian-splat scenes with real depth. Each scene downloads only when selected. Play rooms visits all four and may download about 43 MB in total."} Drag or use arrow keys inside the lens to look around.</p></div><div class="room-gallery" role="group" aria-label="Choose a room">${roomList.map((entry) => `<button class="room-preset room-edition-${entry.id}" data-room="${entry.id}" aria-pressed="${selectedRoom === entry.id}"><span class="room-mini" ${isCaptureId(entry.id) ? `style="background-image:url(${new URL(captureDefinition(entry.id).thumbnail, document.baseURI).href})"` : ""} aria-hidden="true"></span><strong>${entry.name}</strong><small>${entry.subtitle}</small></button>`).join("")}</div><p class="room-description">${roomDefinition(selectedRoom).detail}</p><p class="media-note">${isCaptureId(selectedRoom) ? `${captureDefinition(selectedRoom).name} by <a href="${captureDefinition(selectedRoom).source}" target="_blank" rel="noopener">${captureDefinition(selectedRoom).creator}</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>. ${captureDefinition(selectedRoom).note}` : "Authored geometry and lighting."} Small viewpoint movements reveal depth.</p><p class="media-note"><a href="${studyMode ? "?room=1&space=pantheon" : "?room=1&studies=1&space=gallery"}">${studyMode ? "Captured places" : "Authored studies · threshold experiment"}</a></p><div class="journey-controls"><button id="journey-toggle" class="text-button" ${motion.reduced ? "disabled" : ""}>${icon("play")}${journey.playing ? "Pause rooms" : journey.finished ? "Replay rooms" : "Play rooms"}</button><button id="journey-replay" class="text-button" ${motion.reduced ? "disabled" : ""}>${icon("reset")}Start again</button></div><p class="media-note">${motion.reduced ? "Reduced motion is active. Choose any room to explore it at rest." : "14 seconds of viewing in each room. Loading pauses the sequence. Pause anytime; the visit has a final room."}</p>${toggle("room-look", "Look around", "Gentle perspective movement. Reduced motion keeps it still.", roomLook)}` : ""}<label class="drop-zone" id="drop-zone">${icon("upload")}<strong>Drop a file, or browse</strong><small>IMAGE, VIDEO OR AUDIO · UP TO 150 MB</small><input id="file" type="file" accept="image/*,video/*,audio/*" aria-label="Choose a local media file"/></label><div id="media-info"></div><p class="media-note">Your files stay on this device. Visual media is shown in monochrome, with a cover crop that follows the lens.</p><button id="export-frame" class="export-button">${icon("download")}Save this moment<span>PNG ↗</span></button>`;
+    const backdrops = `<div class="stage-gallery" role="group" aria-label="Studio environments">${["Fold", "Sculpture", "Veil", "Room"].map((name, index) => `<button class="stage-preset" data-composition="${index}" aria-pressed="${index === 3 ? roomEnabled : !roomEnabled && composition === index && !media.source}"><span class="stage-mini stage-${index}" aria-hidden="true"></span><span>${name}</span></button>`).join("")}</div><p class="gallery-note">CHOOSE AN ATMOSPHERE, OR BRING YOUR OWN.</p>`;
+    body.innerHTML = `${roomEnabled ? `<div class="room-note"><span class="badge">${studyMode ? "AUTHORED STUDIES + PANTHEON" : "FOUR CAPTURED PLACES"}</span><p>${studyMode ? "Explore the three authored studies and their spatial thresholds. Pantheon is a separate capture." : "Real places, captured in three dimensions."} Drag inside the lens to look around.</p></div><div class="room-gallery" role="group" aria-label="Choose a room">${roomList.map((entry) => `<button class="room-preset room-edition-${entry.id}" data-room="${entry.id}" aria-pressed="${selectedRoom === entry.id}"><span class="room-mini" ${isCaptureId(entry.id) ? `style="background-image:url(${new URL(captureDefinition(entry.id).thumbnail, document.baseURI).href})"` : ""} aria-hidden="true"></span><strong>${entry.name}</strong><small>${entry.subtitle}</small></button>`).join("")}</div><p class="room-description">${roomDefinition(selectedRoom).detail}</p><p class="media-note">${isCaptureId(selectedRoom) ? `${captureDefinition(selectedRoom).name} by <a href="${captureDefinition(selectedRoom).source}" target="_blank" rel="noopener">${captureDefinition(selectedRoom).creator}</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>. ${captureDefinition(selectedRoom).note}` : "Authored geometry and lighting."} Small viewpoint movements reveal depth.</p><p class="media-note"><a href="${studyMode ? "?room=1&space=pantheon" : "?room=1&studies=1&space=gallery"}">${studyMode ? "Captured places" : "Authored studies · threshold experiment"}</a></p><div class="journey-controls"><button id="journey-toggle" class="text-button" ${motion.reduced ? "disabled" : ""}>${icon("play")}${journey.playing ? "Pause rooms" : journey.finished ? "Replay rooms" : "Play rooms"}</button><button id="journey-replay" class="text-button" ${motion.reduced ? "disabled" : ""}>${icon("reset")}Start again</button></div><p class="media-note">${motion.reduced ? "Reduced motion is active. Choose any room to explore it at rest." : "14 seconds in each room. Pause anytime. Each place downloads when selected; all four total about 43 MB."}</p>${toggle("room-look", "Look around", "Gentle perspective movement. Reduced motion keeps it still.", roomLook)}` : ""}<details class="media-sources" ${!roomEnabled || filename ? "open" : ""}><summary>Backdrops & your media<span aria-hidden="true">+</span></summary>${backdrops}<label class="drop-zone" id="drop-zone">${icon("upload")}<strong>Drop a file, or browse</strong><small>IMAGE, VIDEO OR AUDIO · UP TO 150 MB</small><input id="file" type="file" accept="image/*,video/*,audio/*" aria-label="Choose a local media file"/></label><div id="media-info"></div><p class="media-note">Your files stay on this device. Visual media is shown in monochrome, with a cover crop that follows the lens.</p></details><button id="export-frame" class="export-button">${icon("download")}Save this moment<span>PNG ↗</span></button>`;
     for (const button of body.querySelectorAll<HTMLButtonElement>(
       "[data-composition]",
     ))
@@ -1156,7 +1167,7 @@ function renderWorkspace(type: Workspace) {
   }
   if (type === "interaction") {
     title(
-      "A little give.",
+      "Interaction",
       "Fine-tune the relationship between you and the lens.",
       3,
     );
@@ -1184,11 +1195,7 @@ function renderWorkspace(type: Workspace) {
     });
   }
   if (type === "details") {
-    title(
-      "Behind the surface.",
-      "An optical study in a single, continuous object.",
-      4,
-    );
+    title("About FORM", "Light, material, and a different point of view.", 4);
     body.innerHTML = `<div class="detail-row"><span>Active renderer</span><span id="renderer-name"></span></div><div class="detail-row"><span>Measured active frames</span><span id="fps">Collecting…</span></div><div class="detail-row"><span>Render resolution</span><span id="resolution"></span></div><div class="detail-row"><span>Room renderer</span><span id="room-renderer"></span></div><div class="detail-row"><span>Room rendering</span><span id="room-measurement"></span></div><div class="detail-row"><span>Backdrop updates</span><span id="texture-updates"></span></div><div class="detail-row"><span>Quality scale</span><span id="quality"></span></div><p class="details-copy">The lens samples the same scene you see behind it. Snell’s law bends the scene samples through a convex surface profile; optical depth controls their travel. Schlick’s approximation varies reflection with refractive index and viewing angle. Roughness softens both highlights and transmitted detail.</p><p class="details-copy">This is a real-time optical approximation, not physical ray tracing. The light wake is a soft caustic approximation driven by the same spring state as the lens.</p><span class="badge">60 FPS TARGET · 16.7 MS FRAME BUDGET</span>`;
     updateDetails();
   }

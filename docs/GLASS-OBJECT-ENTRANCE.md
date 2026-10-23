@@ -20,7 +20,7 @@ The subtle contact tone plays only when the existing sound demonstration is enab
 
 ## Validation
 
-The latest font update pairs Instrument Serif with Manrope throughout the studio. See [typography and the current live preview](TYPOGRAPHY.md) for the design, screenshots, font licenses, and current checks. The solar appearance results below record the preceding release.
+The current interface uses Manrope, grouped room navigation and credits, labeled studio tools, and direct switching inside studio panels. See [the interface and current live preview](INTERFACE.md) for screenshots and current checks, and [typography](TYPOGRAPHY.md) for font delivery and licensing. The solar appearance results below record an earlier release.
 
 The solar-orange appearance update passes the production build and all six existing entrance browser checks, including WebGPU presentation. The built courtyard scene and Canvas fallback were also visually reviewed with zero page errors or external asset requests. See [solar appearance verification](solar-validation-results.json).
 
