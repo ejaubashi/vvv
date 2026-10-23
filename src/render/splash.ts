@@ -135,6 +135,32 @@ const derivativeExpression = (angle: string) =>
   `0.195*cos(3.0*${angle}+0.55)+0.225*cos(5.0*${angle}-1.1)-0.2*sin(8.0*${angle}+0.4)`;
 
 export const splashGLSL = `
+// Project and soften each primitive independently. A nearest-island size would
+// create discontinuities where the large body's shadow meets a tiny droplet.
+float liquidShadow(vec2 local,vec2 halfSize,float rounding,float amount,vec2 lightDir,float ratio){
+float size=min(halfSize.x,halfSize.y);
+vec2 shifted=local+lightDir*clamp(size*.07,1.2*ratio,14.*ratio);
+vec2 q=abs(shifted)-halfSize+vec2(rounding);
+float a=atan(shifted.y/halfSize.y,shifted.x/halfSize.x);
+float distance=length(max(q,0.))+min(max(q.x,q.y),0.)-rounding+amount*(1.-(${radiusExpression("a")}))*size;
+float shadow=exp(-max(distance,0.)/clamp(size*.055,ratio,12.*ratio))*.17;
+if(amount>.0001){
+${SPLASH_DROPS.map(
+  (drop) => `{
+float dropSize=size*${literal(Math.min(drop.rx, drop.ry))}*amount;
+vec2 delta=(local+lightDir*clamp(dropSize*.07,1.2*ratio,14.*ratio))/halfSize-vec2(${literal(drop.x)},${literal(drop.y)})*(.75+.25*amount);
+float cs=${literal(Math.cos(drop.angle))},sn=${literal(Math.sin(drop.angle))};
+vec2 p=vec2(cs*delta.x+sn*delta.y,-sn*delta.x+cs*delta.y);
+vec2 radii=vec2(${literal(drop.rx)},${literal(drop.ry)})*amount;
+float k0=length(p/radii),k1=length(p/(radii*radii));
+float distance=(k0<.0001?-min(radii.x,radii.y):k0*(k0-1.)/max(k1,.00001))*size;
+float candidate=exp(-max(distance,0.)/clamp(dropSize*.055,ratio,12.*ratio))*.17;
+shadow+=candidate*(1.-shadow);
+}`,
+).join("\n")}
+}
+return shadow;
+}
 vec4 liquidField(vec2 local,vec2 halfSize,float rounding,float amount){
 vec2 q=abs(local)-halfSize+vec2(rounding);
 float distance=length(max(q,0.))+min(max(q.x,q.y),0.)-rounding;
@@ -162,6 +188,30 @@ return field;
 }`;
 
 export const splashWGSL = `
+fn liquidShadow(local:vec2f,halfSize:vec2f,rounding:f32,amount:f32,lightDir:vec2f,ratio:f32)->f32{
+let size=min(halfSize.x,halfSize.y);
+let shifted=local+lightDir*clamp(size*.07,1.2*ratio,14.*ratio);
+let q=abs(shifted)-halfSize+vec2f(rounding);
+let a=atan2(shifted.y/halfSize.y,shifted.x/halfSize.x);
+let distance=length(max(q,vec2f(0.)))+min(max(q.x,q.y),0.)-rounding+amount*(1.-(${radiusExpression("a")}))*size;
+var shadow=exp(-max(distance,0.)/clamp(size*.055,ratio,12.*ratio))*.17;
+if(amount>.0001){
+${SPLASH_DROPS.map(
+  (drop) => `{
+let dropSize=size*${literal(Math.min(drop.rx, drop.ry))}*amount;
+let delta=(local+lightDir*clamp(dropSize*.07,1.2*ratio,14.*ratio))/halfSize-vec2f(${literal(drop.x)},${literal(drop.y)})*(.75+.25*amount);
+let cs=${literal(Math.cos(drop.angle))};let sn=${literal(Math.sin(drop.angle))};
+let p=vec2f(cs*delta.x+sn*delta.y,-sn*delta.x+cs*delta.y);
+let radii=vec2f(${literal(drop.rx)},${literal(drop.ry)})*amount;
+let k0=length(p/radii);let k1=length(p/(radii*radii));
+let distance=select(k0*(k0-1.)/max(k1,.00001),-min(radii.x,radii.y),k0<.0001)*size;
+let candidate=exp(-max(distance,0.)/clamp(dropSize*.055,ratio,12.*ratio))*.17;
+shadow+=candidate*(1.-shadow);
+}`,
+).join("\n")}
+}
+return shadow;
+}
 fn liquidField(local:vec2f,halfSize:vec2f,rounding:f32,amount:f32)->vec4f{
 let q=abs(local)-halfSize+vec2f(rounding);
 let distance=length(max(q,vec2f(0.)))+min(max(q.x,q.y),0.)-rounding;

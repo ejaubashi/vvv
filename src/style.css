@@ -1226,10 +1226,8 @@ body.reduced *:after {
   text-shadow: 0 1px 8px #fff;
   color: #79410f;
 }
-.entry-orb:hover {
-  box-shadow:
-    0 0 0 1px #ffd59199,
-    0 0 25px #ff98003d;
+.entry-orb:hover span {
+  color: #b45112;
 }
 .entry-orb[hidden] {
   display: none;
