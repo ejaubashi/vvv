@@ -6,10 +6,25 @@ export const glFragment = `#version 300 es
 precision highp float;
 uniform sampler2D scene;
 uniform sampler2D room;
-uniform vec4 a; uniform vec4 b; uniform vec4 c; uniform vec4 d; uniform vec4 e;
+uniform vec4 a; uniform vec4 b; uniform vec4 c; uniform vec4 d; uniform vec4 e; uniform vec4 f; uniform vec4 g; uniform vec4 h;
 out vec4 color;
 vec3 sampleScene(vec2 p){return texture(scene,clamp(p/a.xy,vec2(.001),vec2(.999))).rgb;}
 vec3 sampleGlass(vec2 p){if(e.z<.001)return sampleScene(p);vec2 pixels=vec2(textureSize(room,0));vec2 cover=pixels*max(2.*b.x/pixels.x,2.*b.y/pixels.y);vec2 uv=(p-a.zw)/cover+vec2(.5);return mix(sampleScene(p),texture(room,clamp(uv,vec2(.001),vec2(.999))).rgb,e.z);}
+vec2 ripple(vec2 p){if(g.w<.001)return vec2(0.);vec2 delta=p-h.xy;float distance=length(delta);float band=(distance-g.z)/(22.*d.w);return delta/max(distance,1.)*sin((distance-g.z)/(6.*d.w))*exp(-band*band)*g.w*8.*d.w;}
+vec3 orb(vec2 p,vec3 base){
+if(g.y<.001||f.z<1.)return base;
+vec2 delta=p-f.xy;float cs=cos(g.x),sn=sin(g.x);
+vec2 q=vec2(cs*delta.x+sn*delta.y,-sn*delta.x+cs*delta.y);q*=vec2(1./f.w,sqrt(f.w));
+float dist=length(q),r=dist/f.z;
+base*=1.-exp(-max(dist-f.z,0.)/(7.*d.w))*.13*g.y*smoothstep(.98,1.1,r);
+if(r>1.03)return base;
+vec2 n=q/f.z;float z=sqrt(max(.001,1.-min(dot(n,n),1.)));
+vec3 normal=normalize(vec3(n,z));vec3 glass=sampleGlass(a.zw+delta*mix(1.6,.5,z));
+float rim=pow(1.-z,3.);float shine=pow(max(dot(normal,normalize(vec3(-.45,-.6,.8))),0.),65.);
+glass=glass*.94+vec3(.025,.04,.035)+vec3(rim*.24+shine*.6);
+glass+=vec3(exp(-pow((r-.94)/.025,2.))*.25);
+return mix(base,glass,g.y*(1.-smoothstep(.97,1.02,r)));
+}
 void main(){
 vec2 p=vec2(gl_FragCoord.x,a.y-gl_FragCoord.y),local=p-a.zw;
 local/=1.-c.z*.06;
@@ -26,7 +41,7 @@ vec2 slope=n*.78*mix(1.,.2,e.w)/max(1.,length(n));float z=sqrt(max(.06,1.-dot(sl
 vec3 normal=normalize(vec3(slope,z));vec3 ray=refract(vec3(0.,0.,-1.),normal,1./b.w);
 vec2 offset=clamp(ray.xy/max(.2,-ray.z)*c.w*ratio*e.x*.72,vec2(-c.w*ratio*.5),vec2(c.w*ratio*.5));
 float portalBend=mix(1.,.3+.7*smoothstep(.6,1.,r),e.z);
-vec2 refracted=p+offset*portalBend+c.xy*ratio*2.;float frost=d.x*(3.+e.x*12.)*ratio*mix(1.,.18+.82*smoothstep(.12,.85,d.x),e.z);
+vec2 refracted=p+offset*portalBend+c.xy*ratio*2.+ripple(p);float frost=d.x*(3.+e.x*12.)*ratio*mix(1.,.18+.82*smoothstep(.12,.85,d.x),e.z);
 vec3 glass=sampleGlass(refracted)*.4;
 glass+=(sampleGlass(refracted+vec2(frost,0.))+sampleGlass(refracted-vec2(frost,0.))+sampleGlass(refracted+vec2(0.,frost))+sampleGlass(refracted-vec2(0.,frost)))*.15;
 float f0=pow((b.w-1.)/(b.w+1.),2.);float fresnel=b.w<=1.0001?0.:f0+(1.-f0)*pow(1.-normal.z,5.);
@@ -40,9 +55,10 @@ glass-=vec3(exp(-abs(sdf+1.8*ratio)/(1.1*ratio))*.07*(1.-facing));
 if(d.y>.5)glass=sampleGlass(p);
 color=vec4(mix(base,glass,1.-smoothstep(-.8*ratio,1.2*ratio,sdf)),1.);
 }else color=vec4(base,1.);
+color.rgb=orb(p,color.rgb);
 }`;
 export const wgsl = `
-struct Uniforms { a:vec4f,b:vec4f,c:vec4f,d:vec4f,e:vec4f };
+struct Uniforms { a:vec4f,b:vec4f,c:vec4f,d:vec4f,e:vec4f,f:vec4f,g:vec4f,h:vec4f };
 @group(0) @binding(0) var<uniform> u:Uniforms;
 @group(0) @binding(1) var scene:texture_2d<f32>;
 @group(0) @binding(2) var smp:sampler;
@@ -52,6 +68,21 @@ var verts=array<vec2f,3>(vec2f(-1.,-1.),vec2f(3.,-1.),vec2f(-1.,3.));return vec4
 }
 fn sampleScene(p:vec2f)->vec3f{return textureSampleLevel(scene,smp,clamp(p/u.a.xy,vec2f(.001),vec2f(.999)),0.).rgb;}
 fn sampleGlass(p:vec2f)->vec3f{if(u.e.z<.001){return sampleScene(p);}let pixels=vec2f(textureDimensions(room));let cover=pixels*max(2.*u.b.x/pixels.x,2.*u.b.y/pixels.y);let uv=(p-u.a.zw)/cover+vec2f(.5);return mix(sampleScene(p),textureSampleLevel(room,smp,clamp(uv,vec2f(.001),vec2f(.999)),0.).rgb,u.e.z);}
+fn ripple(p:vec2f)->vec2f{if(u.g.w<.001){return vec2f(0.);}let delta=p-u.h.xy;let distance=length(delta);let band=(distance-u.g.z)/(22.*u.d.w);return delta/max(distance,1.)*sin((distance-u.g.z)/(6.*u.d.w))*exp(-band*band)*u.g.w*8.*u.d.w;}
+fn orb(p:vec2f,background:vec3f)->vec3f{
+if(u.g.y<.001||u.f.z<1.){return background;}
+let delta=p-u.f.xy;let cs=cos(u.g.x);let sn=sin(u.g.x);
+let q=vec2f(cs*delta.x+sn*delta.y,-sn*delta.x+cs*delta.y)*vec2f(1./u.f.w,sqrt(u.f.w));
+let dist=length(q);let r=dist/u.f.z;
+let base=background*(1.-exp(-max(dist-u.f.z,0.)/(7.*u.d.w))*.13*u.g.y*smoothstep(.98,1.1,r));
+if(r>1.03){return base;}
+let n=q/u.f.z;let z=sqrt(max(.001,1.-min(dot(n,n),1.)));
+let normal=normalize(vec3f(n,z));var glass=sampleGlass(u.a.zw+delta*mix(1.6,.5,z));
+let rim=pow(1.-z,3.);let shine=pow(max(dot(normal,normalize(vec3f(-.45,-.6,.8))),0.),65.);
+glass=glass*.94+vec3f(.025,.04,.035)+vec3f(rim*.24+shine*.6);
+glass+=vec3f(exp(-pow((r-.94)/.025,2.))*.25);
+return mix(base,glass,u.g.y*(1.-smoothstep(.97,1.02,r)));
+}
 @fragment fn fsBackground(@builtin(position) pos:vec4f)->@location(0) vec4f {return vec4f(sampleScene(pos.xy),1.);}
 @fragment fn fs(@builtin(position) pos:vec4f)->@location(0) vec4f {
 let p=pos.xy;var local=(p-u.a.zw)/(1.-u.c.z*.06);
@@ -66,7 +97,7 @@ if(sdf<1.5*ratio){let n=local/max(u.b.xy,vec2f(1.));let r=clamp(length(n),0.,1.)
 let z=sqrt(max(.06,1.-dot(slope,slope)));let normal=normalize(vec3f(slope,z));let ray=refract(vec3f(0.,0.,-1.),normal,1./u.b.w);
 let offset=clamp(ray.xy/max(.2,-ray.z)*u.c.w*ratio*u.e.x*.72,vec2f(-u.c.w*ratio*.5),vec2f(u.c.w*ratio*.5));
 let portalBend=mix(1.,.3+.7*smoothstep(.6,1.,r),u.e.z);
-let refracted=p+offset*portalBend+u.c.xy*ratio*2.;let frost=u.d.x*(3.+u.e.x*12.)*ratio*mix(1.,.18+.82*smoothstep(.12,.85,u.d.x),u.e.z);
+let refracted=p+offset*portalBend+u.c.xy*ratio*2.+ripple(p);let frost=u.d.x*(3.+u.e.x*12.)*ratio*mix(1.,.18+.82*smoothstep(.12,.85,u.d.x),u.e.z);
 var glass=sampleGlass(refracted)*.4;
 glass+=(sampleGlass(refracted+vec2f(frost,0.))+sampleGlass(refracted-vec2f(frost,0.))+sampleGlass(refracted+vec2f(0.,frost))+sampleGlass(refracted-vec2f(0.,frost)))*.15;
 let f0=pow((u.b.w-1.)/(u.b.w+1.),2.);let fresnel=select(f0+(1.-f0)*pow(1.-normal.z,5.),0.,u.b.w<=1.0001);
@@ -74,8 +105,8 @@ let light=normalize(vec3f(cos(u.e.y)*.85,sin(u.e.y)*.85,.8));
 let spec=pow(max(dot(reflect(vec3f(0.,0.,-1.),normal),light),0.),mix(95.,9.,u.d.x));
 let edge=exp(-abs(sdf)/(1.15*ratio));let rim=exp(-abs(sdf+4.*ratio)/(3.*ratio));let facing=max(dot(normalize(local+vec2f(.001)),normalize(light.xy)),0.);
 glass=mix(glass,vec3f(.94),min(.3,fresnel*.75+u.d.x*.12));glass+=vec3f(spec*min(1.,sqrt(f0)*5.)*(.24+.08*u.d.z)*(1.-u.d.x*.5)+edge*(.11+.38*facing)+rim*facing*.07);glass-=vec3f(exp(-abs(sdf+1.8*ratio)/(1.1*ratio))*.07*(1.-facing));
-if(u.d.y>.5){glass=sampleGlass(p);}return vec4f(mix(base,glass,1.-smoothstep(-.8*ratio,1.2*ratio,sdf)),1.);
-}return vec4f(base,1.);
+if(u.d.y>.5){glass=sampleGlass(p);}return vec4f(orb(p,mix(base,glass,1.-smoothstep(-.8*ratio,1.2*ratio,sdf))),1.);
+}return vec4f(orb(p,base),1.);
 }`;
 
 export const glBackground = `#version 300 es

@@ -27,6 +27,7 @@ export function mount() {
 <header class="chrome"><a class="wordmark" href="./" aria-label="FORM home">form<span>®</span></a><div class="edition"><span>OPTICAL INTERACTION STUDIO</span><span class="edition-no">VOL. 001 — LIGHT & MATTER</span></div></header>
 <button id="lens" aria-label="Glass lens. Open actions" aria-expanded="false" aria-controls="actions"></button>
 <button id="enter-room" class="enter-room chrome">Enter the lens ${icon("arrow")}</button>
+<button id="entry-orb" class="entry-orb chrome" aria-label="Enter the lens through the glass object"><span aria-hidden="true">ENTER</span></button>
 <div id="room-view" tabindex="0" role="region" aria-label="Room view. Drag or use arrow keys to look around. Escape returns to the lens." hidden></div>
 <div id="visit-bar" hidden><button id="return-to-lens">${icon("arrow")}Return to lens</button><span id="visit-hint">DRAG OR USE ARROW KEYS TO LOOK AROUND</span><button id="visit-studio" aria-expanded="false" aria-controls="studio-dock">${icon("material")}Studio</button></div>
 <div id="threshold-tools" class="unravel-tools threshold-tools chrome" hidden><div class="threshold-actions"><button id="threshold-toggle" aria-pressed="false" aria-describedby="threshold-hint">Open a threshold</button><button id="threshold-cross" hidden>Step through</button></div><span id="threshold-hint" role="status" aria-live="polite"></span></div>

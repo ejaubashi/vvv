@@ -1165,6 +1165,35 @@ body.reduced *:after {
   }
 }
 
+.entry-orb {
+  position: fixed;
+  z-index: 3;
+  width: 60px;
+  height: 60px;
+  padding: 0;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  touch-action: manipulation;
+}
+.entry-orb span {
+  position: absolute;
+  top: 65px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 1.6px;
+  white-space: nowrap;
+  text-shadow: 0 1px 8px #fff;
+}
+.entry-orb:hover {
+  box-shadow:
+    0 0 0 1px #ffffff80,
+    0 0 25px #ffffff45;
+}
+.entry-orb[hidden] {
+  display: none;
+}
 .enter-room {
   position: fixed;
   z-index: 3;

@@ -42,6 +42,17 @@ function values(
   target[17] = s.lightAngle;
   target[18] = s.room ?? 0;
   target[19] = s.immersion ?? 0;
+  const entry = s.entrance;
+  target[20] = (entry?.x ?? 0) * ratio;
+  target[21] = (entry?.y ?? 0) * ratio;
+  target[22] = (entry?.radius ?? 0) * ratio;
+  target[23] = entry?.stretch ?? 1;
+  target[24] = entry?.angle ?? 0;
+  target[25] = entry?.opacity ?? 0;
+  target[26] = (entry?.rippleRadius ?? 0) * ratio;
+  target[27] = entry?.rippleStrength ?? 0;
+  target[28] = (entry?.impactX ?? 0) * ratio;
+  target[29] = (entry?.impactY ?? 0) * ratio;
   return target;
 }
 /** Expensive optics only cover the object plus a 96 CSS-pixel light/shadow halo. */
@@ -69,9 +80,9 @@ abstract class Base {
   ratio = 1;
   maxDimension = 4096;
   name = "";
-  data = new Float32Array(20);
+  data = new Float32Array(32);
   rect = new Int32Array(4);
-  chunks = Array.from({ length: 5 }, (_, i) =>
+  chunks = Array.from({ length: 8 }, (_, i) =>
     this.data.subarray(i * 4, i * 4 + 4),
   );
   version = -1;
@@ -160,7 +171,7 @@ export class WebGLRenderer extends Base implements Renderer {
     gl.useProgram(this.program);
     gl.uniform1i(gl.getUniformLocation(this.program, "room"), 1);
     gl.activeTexture(gl.TEXTURE0);
-    this.uniforms = ["a", "b", "c", "d", "e"].map((n) =>
+    this.uniforms = ["a", "b", "c", "d", "e", "f", "g", "h"].map((n) =>
       gl.getUniformLocation(this.program, n)!,
     );
     this.canvas.addEventListener(
@@ -295,7 +306,7 @@ export class WebGPURenderer extends Base implements Renderer {
             {
               binding: 0,
               visibility: GPUShaderStage.FRAGMENT,
-              buffer: { type: "uniform", minBindingSize: 80 },
+              buffer: { type: "uniform", minBindingSize: 128 },
             },
             {
               binding: 1,
@@ -333,7 +344,7 @@ export class WebGPURenderer extends Base implements Renderer {
       primitive: { topology: "triangle-list" },
     });
     this.uniform = this.device.createBuffer({
-      size: 80,
+      size: 128,
       usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
     });
     this.sampler = this.device.createSampler({
@@ -529,6 +540,61 @@ export class CanvasRenderer extends Base implements Renderer {
     c.strokeStyle = shine;
     c.lineWidth = 1;
     c.stroke();
+    const entry = s.entrance;
+    if (entry && entry.rippleStrength > 0) {
+      c.save();
+      c.beginPath();
+      c.roundRect(
+        s.x - s.width / 2,
+        s.y - s.height / 2,
+        s.width,
+        s.height,
+        s.round,
+      );
+      c.clip();
+      c.beginPath();
+      c.arc(entry.impactX, entry.impactY, entry.rippleRadius, 0, Math.PI * 2);
+      c.lineWidth = 3;
+      c.strokeStyle = `rgba(245,255,248,${entry.rippleStrength * 0.35})`;
+      c.stroke();
+      c.restore();
+    }
+    if (entry && entry.opacity > 0) {
+      c.save();
+      c.globalAlpha = entry.opacity;
+      c.translate(entry.x, entry.y);
+      c.rotate(entry.angle);
+      c.scale(entry.stretch, 1 / Math.sqrt(entry.stretch));
+      c.beginPath();
+      c.arc(0, 0, entry.radius, 0, Math.PI * 2);
+      c.shadowColor = "#13291e35";
+      c.shadowBlur = 15;
+      c.fillStyle = "#e6f1e7";
+      c.fill();
+      c.shadowColor = "transparent";
+      c.clip();
+      const source = portal && s.room > 0 ? portal.canvas : scene;
+      const side = Math.min(source.width, source.height) * 0.22;
+      c.drawImage(
+        source,
+        (source.width - side) / 2,
+        (source.height - side) / 2,
+        side,
+        side,
+        -entry.radius,
+        -entry.radius,
+        entry.radius * 2,
+        entry.radius * 2,
+      );
+      const glaze = c.createRadialGradient(-9, -10, 1, 0, 0, entry.radius);
+      glaze.addColorStop(0, "#ffffffb0");
+      glaze.addColorStop(0.35, "#ffffff05");
+      glaze.addColorStop(0.8, "#eefaf31a");
+      glaze.addColorStop(1, "#ffffffc0");
+      c.fillStyle = glaze;
+      c.fill();
+      c.restore();
+    }
   }
   dispose() {}
 }
