@@ -555,7 +555,7 @@ export class CanvasRenderer extends Base implements Renderer {
       c.beginPath();
       c.arc(entry.impactX, entry.impactY, entry.rippleRadius, 0, Math.PI * 2);
       c.lineWidth = 3;
-      c.strokeStyle = `rgba(245,255,248,${entry.rippleStrength * 0.35})`;
+      c.strokeStyle = `rgba(255,183,77,${entry.rippleStrength * 0.35})`;
       c.stroke();
       c.restore();
     }
@@ -567,9 +567,9 @@ export class CanvasRenderer extends Base implements Renderer {
       c.scale(entry.stretch, 1 / Math.sqrt(entry.stretch));
       c.beginPath();
       c.arc(0, 0, entry.radius, 0, Math.PI * 2);
-      c.shadowColor = "#13291e35";
-      c.shadowBlur = 15;
-      c.fillStyle = "#e6f1e7";
+      c.shadowColor = "#ff930080";
+      c.shadowBlur = 24;
+      c.fillStyle = "#ffa52d";
       c.fill();
       c.shadowColor = "transparent";
       c.clip();
@@ -586,11 +586,17 @@ export class CanvasRenderer extends Base implements Renderer {
         entry.radius * 2,
         entry.radius * 2,
       );
+      const solar = c.createRadialGradient(-3, -4, 0, 0, 0, entry.radius);
+      solar.addColorStop(0, "#ffb62cba");
+      solar.addColorStop(0.65, "#ff8408b5");
+      solar.addColorStop(1, "#f04b04d4");
+      c.fillStyle = solar;
+      c.fill();
       const glaze = c.createRadialGradient(-9, -10, 1, 0, 0, entry.radius);
-      glaze.addColorStop(0, "#ffffffb0");
-      glaze.addColorStop(0.35, "#ffffff05");
-      glaze.addColorStop(0.8, "#eefaf31a");
-      glaze.addColorStop(1, "#ffffffc0");
+      glaze.addColorStop(0, "#fff4cccf");
+      glaze.addColorStop(0.35, "#ffd36d05");
+      glaze.addColorStop(0.8, "#ffaf281a");
+      glaze.addColorStop(1, "#ffda80c0");
       c.fillStyle = glaze;
       c.fill();
       c.restore();

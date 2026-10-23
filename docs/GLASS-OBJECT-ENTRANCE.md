@@ -1,6 +1,8 @@
-# FORM: enter through a glass object
+# FORM: enter through a solar glass object
 
 Click the small glass object beside the lens, or use the existing **Enter the lens** button. The object approaches the glass, stretches, sinks through its surface, and sends a refractive ripple across the room. The lens then opens into the expanded room view. The room remains visible throughout the transition.
+
+The entrance object has a solar-orange core, a golden rim, a warm halo, and fine static surface detail. The room remains visible through its amber tint. WebGL and WebGPU share the same color treatment, and Canvas 2D uses matching warm gradients. The glow follows the object's existing disappearance during entry; it adds no continuous animation or downloaded texture.
 
 The entrance uses a finite 1.4-second animation score after the selected room is ready and visible. Downloading and initialization happen before the score begins; the Return control and Escape remain available while waiting. The animation advances on the existing application clock, pauses in a hidden tab, and stops drawing once the view settles. Slow devices can take longer to present the sequence.
 
@@ -28,6 +30,6 @@ Verified on 23 October 2026: production build, 33 unit checks, and all 65 browse
 
 The [published preview](https://rawcdn.githack.com/ejaubashi/vvv/a51ad19e11010c94067468e54c98c1f60bee07bd/preview/index.html?room=1&space=apartment&renderer=webgl) and [source branch](https://github.com/ejaubashi/vvv/tree/glass-object-entrance) are saved on GitHub. All 23 preview files match the tested production build by exact Git blob hash. The execution proxy blocks the CDN endpoint, so this records GitHub delivery verification rather than a live-CDN browser audit.
 
-![The glass entrance object beside the captured Apartment courtyard, Stephane Agullo, CC BY 4.0](previews/entrance-object.png)
+![The solar-orange glass object beside the captured Apartment courtyard, Stephane Agullo, CC BY 4.0](previews/solar-object.png)
 
 ![Arrival inside the Apartment courtyard, Stephane Agullo, CC BY 4.0](previews/entrance-arrival.png)

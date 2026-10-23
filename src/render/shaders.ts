@@ -16,13 +16,17 @@ if(g.y<.001||f.z<1.)return base;
 vec2 delta=p-f.xy;float cs=cos(g.x),sn=sin(g.x);
 vec2 q=vec2(cs*delta.x+sn*delta.y,-sn*delta.x+cs*delta.y);q*=vec2(1./f.w,sqrt(f.w));
 float dist=length(q),r=dist/f.z;
-base*=1.-exp(-max(dist-f.z,0.)/(7.*d.w))*.13*g.y*smoothstep(.98,1.1,r);
+float halo=exp(-max(dist-f.z,0.)/(11.*d.w))*.22*g.y*smoothstep(.94,1.12,r);
+base=mix(base,vec3(1.,.48,.065),halo);
 if(r>1.03)return base;
 vec2 n=q/f.z;float z=sqrt(max(.001,1.-min(dot(n,n),1.)));
 vec3 normal=normalize(vec3(n,z));vec3 glass=sampleGlass(a.zw+delta*mix(1.6,.5,z));
 float rim=pow(1.-z,3.);float shine=pow(max(dot(normal,normalize(vec3(-.45,-.6,.8))),0.),65.);
-glass=glass*.94+vec3(.025,.04,.035)+vec3(rim*.24+shine*.6);
-glass+=vec3(exp(-pow((r-.94)/.025,2.))*.25);
+vec3 solar=mix(vec3(1.,.19,.015),vec3(1.,.59,.10),pow(z,1.4));
+float grain=sin(n.x*34.+sin(n.y*23.))*sin(n.y*41.)*.018*z;
+glass=mix(glass*vec3(1.,.65,.25),solar,.64)+vec3(grain);
+glass+=vec3(1.,.68,.23)*(.09+rim*.3)+vec3(1.,.91,.63)*shine*.62;
+glass+=vec3(1.,.82,.33)*exp(-pow((r-.94)/.025,2.))*.32;
 return mix(base,glass,g.y*(1.-smoothstep(.97,1.02,r)));
 }
 void main(){
@@ -74,13 +78,17 @@ if(u.g.y<.001||u.f.z<1.){return background;}
 let delta=p-u.f.xy;let cs=cos(u.g.x);let sn=sin(u.g.x);
 let q=vec2f(cs*delta.x+sn*delta.y,-sn*delta.x+cs*delta.y)*vec2f(1./u.f.w,sqrt(u.f.w));
 let dist=length(q);let r=dist/u.f.z;
-let base=background*(1.-exp(-max(dist-u.f.z,0.)/(7.*u.d.w))*.13*u.g.y*smoothstep(.98,1.1,r));
+let halo=exp(-max(dist-u.f.z,0.)/(11.*u.d.w))*.22*u.g.y*smoothstep(.94,1.12,r);
+let base=mix(background,vec3f(1.,.48,.065),halo);
 if(r>1.03){return base;}
 let n=q/u.f.z;let z=sqrt(max(.001,1.-min(dot(n,n),1.)));
 let normal=normalize(vec3f(n,z));var glass=sampleGlass(u.a.zw+delta*mix(1.6,.5,z));
 let rim=pow(1.-z,3.);let shine=pow(max(dot(normal,normalize(vec3f(-.45,-.6,.8))),0.),65.);
-glass=glass*.94+vec3f(.025,.04,.035)+vec3f(rim*.24+shine*.6);
-glass+=vec3f(exp(-pow((r-.94)/.025,2.))*.25);
+let solar=mix(vec3f(1.,.19,.015),vec3f(1.,.59,.10),pow(z,1.4));
+let grain=sin(n.x*34.+sin(n.y*23.))*sin(n.y*41.)*.018*z;
+glass=mix(glass*vec3f(1.,.65,.25),solar,.64)+vec3f(grain);
+glass+=vec3f(1.,.68,.23)*(.09+rim*.3)+vec3f(1.,.91,.63)*shine*.62;
+glass+=vec3f(1.,.82,.33)*exp(-pow((r-.94)/.025,2.))*.32;
 return mix(base,glass,u.g.y*(1.-smoothstep(.97,1.02,r)));
 }
 @fragment fn fsBackground(@builtin(position) pos:vec4f)->@location(0) vec4f {return vec4f(sampleScene(pos.xy),1.);}
