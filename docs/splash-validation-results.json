@@ -218,9 +218,12 @@
     "previews/splash-mobile-courtyard.png"
   ],
   "publication": {
-    "status": "built; awaiting remote verification",
+    "status": "published",
     "previewCommit": "09d5ae2486b7a6fcaa44c59ceea89d9537bcbbe7",
-    "previewUrl": "https://rawcdn.githack.com/ejaubashi/vvv/09d5ae2486b7a6fcaa44c59ceea89d9537bcbbe7/preview/index.html?room=1&space=apartment&renderer=webgl"
+    "previewUrl": "https://rawcdn.githack.com/ejaubashi/vvv/09d5ae2486b7a6fcaa44c59ceea89d9537bcbbe7/preview/index.html?room=1&space=apartment&renderer=webgl",
+    "matchingRemoteGitBlobs": 28,
+    "deliveryVerification": "GitHub refs and exact file hashes; the execution proxy blocks the CDN endpoint, so this is not a live-CDN browser audit."
   },
-  "note": "The preceding 57 layout checks remain historical in exhibition-validation-results.json. This release verifies the changed mask, shared-media mapping, hit areas, entry/return, backends, export and portable execution. Physical-device frame time remains unmeasured."
+  "note": "The preceding 57 layout checks remain historical in exhibition-validation-results.json. This release verifies the changed mask, shared-media mapping, hit areas, entry/return, backends, export and portable execution. Physical-device frame time remains unmeasured.",
+  "applicationCommit": "b0e3a39ea2c10402de3821846ca760970e4e576d"
 }
