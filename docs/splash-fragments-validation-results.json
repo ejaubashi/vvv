@@ -1041,8 +1041,11 @@
     "previews/splash-fragments-mobile-courtyard.png"
   ],
   "publication": {
-    "status": "built; pending push",
+    "status": "published",
     "previewCommit": "4c1fb6380655527e09f6c8e1d0d8d266cff93023",
-    "previewUrl": "https://rawcdn.githack.com/ejaubashi/vvv/4c1fb6380655527e09f6c8e1d0d8d266cff93023/preview/index.html?room=1&space=apartment&renderer=webgl"
-  }
+    "previewUrl": "https://rawcdn.githack.com/ejaubashi/vvv/4c1fb6380655527e09f6c8e1d0d8d266cff93023/preview/index.html?room=1&space=apartment&renderer=webgl",
+    "matchingRemoteGitBlobs": 28,
+    "deliveryVerification": "GitHub refs and exact file hashes; the execution proxy blocks the CDN endpoint, so this is not a live-CDN browser audit."
+  },
+  "applicationCommit": "ac0ba322fd24bf6e1370aa62bb498aa10b027e4b"
 }
