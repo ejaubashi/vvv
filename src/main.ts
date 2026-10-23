@@ -173,16 +173,20 @@ function resize() {
   height = innerHeight;
   const exhibitionLayout = width >= 1000 && height >= 600;
   radius = Math.min(
-    exhibitionLayout ? (roomEnabled ? 260 : 210) : roomEnabled ? 180 : 128,
-    width * (roomEnabled ? 0.34 : 0.27),
+    exhibitionLayout ? (roomEnabled ? 400 : 320) : roomEnabled ? 240 : 160,
+    width * (roomEnabled ? 0.43 : 0.35),
     height *
       (exhibitionLayout
-        ? 0.3
+        ? height >= 700
+          ? 0.37
+          : 0.35
         : roomEnabled
-          ? width >= 600 && height <= 900
-            ? 0.21
-            : 0.24
-          : 0.18),
+          ? height <= 600
+            ? 0.22
+            : width >= 600 && height <= 900
+              ? 0.25
+              : 0.27
+          : 0.22),
   );
   if (viewportChanged && !inspect && !visitActive() && !workspace.active) {
     saved = lensHome(width, height);
@@ -512,11 +516,11 @@ function updateVisitChrome() {
   orbButton.hidden = active || dialog.open || !actions.hidden || focus;
   orbButton.style.left = `${entrance.frame.x}px`;
   orbButton.style.top = `${entrance.frame.y}px`;
-  const reticle = $("#optical-reticle");
-  reticle.hidden = active || dialog.open || focus || !actions.hidden;
-  reticle.style.left = `${motion.x.x}px`;
-  reticle.style.top = `${motion.y.x}px`;
-  reticle.style.width = reticle.style.height = `${radius * 2 + 36}px`;
+  const focusMark = $("#lens-focus-mark");
+  focusMark.hidden = active || dialog.open || focus || !actions.hidden;
+  focusMark.style.left = `${motion.x.x}px`;
+  focusMark.style.top = `${motion.y.x}px`;
+  focusMark.style.width = focusMark.style.height = `${radius * 2 + 12}px`;
   $(".exhibition-copy").inert = active || focus;
   $("#visit-bar").hidden = !active;
   roomView.hidden = !active || dialog.open;
@@ -1463,5 +1467,7 @@ renderer = await createRenderer(fallback);
 $("#scene").append(renderer.canvas);
 reduced();
 resize();
+motion.x.snap(saved.x);
+motion.y.snap(saved.y);
 wake();
 if (roomEnabled) void startRoom(false);

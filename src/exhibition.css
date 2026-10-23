@@ -13,9 +13,26 @@
 #lens {
   border-radius: 0;
 }
-body:has(#lens:focus-visible) .optical-reticle {
-  outline: 2px solid var(--accent);
-  outline-offset: 5px;
+.lens-focus-mark {
+  position: fixed;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 2;
+  display: none;
+  --focus-stroke: linear-gradient(var(--accent), var(--accent));
+  background:
+    var(--focus-stroke) left top / 16px 2px,
+    var(--focus-stroke) left top / 2px 16px,
+    var(--focus-stroke) right top / 16px 2px,
+    var(--focus-stroke) right top / 2px 16px,
+    var(--focus-stroke) left bottom / 16px 2px,
+    var(--focus-stroke) left bottom / 2px 16px,
+    var(--focus-stroke) right bottom / 16px 2px,
+    var(--focus-stroke) right bottom / 2px 16px;
+  background-repeat: no-repeat;
+}
+body:has(#lens:focus-visible) .lens-focus-mark:not([hidden]) {
+  display: block;
 }
 
 header {
@@ -121,62 +138,6 @@ header {
 #browse-collection:hover {
   color: var(--accent);
   border-color: var(--accent);
-}
-
-.optical-reticle {
-  position: fixed;
-  transform: translate(-50%, -50%);
-  border: 1px solid #292d2b1c;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 1;
-  color: var(--muted);
-}
-.optical-reticle[hidden] {
-  display: none;
-}
-.optical-reticle::before,
-.optical-reticle::after {
-  content: "";
-  position: absolute;
-  width: 9px;
-  height: 1px;
-  background: #292d2b55;
-  top: 50%;
-}
-.optical-reticle::before {
-  left: -5px;
-}
-.optical-reticle::after {
-  right: -5px;
-}
-.optical-reticle > i {
-  position: absolute;
-  width: 1px;
-  height: 9px;
-  left: 50%;
-  background: #292d2b55;
-}
-.optical-reticle > i:first-of-type {
-  top: -5px;
-}
-.optical-reticle > i:last-of-type {
-  bottom: -5px;
-}
-.reticle-top,
-.reticle-bottom {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  white-space: nowrap;
-  font-size: 8px;
-  letter-spacing: 0.14em;
-}
-.reticle-top {
-  top: -28px;
-}
-.reticle-bottom {
-  bottom: -27px;
 }
 .enter-room {
   min-height: 48px;
@@ -296,10 +257,6 @@ header {
 body.dark .exhibition-copy {
   --accent: #ffa467;
 }
-body.dark .optical-reticle {
-  border-color: #ffffff30;
-  color: #e5e6df;
-}
 body.dark .dock {
   background: transparent;
   border-color: #ffffff50;
@@ -374,16 +331,11 @@ body.reduced .exhibition-copy * {
   #browse-collection {
     display: none;
   }
-  .reticle-top {
-    display: none;
-  }
-  .reticle-bottom {
-    bottom: -23px;
-    font-size: 7px;
-    letter-spacing: 0.08em;
-  }
 }
 @media (max-width: 600px) {
+  .entry-orb span {
+    display: none;
+  }
   .wordmark {
     font-size: 30px;
   }
@@ -435,16 +387,6 @@ body.reduced .exhibition-copy * {
 }
 @media (max-width: 999px) and (max-height: 680px) {
   .exhibition-copy {
-    display: none;
-  }
-}
-@media (max-width: 600px) and (max-height: 760px) {
-  .reticle-bottom {
-    display: none;
-  }
-}
-@media (min-width: 601px) and (max-width: 999px) and (max-height: 900px) {
-  .reticle-bottom {
     display: none;
   }
 }

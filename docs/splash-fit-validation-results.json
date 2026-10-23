@@ -1,0 +1,1074 @@
+{
+  "date": "2026-10-23",
+  "sourceBranch": "glass-object-entrance",
+  "change": "Larger splash with responsive width and height limits; circular frame, ticks and surrounding labels removed; keyboard-only corner marks; compact phone sun placement and label cleanup; initial position snaps to clamped home before first draw.",
+  "build": {
+    "status": "passed",
+    "files": 28,
+    "bytes": 47189777,
+    "manifest": [
+      {
+        "path": "THIRD-PARTY-LICENSES.txt",
+        "bytes": 12001,
+        "gitBlob": "4624bb86f59a657ac8e6c950a23800ce5fb3b7c7"
+      },
+      {
+        "path": "assets/capture-CsDUnzI9.js",
+        "bytes": 2731097,
+        "gitBlob": "e07153b4cc386396ef47af38781a8e31b17b4425"
+      },
+      {
+        "path": "assets/capture-source-Drn4nOE-.js",
+        "bytes": 594399,
+        "gitBlob": "d61ddeb74f00c3ec8f4858e710ce69e673b245a2"
+      },
+      {
+        "path": "assets/index-BGa4-qC1.js",
+        "bytes": 808802,
+        "gitBlob": "5dc883ab95c243982b24d7930fdfceca20393bb8"
+      },
+      {
+        "path": "assets/index-VGJrXVBs.css",
+        "bytes": 30664,
+        "gitBlob": "79585b0d749cfbc575ac2466e5ff1d2be3a1d0a5"
+      },
+      {
+        "path": "assets/manrope-latin-DHIcAJRg.woff2",
+        "bytes": 24836,
+        "gitBlob": "71eb731d558046199aa7f985adbf812890a093a1"
+      },
+      {
+        "path": "assets/pantheon-m1QjEi82.webp",
+        "bytes": 24262,
+        "gitBlob": "147d19c908289a384add6faa333716d24a53c5cf"
+      },
+      {
+        "path": "assets/space-grotesk-latin-BhU9QXUp.woff2",
+        "bytes": 22288,
+        "gitBlob": "0f3474ee8af2f8253225f3b41bf79be986a1ae13"
+      },
+      {
+        "path": "captures/apartment/ATTRIBUTION.txt",
+        "bytes": 745,
+        "gitBlob": "f10f5375e46baff6f9d699dfc34c8337be01ac9d"
+      },
+      {
+        "path": "captures/apartment/PROVENANCE.json",
+        "bytes": 851,
+        "gitBlob": "83b8d6a157091017752d51c4bd979685420513ff"
+      },
+      {
+        "path": "captures/apartment/apartment.sog",
+        "bytes": 8379050,
+        "gitBlob": "543c77c696efe384c0f2cea31efaea5c6a025e73"
+      },
+      {
+        "path": "captures/apartment/thumb.webp",
+        "bytes": 39296,
+        "gitBlob": "fb901d376f687cde18fbbb7c3dbad5ee856c085b"
+      },
+      {
+        "path": "captures/la-night/ATTRIBUTION.txt",
+        "bytes": 1152,
+        "gitBlob": "a8780cf7aeefdec654b4e68fb8bb26870a1f1a99"
+      },
+      {
+        "path": "captures/la-night/PROVENANCE.json",
+        "bytes": 624,
+        "gitBlob": "4376e767c5ff32bec990530b6354ea438a809f19"
+      },
+      {
+        "path": "captures/la-night/la-night.sog",
+        "bytes": 10784806,
+        "gitBlob": "3b373884930f722a2cedaf9272cb5b6a4de0de8e"
+      },
+      {
+        "path": "captures/la-night/thumb.webp",
+        "bytes": 17298,
+        "gitBlob": "b5ea7e1e3d17df9c050545c60154b2e6018e3d9f"
+      },
+      {
+        "path": "captures/pantheon/PROVENANCE.json",
+        "bytes": 686,
+        "gitBlob": "c58ef0514613890f447eb87c1598d44a529fc9e5"
+      },
+      {
+        "path": "captures/pantheon/UPSTREAM-ATTRIBUTION.txt",
+        "bytes": 1166,
+        "gitBlob": "ff5116a48b0681204e4d33d6a8c4735694ca7e83"
+      },
+      {
+        "path": "captures/pantheon/pantheon.sog",
+        "bytes": 10577976,
+        "gitBlob": "d45fa6bd93ee509997a109a39e8f96f2a43165eb"
+      },
+      {
+        "path": "captures/pantheon/thumb.webp",
+        "bytes": 24262,
+        "gitBlob": "147d19c908289a384add6faa333716d24a53c5cf"
+      },
+      {
+        "path": "captures/small-garden/ATTRIBUTION.txt",
+        "bytes": 2134,
+        "gitBlob": "84d32e39eb6fc325a20b4e077d055afbc61bff00"
+      },
+      {
+        "path": "captures/small-garden/PROVENANCE.json",
+        "bytes": 624,
+        "gitBlob": "fc3f4eb70579e8b0383447ee51922d90156e466c"
+      },
+      {
+        "path": "captures/small-garden/small-garden.sog",
+        "bytes": 13081550,
+        "gitBlob": "d8182f404f63e9612ae76bb47668006129030a2c"
+      },
+      {
+        "path": "captures/small-garden/thumb.webp",
+        "bytes": 18270,
+        "gitBlob": "32678de8d8b887e01b43cdf1a49e7434027942da"
+      },
+      {
+        "path": "fonts/PROVENANCE.json",
+        "bytes": 870,
+        "gitBlob": "3ce7a19c89edde23aec8a9eed4eb373d36fa6043"
+      },
+      {
+        "path": "fonts/manrope-OFL.txt",
+        "bytes": 4383,
+        "gitBlob": "462280f3e4037df1839fba6cdee11d0980d3f0a9"
+      },
+      {
+        "path": "fonts/space-grotesk-OFL.txt",
+        "bytes": 4401,
+        "gitBlob": "d5666d70873cb905b4421d2c0d2e60747aae8573"
+      },
+      {
+        "path": "index.html",
+        "bytes": 1284,
+        "gitBlob": "a5286f7ed104204643a117131be5d3d54dfa18f1"
+      }
+    ]
+  },
+  "layoutReview": {
+    "productionPrefix": "/release/preview/",
+    "fonts": [
+      "Manrope variable",
+      "Space Grotesk variable"
+    ],
+    "fontBytes": 47124,
+    "layoutChecks": [
+      {
+        "label": "desktop lens",
+        "width": 1100,
+        "height": 800,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 1068,
+            "bottom": 67.5
+          },
+          {
+            "name": "browse-collection",
+            "x": 55,
+            "y": 567.15625,
+            "right": 214.40625,
+            "bottom": 611.15625
+          },
+          {
+            "name": "enter-room",
+            "x": 693.34375,
+            "y": 614,
+            "right": 846.65625,
+            "bottom": 662
+          },
+          {
+            "name": "collection-panel chrome",
+            "x": 32,
+            "y": 670,
+            "right": 392,
+            "bottom": 768
+          },
+          {
+            "name": "studio-dock",
+            "x": 740,
+            "y": 717,
+            "right": 1068,
+            "bottom": 768
+          }
+        ],
+        "footprint": {
+          "left": null,
+          "right": null,
+          "top": null,
+          "bottom": null,
+          "diameter": 592
+        },
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "desktop paper",
+        "width": 1100,
+        "height": 800,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 1068,
+            "bottom": 67.5
+          },
+          {
+            "name": "browse-collection",
+            "x": 55,
+            "y": 567.15625,
+            "right": 214.40625,
+            "bottom": 611.15625
+          },
+          {
+            "name": "enter-room",
+            "x": 693.34375,
+            "y": 614,
+            "right": 846.65625,
+            "bottom": 662
+          },
+          {
+            "name": "studio-dock",
+            "x": 740,
+            "y": 717,
+            "right": 1068,
+            "bottom": 768
+          }
+        ],
+        "footprint": {
+          "left": null,
+          "right": null,
+          "top": null,
+          "bottom": null,
+          "diameter": 592
+        },
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "wide lens",
+        "width": 1920,
+        "height": 1080,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 1888,
+            "bottom": 67.5
+          },
+          {
+            "name": "browse-collection",
+            "x": 96,
+            "y": 706.328125,
+            "right": 255.40625,
+            "bottom": 750.328125
+          },
+          {
+            "name": "enter-room",
+            "x": 1267.34375,
+            "y": 838.390625,
+            "right": 1420.65625,
+            "bottom": 886.390625
+          },
+          {
+            "name": "collection-panel chrome",
+            "x": 32,
+            "y": 950,
+            "right": 392,
+            "bottom": 1048
+          },
+          {
+            "name": "studio-dock",
+            "x": 1560,
+            "y": 997,
+            "right": 1888,
+            "bottom": 1048
+          }
+        ],
+        "footprint": {
+          "left": null,
+          "right": null,
+          "top": null,
+          "bottom": null,
+          "diameter": 799.1875
+        },
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "wide paper",
+        "width": 1920,
+        "height": 1080,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 1888,
+            "bottom": 67.5
+          },
+          {
+            "name": "browse-collection",
+            "x": 96,
+            "y": 706.328125,
+            "right": 255.40625,
+            "bottom": 750.328125
+          },
+          {
+            "name": "enter-room",
+            "x": 1267.34375,
+            "y": 758.796875,
+            "right": 1420.65625,
+            "bottom": 806.796875
+          },
+          {
+            "name": "studio-dock",
+            "x": 1560,
+            "y": 997,
+            "right": 1888,
+            "bottom": 1048
+          }
+        ],
+        "footprint": {
+          "left": null,
+          "right": null,
+          "top": null,
+          "bottom": null,
+          "diameter": 640
+        },
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "mobile lens",
+        "width": 390,
+        "height": 844,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 24,
+            "right": 370,
+            "bottom": 55.5
+          },
+          {
+            "name": "enter-room",
+            "x": 118.34375,
+            "y": 531.6875,
+            "right": 271.65625,
+            "bottom": 579.6875
+          },
+          {
+            "name": "collection-panel chrome",
+            "x": 20,
+            "y": 667.5,
+            "right": 370,
+            "bottom": 746
+          },
+          {
+            "name": "studio-dock",
+            "x": 20,
+            "y": 772,
+            "right": 370,
+            "bottom": 824
+          }
+        ],
+        "footprint": {
+          "left": null,
+          "right": null,
+          "top": null,
+          "bottom": null,
+          "diameter": 335.390625
+        },
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "mobile paper",
+        "width": 390,
+        "height": 844,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 24,
+            "right": 370,
+            "bottom": 55.5
+          },
+          {
+            "name": "enter-room",
+            "x": 118.34375,
+            "y": 500.5,
+            "right": 271.65625,
+            "bottom": 548.5
+          },
+          {
+            "name": "studio-dock",
+            "x": 20,
+            "y": 772,
+            "right": 370,
+            "bottom": 824
+          }
+        ],
+        "footprint": {
+          "left": null,
+          "right": null,
+          "top": null,
+          "bottom": null,
+          "diameter": 273
+        },
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "narrow lens",
+        "width": 320,
+        "height": 700,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 24,
+            "right": 300,
+            "bottom": 55.5
+          },
+          {
+            "name": "enter-room",
+            "x": 83.34375,
+            "y": 429.59375,
+            "right": 236.65625,
+            "bottom": 477.59375
+          },
+          {
+            "name": "collection-panel chrome",
+            "x": 20,
+            "y": 515.734375,
+            "right": 300,
+            "bottom": 602
+          },
+          {
+            "name": "studio-dock",
+            "x": 20,
+            "y": 628,
+            "right": 300,
+            "bottom": 680
+          }
+        ],
+        "footprint": {
+          "left": null,
+          "right": null,
+          "top": null,
+          "bottom": null,
+          "diameter": 275.1875
+        },
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "narrow paper",
+        "width": 320,
+        "height": 700,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 24,
+            "right": 300,
+            "bottom": 55.5
+          },
+          {
+            "name": "enter-room",
+            "x": 83.34375,
+            "y": 404,
+            "right": 236.65625,
+            "bottom": 452
+          },
+          {
+            "name": "studio-dock",
+            "x": 20,
+            "y": 628,
+            "right": 300,
+            "bottom": 680
+          }
+        ],
+        "footprint": {
+          "left": null,
+          "right": null,
+          "top": null,
+          "bottom": null,
+          "diameter": 224
+        },
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "short lens",
+        "width": 320,
+        "height": 568,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 24,
+            "right": 300,
+            "bottom": 55.5
+          },
+          {
+            "name": "enter-room",
+            "x": 83.34375,
+            "y": 328.234375,
+            "right": 236.65625,
+            "bottom": 376.234375
+          },
+          {
+            "name": "collection-panel chrome",
+            "x": 20,
+            "y": 383.734375,
+            "right": 300,
+            "bottom": 470
+          },
+          {
+            "name": "studio-dock",
+            "x": 20,
+            "y": 496,
+            "right": 300,
+            "bottom": 548
+          }
+        ],
+        "footprint": {
+          "left": null,
+          "right": null,
+          "top": null,
+          "bottom": null,
+          "diameter": 249.90625
+        },
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "short paper",
+        "width": 320,
+        "height": 568,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 24,
+            "right": 300,
+            "bottom": 55.5
+          },
+          {
+            "name": "enter-room",
+            "x": 83.34375,
+            "y": 315.265625,
+            "right": 236.65625,
+            "bottom": 363.265625
+          },
+          {
+            "name": "studio-dock",
+            "x": 20,
+            "y": 496,
+            "right": 300,
+            "bottom": 548
+          }
+        ],
+        "footprint": {
+          "left": null,
+          "right": null,
+          "top": null,
+          "bottom": null,
+          "diameter": 224
+        },
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "tablet lens",
+        "width": 768,
+        "height": 1024,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 736,
+            "bottom": 67.5
+          },
+          {
+            "name": "enter-room",
+            "x": 307.34375,
+            "y": 694,
+            "right": 460.65625,
+            "bottom": 742
+          },
+          {
+            "name": "collection-panel chrome",
+            "x": 204,
+            "y": 828,
+            "right": 564,
+            "bottom": 926
+          },
+          {
+            "name": "studio-dock",
+            "x": 220,
+            "y": 953,
+            "right": 548,
+            "bottom": 1004
+          }
+        ],
+        "footprint": {
+          "left": null,
+          "right": null,
+          "top": null,
+          "bottom": null,
+          "diameter": 480
+        },
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "tablet paper",
+        "width": 768,
+        "height": 1024,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 736,
+            "bottom": 67.5
+          },
+          {
+            "name": "enter-room",
+            "x": 307.34375,
+            "y": 614,
+            "right": 460.65625,
+            "bottom": 662
+          },
+          {
+            "name": "studio-dock",
+            "x": 220,
+            "y": 953,
+            "right": 548,
+            "bottom": 1004
+          }
+        ],
+        "footprint": {
+          "left": null,
+          "right": null,
+          "top": null,
+          "bottom": null,
+          "diameter": 320
+        },
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "square-tablet lens",
+        "width": 768,
+        "height": 768,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 736,
+            "bottom": 67.5
+          },
+          {
+            "name": "enter-room",
+            "x": 307.34375,
+            "y": 518,
+            "right": 460.65625,
+            "bottom": 566
+          },
+          {
+            "name": "collection-panel chrome",
+            "x": 204,
+            "y": 572,
+            "right": 564,
+            "bottom": 670
+          },
+          {
+            "name": "studio-dock",
+            "x": 220,
+            "y": 697,
+            "right": 548,
+            "bottom": 748
+          }
+        ],
+        "footprint": {
+          "left": null,
+          "right": null,
+          "top": null,
+          "bottom": null,
+          "diameter": 384
+        },
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "square-tablet paper",
+        "width": 768,
+        "height": 768,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 736,
+            "bottom": 67.5
+          },
+          {
+            "name": "enter-room",
+            "x": 307.34375,
+            "y": 486,
+            "right": 460.65625,
+            "bottom": 534
+          },
+          {
+            "name": "studio-dock",
+            "x": 220,
+            "y": 697,
+            "right": 548,
+            "bottom": 748
+          }
+        ],
+        "footprint": {
+          "left": null,
+          "right": null,
+          "top": null,
+          "bottom": null,
+          "diameter": 320
+        },
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "small-desktop lens",
+        "width": 1000,
+        "height": 650,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 968,
+            "bottom": 67.5
+          },
+          {
+            "name": "browse-collection",
+            "x": 50,
+            "y": 440.03125,
+            "right": 209.40625,
+            "bottom": 484.03125
+          },
+          {
+            "name": "enter-room",
+            "x": 623.34375,
+            "y": 477,
+            "right": 776.65625,
+            "bottom": 525
+          },
+          {
+            "name": "collection-panel chrome",
+            "x": 32,
+            "y": 520,
+            "right": 392,
+            "bottom": 618
+          },
+          {
+            "name": "studio-dock",
+            "x": 640,
+            "y": 567,
+            "right": 968,
+            "bottom": 618
+          }
+        ],
+        "footprint": {
+          "left": null,
+          "right": null,
+          "top": null,
+          "bottom": null,
+          "diameter": 455
+        },
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "small-desktop paper",
+        "width": 1000,
+        "height": 650,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 968,
+            "bottom": 67.5
+          },
+          {
+            "name": "browse-collection",
+            "x": 50,
+            "y": 440.03125,
+            "right": 209.40625,
+            "bottom": 484.03125
+          },
+          {
+            "name": "enter-room",
+            "x": 623.34375,
+            "y": 477,
+            "right": 776.65625,
+            "bottom": 525
+          },
+          {
+            "name": "studio-dock",
+            "x": 640,
+            "y": 567,
+            "right": 968,
+            "bottom": 618
+          }
+        ],
+        "footprint": {
+          "left": null,
+          "right": null,
+          "top": null,
+          "bottom": null,
+          "diameter": 455
+        },
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "landscape lens",
+        "width": 844,
+        "height": 390,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 812,
+            "bottom": 67.5
+          },
+          {
+            "name": "enter-room",
+            "x": 345.34375,
+            "y": 193.59375,
+            "right": 498.65625,
+            "bottom": 241.59375
+          },
+          {
+            "name": "collection-panel chrome",
+            "x": 20,
+            "y": 292.5,
+            "right": 360,
+            "bottom": 374
+          },
+          {
+            "name": "studio-dock",
+            "x": 496,
+            "y": 323,
+            "right": 824,
+            "bottom": 374
+          }
+        ],
+        "footprint": {
+          "left": null,
+          "right": null,
+          "top": null,
+          "bottom": null,
+          "diameter": 171.59375
+        },
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "landscape paper",
+        "width": 844,
+        "height": 390,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 812,
+            "bottom": 67.5
+          },
+          {
+            "name": "enter-room",
+            "x": 345.34375,
+            "y": 193.59375,
+            "right": 498.65625,
+            "bottom": 241.59375
+          },
+          {
+            "name": "studio-dock",
+            "x": 496,
+            "y": 323,
+            "right": 824,
+            "bottom": 374
+          }
+        ],
+        "footprint": {
+          "left": null,
+          "right": null,
+          "top": null,
+          "bottom": null,
+          "diameter": 171.59375
+        },
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "font fallback narrow workspace",
+        "width": 320,
+        "height": 700,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 24,
+            "right": 300,
+            "bottom": 55.5
+          },
+          {
+            "name": "studio-dock",
+            "x": 20,
+            "y": 628,
+            "right": 300,
+            "bottom": 680
+          }
+        ],
+        "footprint": {
+          "left": null,
+          "right": null,
+          "top": null,
+          "bottom": null,
+          "diameter": 224
+        },
+        "font": "Manrope, system-ui, sans-serif"
+      }
+    ],
+    "fit": "painted splash stays within viewport; controls do not overlap; circle absent; keyboard-only corner marks work",
+    "portableFontFacesLoaded": 2,
+    "portableExternalRequests": [],
+    "pageErrors": [],
+    "externalRequests": [],
+    "badResponses": []
+  },
+  "entranceUnitChecks": {
+    "command": "npx tsx --test tests/entrance.test.ts",
+    "passed": 3,
+    "failed": 0
+  },
+  "browserRegression": {
+    "command": "npx playwright test tests/browser/splash.spec.ts tests/browser/entrance.spec.ts tests/browser/visit.spec.ts --grep 'continuous media|hit area|the glass object leads|the object stays touchable|entrance presents through WebGPU|entering coordinates|mobile touch and keyboard explore' --reporter=json",
+    "stats": {
+      "startTime": "2026-10-23T11:34:35.182Z",
+      "duration": 43894.244,
+      "expected": 8,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "errors": []
+  },
+  "capturedProductionReview": {
+    "productionPrefix": "/release/preview/",
+    "scene": "apartment",
+    "renderer": "webgl",
+    "roomRenderer": "spark",
+    "roomStatus": "ready",
+    "shape": "one fluid body and six detached droplets; shared room coordinates; merges during entry and returns intact",
+    "collectionShortcut": "opens Media and restores trigger focus",
+    "fontFaces": [
+      {
+        "family": "Manrope",
+        "style": "normal",
+        "status": "loaded"
+      },
+      {
+        "family": "Space Grotesk",
+        "style": "normal",
+        "status": "loaded"
+      }
+    ],
+    "pageErrors": [],
+    "externalRequests": [],
+    "badResponses": [],
+    "entryAndReturn": "passed",
+    "splashAmountInside": 0,
+    "splashAmountAfterReturn": 1,
+    "circleRemoved": "passed"
+  },
+  "finalPhoneReview": {
+    "productionPrefix": "/release/preview/",
+    "scene": "apartment",
+    "renderer": "webgl",
+    "roomRenderer": "spark",
+    "roomStatus": "ready",
+    "intro": "finite; settled with zero running animations; removed with reduced motion",
+    "collectionShortcut": "opens Media and restores trigger focus",
+    "fontFaces": [
+      {
+        "family": "Manrope",
+        "style": "normal",
+        "status": "loaded"
+      },
+      {
+        "family": "Space Grotesk",
+        "style": "normal",
+        "status": "loaded"
+      }
+    ],
+    "pageErrors": [],
+    "externalRequests": [],
+    "badResponses": [],
+    "circleAbsent": "passed",
+    "duplicateSunLabelHidden": "passed"
+  },
+  "standalone": {
+    "export": "passed",
+    "bytes": 61492780,
+    "fontFacesLoaded": 2,
+    "externalRequests": []
+  },
+  "screenshots": [
+    "previews/splash-fit-courtyard.png",
+    "previews/splash-fit-mobile-courtyard.png"
+  ],
+  "publication": {
+    "status": "built; awaiting remote verification",
+    "previewCommit": "7680a2849be4995fe10f28bfea777360611ece04",
+    "previewUrl": "https://rawcdn.githack.com/ejaubashi/vvv/7680a2849be4995fe10f28bfea777360611ece04/preview/index.html?room=1&space=apartment&renderer=webgl"
+  }
+}

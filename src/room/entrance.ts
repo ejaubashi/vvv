@@ -100,6 +100,8 @@ export class LensEntrance {
     const sink = ease(0.38, 0.7, t);
     const start = Math.min(radius + 30, side > 0 ? width - x - 32 : x - 32);
     f.radius = width < 600 ? 20 : 23;
+    const restingHeight =
+      width < 600 && start < radius + f.radius + 10 ? 0.72 : 0.43;
     f.x =
       x +
       side *
@@ -108,7 +110,7 @@ export class LensEntrance {
           radius * 0.4 * sink);
     f.y =
       y -
-      radius * 0.43 +
+      radius * (restingHeight * (1 - approach) + 0.43 * approach) +
       Math.sin(approach * Math.PI) * radius * 0.1 +
       sink * radius * 0.18;
     f.stretch = 1 + Math.sin(approach * Math.PI) * 0.65 - sink * 0.55;
