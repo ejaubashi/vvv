@@ -2159,9 +2159,12 @@
     "Execution proxy blocks live-CDN requests; publication verified through exact GitHub file hashes"
   ],
   "publication": {
-    "status": "prepared",
+    "status": "published",
     "branch": "live-preview",
     "commit": "91d68539bd0c92cf9ba6b37775b9977573587275",
-    "url": "https://rawcdn.githack.com/ejaubashi/vvv/91d68539bd0c92cf9ba6b37775b9977573587275/preview/index.html?room=1&space=apartment&renderer=webgl"
+    "url": "https://rawcdn.githack.com/ejaubashi/vvv/91d68539bd0c92cf9ba6b37775b9977573587275/preview/index.html?room=1&space=apartment&renderer=webgl",
+    "applicationCommit": "31a1c4079152c97f460e4fd7129982e1434934a2",
+    "matchingPublishedBlobs": 30,
+    "verification": "GitHub recursive tree contains exactly the 30 reviewed build blobs with identical Git object hashes."
   }
 }
