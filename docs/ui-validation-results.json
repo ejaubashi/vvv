@@ -1335,9 +1335,11 @@
     "previews/ui-mobile-media.png"
   ],
   "publication": {
-    "status": "built; awaiting remote verification",
+    "status": "published",
     "previewCommit": "1ac4e67f10beea62c1ced240ca1addc4643d53f9",
-    "previewUrl": "https://rawcdn.githack.com/ejaubashi/vvv/1ac4e67f10beea62c1ced240ca1addc4643d53f9/preview/index.html?room=1&space=apartment&renderer=webgl"
+    "previewUrl": "https://rawcdn.githack.com/ejaubashi/vvv/1ac4e67f10beea62c1ced240ca1addc4643d53f9/preview/index.html?room=1&space=apartment&renderer=webgl",
+    "matchingRemoteGitBlobs": 26,
+    "deliveryVerification": "GitHub refs and exact file hashes; the execution proxy blocks the CDN endpoint, so this is not a live-CDN browser audit."
   },
   "capturedProductionReview": {
     "productionPrefix": "/release/preview/",
@@ -1363,5 +1365,6 @@
       "previews/ui-courtyard.png",
       "previews/ui-mobile-courtyard.png"
     ]
-  }
+  },
+  "applicationCommit": "8e373bb673a826ca0645c095c82264c559b07cdc"
 }
