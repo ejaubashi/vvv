@@ -1,5 +1,6 @@
 import "./style.css";
 import "./exhibition.css";
+import "./exhibition-motion.css";
 import { mount, icon, range, toggle } from "./ui";
 import {
   defaults,
@@ -12,6 +13,7 @@ import {
 import { Motion } from "./motion";
 import { Gestures } from "./gestures";
 import { WorkspaceTransition } from "./transitions";
+import { ExhibitionMotion } from "./exhibition-motion";
 import { MediaManager } from "./media";
 import { PerformanceMonitor } from "./performance";
 import { PortalRoom } from "./room/room";
@@ -43,6 +45,7 @@ const studyMode =
   viewParams.get("threshold") === "1";
 const roomList = studyMode ? STUDY_ROOMS : ROOMS;
 mount();
+const exhibitionMotion = new ExhibitionMotion();
 document.body.classList.toggle("captured-collection", !studyMode);
 const $ = <T extends HTMLElement = HTMLElement>(selector: string) =>
   document.querySelector<T>(selector)!;
@@ -116,7 +119,9 @@ function lensHome(w: number, h: number) {
 }
 let saved = lensHome(width, height),
   target = { x: width * 0.5, y: height * 0.5, w: 480, h: 500 };
-const transition = new WorkspaceTransition(dialog, content, motion, lens);
+const transition = new WorkspaceTransition(dialog, content, motion, lens, () =>
+  exhibitionMotion.revealPanel(),
+);
 let toastTimer = 0,
   filename = "",
   loading = false;
@@ -161,6 +166,7 @@ function wake() {
 function reduced() {
   motion.reduced = systemReduced.matches || userReduced;
   document.body.classList.toggle("reduced", motion.reduced);
+  exhibitionMotion.setReduced(motion.reduced);
   if (motion.reduced) {
     journey.pause();
     stopUnravel();
@@ -441,6 +447,7 @@ function entryMoving() {
 }
 async function enterLens(trigger = enterButton) {
   if (enterPending || entered || dialog.open) return;
+  exhibitionMotion.leaveHero();
   visitTrigger = trigger;
   const token = ++visitToken;
   enterPending = true;
@@ -614,6 +621,7 @@ function updateVisitChrome() {
     (enterPending || entryMoving() || room.thresholdState === "crossing");
   if (restoreVisitFocus && !active && !dialog.open) {
     restoreVisitFocus = false;
+    exhibitionMotion.revealHero();
     visitTrigger.hidden = false;
     visitTrigger.focus({ preventScroll: true });
   }
@@ -705,7 +713,7 @@ function updateRoomChrome() {
         : credit.note);
   $("#capture-retry").hidden = !room.captureError;
   if ($("#room-name").textContent !== label)
-    $("#room-name").textContent = label;
+    exhibitionMotion.roomCaption($("#room-name"), label, selectedRoom);
   nav.dataset.playing = String(journey.playing);
   const play = $<HTMLButtonElement>("#journey-play");
   const name = journey.playing
@@ -1009,6 +1017,7 @@ function openWorkspace(type: Workspace, trigger: HTMLElement) {
 function closeWorkspace() {
   if (!workspace.active) return;
   workspace.close();
+  exhibitionMotion.closePanel();
   transition.close();
   motion.x.target = saved.x;
   motion.y.target = saved.y;
@@ -1241,6 +1250,7 @@ function renderWorkspace(type: Workspace) {
     updateDetails();
   }
   measureDialog();
+  exhibitionMotion.panelRendered(type);
 }
 function updatePresets() {
   for (const button of document.querySelectorAll<HTMLButtonElement>(
@@ -1450,6 +1460,7 @@ window.addEventListener(
     cancelAnimationFrame(frame);
     clearTimeout(toastTimer);
     gestures.dispose();
+    exhibitionMotion.dispose();
     observer.disconnect();
     media.dispose();
     frameExport.dispose();

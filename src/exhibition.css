@@ -275,40 +275,6 @@ body.dark.visit-expanded .collection-panel {
   --muted: #626662;
 }
 
-@keyframes exhibition-entrance {
-  from {
-    opacity: 0;
-    transform: translateY(24px);
-    filter: blur(4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-    filter: blur(0);
-  }
-}
-@media (prefers-reduced-motion: no-preference) {
-  .exhibition-eyebrow,
-  #exhibition-title > *,
-  .exhibition-description,
-  #browse-collection {
-    animation: exhibition-entrance 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-  #exhibition-title > :nth-child(2) {
-    animation-delay: 0.06s;
-  }
-  #exhibition-title > :nth-child(3) {
-    animation-delay: 0.12s;
-  }
-  .exhibition-description,
-  #browse-collection {
-    animation-delay: 0.18s;
-  }
-}
-body.reduced .exhibition-copy * {
-  animation: none;
-}
-
 @media (max-width: 999px) {
   .exhibition-copy {
     left: 32px;
