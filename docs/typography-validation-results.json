@@ -624,9 +624,11 @@
     "previews/typography-mobile.png"
   ],
   "publication": {
-    "status": "built; awaiting remote verification",
+    "status": "published",
     "previewCommit": "7bcf3798114e806976a41a82405e7add2edb5f61",
-    "previewUrl": "https://rawcdn.githack.com/ejaubashi/vvv/7bcf3798114e806976a41a82405e7add2edb5f61/preview/index.html?room=1&space=apartment&renderer=webgl"
+    "previewUrl": "https://rawcdn.githack.com/ejaubashi/vvv/7bcf3798114e806976a41a82405e7add2edb5f61/preview/index.html?room=1&space=apartment&renderer=webgl",
+    "matchingRemoteGitBlobs": 29,
+    "deliveryVerification": "GitHub refs and exact file hashes; the execution proxy blocks the CDN endpoint, so this is not a live-CDN browser audit."
   },
   "capturedProductionReview": {
     "productionPrefix": "/release/preview/",
@@ -654,5 +656,6 @@
     "pageErrors": [],
     "externalRequests": [],
     "badResponses": []
-  }
+  },
+  "applicationCommit": "02bb3168b12211f8d9376ecd5fedff6602eac905"
 }

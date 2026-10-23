@@ -20,6 +20,8 @@ The subtle contact tone plays only when the existing sound demonstration is enab
 
 ## Validation
 
+The latest font update pairs Instrument Serif with Manrope throughout the studio. See [typography and the current live preview](TYPOGRAPHY.md) for the design, screenshots, font licenses, and current checks. The solar appearance results below record the preceding release.
+
 The solar-orange appearance update passes the production build and all six existing entrance browser checks, including WebGPU presentation. The built courtyard scene and Canvas fallback were also visually reviewed with zero page errors or external asset requests. See [solar appearance verification](solar-validation-results.json).
 
 Unit coverage checks room visibility before launch, a single contact event, exact completion, cancellation/replay, reduced motion in flight, bounded object placement, and finite temporary distortion. Browser coverage checks the actual WebGL pixel displacement and exact restoration, WebGPU presentation, narrow-screen touch, keyboard focus, cancellation/replay, the optional audio lifecycle, and idle rendering.
