@@ -2276,9 +2276,12 @@
     "previews/section-motion-mobile-media.png"
   ],
   "publication": {
-    "status": "built; pending push",
+    "status": "published",
     "previewCommit": "fc5c8374d6d3048093a949f8081958066dffd06f",
-    "previewUrl": "https://rawcdn.githack.com/ejaubashi/vvv/fc5c8374d6d3048093a949f8081958066dffd06f/preview/index.html?room=1&space=apartment&renderer=webgl"
+    "previewUrl": "https://rawcdn.githack.com/ejaubashi/vvv/fc5c8374d6d3048093a949f8081958066dffd06f/preview/index.html?room=1&space=apartment&renderer=webgl",
+    "matchingRemoteGitBlobs": 28,
+    "deliveryVerification": "GitHub refs and exact file hashes; the execution proxy blocks the CDN endpoint, so this is not a live-CDN browser audit."
   },
-  "performanceLimit": "Graphics verification uses software Chromium; physical-device frame time is unmeasured."
+  "performanceLimit": "Graphics verification uses software Chromium; physical-device frame time is unmeasured.",
+  "applicationCommit": "b517de3730df7edbdfd6f5b0ef64f6f40b140bbe"
 }
