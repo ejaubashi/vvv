@@ -32,25 +32,6 @@
 #exhibition-title > em {
   --word-weight: 1;
 }
-#exhibition-title em .type-ink {
-  color: var(--ink);
-}
-@supports (background-clip: text) {
-  #exhibition-title em .type-ink {
-    color: transparent;
-    background-image: linear-gradient(
-      110deg,
-      var(--ink) 28%,
-      #85867e 48%,
-      var(--ink) 68%
-    );
-    background-size: 230% 100%;
-    background-position: var(--title-light, 50%) 50%;
-    background-clip: text;
-    transition: background-position 750ms var(--motion-out);
-  }
-}
-
 /* The selected section moves as one surface beneath stable button hit areas. */
 .workspace-sections {
   position: relative;
@@ -87,7 +68,7 @@
     background-color 200ms;
 }
 .workspace-sections[data-current] button[aria-pressed="true"] {
-  color: #292d2b;
+  color: var(--ink);
   background: transparent;
   box-shadow: none;
 }
@@ -180,7 +161,6 @@
   }
   #enter-room:hover svg {
     transform: rotate(-35deg);
-    background: #ff9b4d;
   }
   #browse-collection:hover svg {
     transform: translate(4px, -4px);

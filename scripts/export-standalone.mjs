@@ -58,7 +58,7 @@ for (const id of ["pantheon", "apartment", "small-garden", "la-night"]) {
   // in the offline edition, before the gallery is created.
   html = html.replace(
     "</head>",
-    `<style>.room-edition-${id} .room-mini{background-image:url(data:image/webp;base64,${thumbnail.toString("base64")})!important}</style></head>`,
+    `<style>.room-edition-${id} .room-mini,.scene-index [data-place="${id}"] .scene-choice-image{background-image:url(data:image/webp;base64,${thumbnail.toString("base64")})!important}</style></head>`,
   );
   html = html.replace(
     "</body>",

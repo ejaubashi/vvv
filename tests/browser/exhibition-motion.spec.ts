@@ -17,7 +17,7 @@ test("title motion settles; rapid section changes preserve controls, focus and c
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("/?renderer=canvas");
   await expect(
-    page.getByRole("heading", { name: "Look closer." }),
+    page.getByRole("heading", { name: "REAL. UNREAL." }),
   ).toBeVisible();
   await expect(page.locator("#exhibition-title")).toHaveAttribute(
     "data-motion",
@@ -42,17 +42,18 @@ test("title motion settles; rapid section changes preserve controls, focus and c
     .toBe("0px");
   const material = page.getByRole("button", { name: "Material", exact: true });
   await material.hover();
-  await expect(page.locator("#studio-intent")).toHaveText(
-    "02 / Shape the light.",
-  );
+  await expect(page.locator("#studio-intent")).toHaveText("Shape the light.");
   await page.mouse.move(0, 0);
   await expect(page.locator("#studio-intent")).toHaveText(
-    "Real places. Seen differently.",
+    "Reality is only the starting point.",
   );
   await material.focus();
-  await expect(page.locator("#studio-intent")).toHaveText(
-    "02 / Shape the light.",
+  await expect(page.locator("#intent-index")).toHaveText("02");
+  await expect(page.locator(".exhibition-copy")).toHaveAttribute(
+    "data-preview",
+    "material",
   );
+  await expect(page.locator("#studio-intent")).toHaveText("Shape the light.");
   await page.keyboard.press("Enter");
   await expect(page.locator(".workspace-content")).toHaveClass(/revealed/);
   await page.locator("#ior").fill("1.78");
@@ -202,4 +203,52 @@ test("sections remain functional without the Web Animations API", async ({
   );
   await page.keyboard.press("Escape");
   await expect(page.locator("dialog")).not.toBeVisible();
+});
+
+test("direct place index keeps the latest room, its URL and selection in sync", async ({
+  page,
+}) => {
+  const errors: string[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto(
+    "/?studies=1&room=1&space=gallery&renderer=canvas&roomRenderer=none",
+  );
+  const index = page.getByRole("navigation", { name: "Jump to a place" });
+  await expect(index).toBeVisible();
+  await index
+    .getByRole("button", { name: "Choose Nocturne", exact: true })
+    .click();
+  await expect(page.locator("#room-name")).toHaveText("Nocturne");
+  await expect(
+    index.getByRole("button", { name: "Choose Nocturne", exact: true }),
+  ).toHaveAttribute("aria-pressed", "true");
+  await page.evaluate(() => {
+    document
+      .querySelector<HTMLButtonElement>('[data-place="gallery"]')!
+      .click();
+    document.querySelector<HTMLButtonElement>('[data-place="veil"]')!.click();
+  });
+  await expect(page.locator("#room-name")).toHaveText("Veil");
+  await expect(page).toHaveURL(/space=veil/);
+  await expect(index.locator('[aria-pressed="true"]')).toHaveCount(1);
+  await expect(
+    index.getByRole("button", { name: "Choose Veil", exact: true }),
+  ).toHaveAttribute("aria-pressed", "true");
+  await page.setViewportSize({ width: 390, height: 844 });
+  await index
+    .getByRole("button", { name: "Choose Limestone", exact: true })
+    .focus();
+  await page.keyboard.press("Enter");
+  await expect(page.locator("#room-name")).toHaveText("Limestone");
+  await page.locator("#browse-collection").click();
+  await expect(page.locator(".workspace-content")).toHaveClass(/revealed/);
+  await expect(index).toBeHidden();
+  await expect(
+    page.locator('.room-preset[data-room="gallery"]'),
+  ).toHaveAttribute("aria-pressed", "true");
+  await page.keyboard.press("Escape");
+  await expect(index).toBeVisible();
+  await expect(page.locator("#browse-collection")).toBeFocused();
+  expect(errors).toEqual([]);
 });

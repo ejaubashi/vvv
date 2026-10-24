@@ -4,11 +4,11 @@ An immersive optical artwork built with TypeScript, Vite, and browser graphics A
 
 ## Online preview — PC and phone
 
-[Open FORM online](https://rawcdn.githack.com/ejaubashi/vvv/91d68539bd0c92cf9ba6b37775b9977573587275/preview/index.html?room=1&space=apartment&renderer=webgl).
+[Open FORM online](https://rawcdn.githack.com/ejaubashi/vvv/c103629322b7c7f37173f9399a65beff2421c7dc/preview/index.html?room=1&space=apartment&renderer=webgl).
 
-Use the same HTTPS link on a computer or phone. This published edition pairs Geist with Instrument Serif, a minimal “Look closer.” composition, and section-purpose previews on hover or keyboard focus. Collection access is available in the header on desktop and phone. The liquid glass fragments, amber sun, and animated studio sections remain. GitHack serves the built files from GitHub; the cloud workspace and development server can be stopped.
+Use the same HTTPS link on a computer or phone. This published edition uses the bold “REAL. UNREAL.” typographic stage, a vertical studio index, direct photographic scene selection and a dark studio panel. Pointer and keyboard interaction reveal section purposes; the responsive type changes its weight on pointer input. The liquid glass fragments, amber sun and room entrance remain. GitHack serves the built files from GitHub; the cloud workspace and development server can be stopped.
 
-The latest source is saved on [glass-object-entrance](https://github.com/ejaubashi/vvv/tree/glass-object-entrance). The published files are on [live-preview](https://github.com/ejaubashi/vvv/tree/live-preview/preview). The link above is pinned to the reviewed release; future editions can have their own links. See [the minimal exhibition release and checks](docs/MINIMAL-EXHIBITION.md).
+The latest source is saved on [glass-object-entrance](https://github.com/ejaubashi/vvv/tree/glass-object-entrance). The published files are on [live-preview](https://github.com/ejaubashi/vvv/tree/live-preview/preview). The link above is pinned to the reviewed release; future editions can have their own links. See [the instrument exhibition release and checks](docs/INSTRUMENT-EXHIBITION.md).
 
 ## Run
 
@@ -70,8 +70,8 @@ Renderer selection is WebGPU → WebGL 2 → Canvas 2D. Initialization failures 
 ## Validation
 
 ```sh
-npm test                 # 17 focused simulation/state/optics/geometry tests
-npm run test:browser     # 39 Chromium functional, room, shader, media and lifecycle tests
+npm test                 # 33 simulation/state/optics/geometry/provenance tests
+npm run test:browser     # Chromium functional, room, shader, media and lifecycle tests
 npm run build            # strict TypeScript + production build
 ```
 

@@ -6,9 +6,9 @@ The current fit enlarges the splash by about a quarter at typical desktop and ph
 
 The room still renders once. There are no extra cameras, scene downloads, media players, or per-piece textures. The shared scene sample is refracted through the body and droplets. Each droplet has its own smaller curvature profile; the main body's irregular edge shapes its normal and rim. These are screen-space optical approximations, as with the original lens, rather than physical fluid simulation.
 
-[Try the glass depth preview](https://rawcdn.githack.com/ejaubashi/vvv/91d68539bd0c92cf9ba6b37775b9977573587275/preview/index.html?room=1&space=apartment&renderer=webgl).
+[Try the glass depth preview](https://rawcdn.githack.com/ejaubashi/vvv/c103629322b7c7f37173f9399a65beff2421c7dc/preview/index.html?room=1&space=apartment&renderer=webgl).
 
-The current [minimal exhibition](MINIMAL-EXHIBITION.md) pairs new typography and quieter controls with section-purpose previews. Its [motion system](EXHIBITION-MOTION.md) retains masked titles, moving section indicators, and interruptible studio reveals.
+The current [instrument exhibition](INSTRUMENT-EXHIBITION.md) pairs bold variable type with a vertical studio index, direct scene selection and a dark panel. Its [motion system](EXHIBITION-MOTION.md) retains masked titles, moving section indicators, and interruptible studio reveals.
 
 ## Rendering and interaction
 

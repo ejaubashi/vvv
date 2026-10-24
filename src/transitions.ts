@@ -31,7 +31,7 @@ export class WorkspaceTransition {
   }
   update(amount: number, active: boolean) {
     if (!this.dialog.open) return;
-    this.dialog.style.background = `rgba(245,246,241,${Math.pow(amount, 3) * 0.88})`;
+    this.dialog.style.background = `rgba(var(--workspace-surface, 245,246,241),${Math.pow(amount, 3) * 0.88})`;
     if (
       active &&
       amount > 0.94 &&

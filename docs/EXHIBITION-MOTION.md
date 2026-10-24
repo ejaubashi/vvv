@@ -1,6 +1,6 @@
 # Motion through FORM
 
-This is the preceding motion release. The current [minimal exhibition](MINIMAL-EXHIBITION.md) changes the headline to two words, replaces the font pair, and uses an underline for the selected studio section. The earlier preview and validation below remain historical.
+This is the preceding motion release. The current [instrument exhibition](INSTRUMENT-EXHIBITION.md) builds on this motion system with variable stencil typography, a vertical command index, direct scene selection and a dark studio. The earlier preview and validation below remain historical.
 
 The exhibition uses masked word reveals, a sliding studio marker, and direction-aware panel entrances. Motion follows the existing warm glass presentation. The room, optical rendering and typography retain their established composition.
 

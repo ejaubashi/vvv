@@ -92,13 +92,17 @@ export class LensEntrance {
     radius: number,
     width: number,
     visible: boolean,
+    rightInset = 0,
   ) {
     const f = this.frame;
-    const side = x + radius + 78 > width ? -1 : 1;
+    const side = x + radius + 78 > width - rightInset ? -1 : 1;
     const t = this.running ? this.elapsed : 0;
     const approach = ease(0, 0.42, t);
     const sink = ease(0.38, 0.7, t);
-    const start = Math.min(radius + 30, side > 0 ? width - x - 32 : x - 32);
+    const start = Math.min(
+      radius + 30,
+      side > 0 ? width - rightInset - x - 32 : x - 32,
+    );
     f.radius = width < 600 ? 20 : 23;
     const restingHeight =
       width < 600 && start < radius + f.radius + 10 ? 0.72 : 0.43;

@@ -1,5 +1,7 @@
 # Look closer — a minimal FORM exhibition
 
+This is the preceding editorial release. The current [REAL. UNREAL. instrument exhibition](INSTRUMENT-EXHIBITION.md) replaces its typography, layout and studio surfaces. The earlier preview and checks below remain historical.
+
 [Open the desktop and phone preview](https://rawcdn.githack.com/ejaubashi/vvv/91d68539bd0c92cf9ba6b37775b9977573587275/preview/index.html?room=1&space=apartment&renderer=webgl).
 
 The entrance now pairs a restrained Geist “Look” with the expressive italic “closer.” in Instrument Serif. Shorter copy, a compact FORM mark, fine footer rules and generous spacing give the optical artwork more attention. The phone uses the same phrase on one line. Collection access sits in the header on both screen sizes.

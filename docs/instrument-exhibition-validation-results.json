@@ -1,0 +1,1873 @@
+{
+  "edition": "REAL. UNREAL. \u2014 optical instrument",
+  "date": "2026-10-25",
+  "build": {
+    "typescriptAndVite": "passed",
+    "formatting": "passed",
+    "diffCheck": "passed",
+    "files": 29,
+    "bytes": 47220366,
+    "manifest": [
+      {
+        "path": "THIRD-PARTY-LICENSES.txt",
+        "bytes": 21092,
+        "gitBlob": "4bccb00fa56939a18f8a1d90020adf60e9256e6b"
+      },
+      {
+        "path": "assets/capture-CsDUnzI9.js",
+        "bytes": 2731097,
+        "gitBlob": "e07153b4cc386396ef47af38781a8e31b17b4425"
+      },
+      {
+        "path": "assets/capture-source-Drn4nOE-.js",
+        "bytes": 594399,
+        "gitBlob": "d61ddeb74f00c3ec8f4858e710ce69e673b245a2"
+      },
+      {
+        "path": "assets/geist-latin-BgDaEnEv.woff2",
+        "bytes": 29400,
+        "gitBlob": "991445d78ae619a7378ff219385588c7811c88ab"
+      },
+      {
+        "path": "assets/index-C8fhIZ8m.css",
+        "bytes": 43301,
+        "gitBlob": "4b60fd10d94f2c8a0d987f1452241e8ef0499d24"
+      },
+      {
+        "path": "assets/index-DGefCY1V.js",
+        "bytes": 825579,
+        "gitBlob": "41f020946b7f9033536ccd4bb7df0c391caf700c"
+      },
+      {
+        "path": "assets/pantheon-m1QjEi82.webp",
+        "bytes": 24262,
+        "gitBlob": "147d19c908289a384add6faa333716d24a53c5cf"
+      },
+      {
+        "path": "captures/apartment/ATTRIBUTION.txt",
+        "bytes": 745,
+        "gitBlob": "f10f5375e46baff6f9d699dfc34c8337be01ac9d"
+      },
+      {
+        "path": "captures/apartment/PROVENANCE.json",
+        "bytes": 851,
+        "gitBlob": "83b8d6a157091017752d51c4bd979685420513ff"
+      },
+      {
+        "path": "captures/apartment/apartment.sog",
+        "bytes": 8379050,
+        "gitBlob": "543c77c696efe384c0f2cea31efaea5c6a025e73"
+      },
+      {
+        "path": "captures/apartment/thumb.webp",
+        "bytes": 39296,
+        "gitBlob": "fb901d376f687cde18fbbb7c3dbad5ee856c085b"
+      },
+      {
+        "path": "captures/la-night/ATTRIBUTION.txt",
+        "bytes": 1152,
+        "gitBlob": "a8780cf7aeefdec654b4e68fb8bb26870a1f1a99"
+      },
+      {
+        "path": "captures/la-night/PROVENANCE.json",
+        "bytes": 624,
+        "gitBlob": "4376e767c5ff32bec990530b6354ea438a809f19"
+      },
+      {
+        "path": "captures/la-night/la-night.sog",
+        "bytes": 10784806,
+        "gitBlob": "3b373884930f722a2cedaf9272cb5b6a4de0de8e"
+      },
+      {
+        "path": "captures/la-night/thumb.webp",
+        "bytes": 17298,
+        "gitBlob": "b5ea7e1e3d17df9c050545c60154b2e6018e3d9f"
+      },
+      {
+        "path": "captures/pantheon/PROVENANCE.json",
+        "bytes": 686,
+        "gitBlob": "c58ef0514613890f447eb87c1598d44a529fc9e5"
+      },
+      {
+        "path": "captures/pantheon/UPSTREAM-ATTRIBUTION.txt",
+        "bytes": 1166,
+        "gitBlob": "ff5116a48b0681204e4d33d6a8c4735694ca7e83"
+      },
+      {
+        "path": "captures/pantheon/pantheon.sog",
+        "bytes": 10577976,
+        "gitBlob": "d45fa6bd93ee509997a109a39e8f96f2a43165eb"
+      },
+      {
+        "path": "captures/pantheon/thumb.webp",
+        "bytes": 24262,
+        "gitBlob": "147d19c908289a384add6faa333716d24a53c5cf"
+      },
+      {
+        "path": "captures/small-garden/ATTRIBUTION.txt",
+        "bytes": 2134,
+        "gitBlob": "84d32e39eb6fc325a20b4e077d055afbc61bff00"
+      },
+      {
+        "path": "captures/small-garden/PROVENANCE.json",
+        "bytes": 624,
+        "gitBlob": "fc3f4eb70579e8b0383447ee51922d90156e466c"
+      },
+      {
+        "path": "captures/small-garden/small-garden.sog",
+        "bytes": 13081550,
+        "gitBlob": "d8182f404f63e9612ae76bb47668006129030a2c"
+      },
+      {
+        "path": "captures/small-garden/thumb.webp",
+        "bytes": 18270,
+        "gitBlob": "32678de8d8b887e01b43cdf1a49e7434027942da"
+      },
+      {
+        "path": "fonts/PROVENANCE.json",
+        "bytes": 1814,
+        "gitBlob": "7fa893bc719c04e970545d8ea031a7b1f6a655de"
+      },
+      {
+        "path": "fonts/geist-OFL.txt",
+        "bytes": 4486,
+        "gitBlob": "98835ac3f04ec0c9484468424c62e1ea2cdae498"
+      },
+      {
+        "path": "fonts/instrument-serif-OFL.txt",
+        "bytes": 4532,
+        "gitBlob": "a39b7e09b2a12f04fe95fbf9f21a26443f7bef30"
+      },
+      {
+        "path": "fonts/manrope-OFL.txt",
+        "bytes": 4383,
+        "gitBlob": "462280f3e4037df1839fba6cdee11d0980d3f0a9"
+      },
+      {
+        "path": "fonts/space-grotesk-OFL.txt",
+        "bytes": 4401,
+        "gitBlob": "d5666d70873cb905b4421d2c0d2e60747aae8573"
+      },
+      {
+        "path": "index.html",
+        "bytes": 1130,
+        "gitBlob": "0696fe3b48e1d973f414a3b82e48b4c52bb98a55"
+      }
+    ]
+  },
+  "unitTests": {
+    "passed": 33,
+    "failed": 0
+  },
+  "browserRegression": {
+    "startTime": "2026-10-24T22:47:26.819Z",
+    "duration": 60605.161,
+    "expected": 9,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "finalExhibitionSuite": {
+    "scope": "Four repeated motion flows plus one new direct place-selection flow after final styling and copy polish",
+    "startTime": "2026-10-24T22:55:40.554Z",
+    "duration": 29201.724,
+    "expected": 5,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "productionLayout": {
+    "context": "Canvas with authored room fallback; isolated production layout",
+    "checks": [
+      {
+        "width": 1100,
+        "height": 800,
+        "state": "home",
+        "boxes": [
+          {
+            "selector": "header",
+            "x": 32,
+            "y": 24,
+            "right": 1068,
+            "bottom": 72,
+            "width": 1036,
+            "height": 48,
+            "visible": true
+          },
+          {
+            "selector": "#entry-orb",
+            "x": 282,
+            "y": 218.71875,
+            "right": 342,
+            "bottom": 278.71875,
+            "width": 60,
+            "height": 60,
+            "visible": true
+          },
+          {
+            "selector": "#enter-room",
+            "x": 553.5234375,
+            "y": 614,
+            "right": 722.4765625,
+            "bottom": 662,
+            "width": 168.953125,
+            "height": 48,
+            "visible": true
+          },
+          {
+            "selector": "#exhibition-title > span .type-ink",
+            "x": 32,
+            "y": 207,
+            "right": 236.21875,
+            "bottom": 277.9375,
+            "width": 204.21875,
+            "height": 70.9375,
+            "visible": true
+          },
+          {
+            "selector": "#exhibition-title > em .type-ink",
+            "x": 32,
+            "y": 284.53125,
+            "right": 342.875,
+            "bottom": 355.46875,
+            "width": 310.875,
+            "height": 70.9375,
+            "visible": true
+          },
+          {
+            "selector": ".intent-plate",
+            "x": 32,
+            "y": 390.46875,
+            "right": 406,
+            "bottom": 456.46875,
+            "width": 374,
+            "height": 66,
+            "visible": true
+          },
+          {
+            "selector": ".exhibition-eyebrow",
+            "x": 32,
+            "y": 176,
+            "right": 406,
+            "bottom": 185,
+            "width": 374,
+            "height": 9,
+            "visible": true
+          },
+          {
+            "selector": ".exhibition-footnote",
+            "x": 32,
+            "y": 481.46875,
+            "right": 406,
+            "bottom": 489.46875,
+            "width": 374,
+            "height": 8,
+            "visible": true
+          },
+          {
+            "selector": ".collection-panel",
+            "x": 32,
+            "y": 700,
+            "right": 1068,
+            "bottom": 776,
+            "width": 1036,
+            "height": 76,
+            "visible": true
+          },
+          {
+            "selector": "#studio-dock",
+            "x": 956,
+            "y": 238.5,
+            "right": 1068,
+            "bottom": 561.5,
+            "width": 112,
+            "height": 323,
+            "visible": true
+          }
+        ],
+        "overlaps": [],
+        "offscreen": [],
+        "targets": [
+          {
+            "name": "Collection",
+            "width": 135.0625,
+            "height": 44
+          },
+          {
+            "name": "Choose Limestone",
+            "width": 239.5,
+            "height": 76
+          },
+          {
+            "name": "Choose Nocturne",
+            "width": 142.84375,
+            "height": 76
+          },
+          {
+            "name": "Choose Veil",
+            "width": 142.828125,
+            "height": 76
+          },
+          {
+            "name": "Choose Pantheon",
+            "width": 142.828125,
+            "height": 76
+          },
+          {
+            "name": "Media",
+            "width": 112,
+            "height": 76
+          },
+          {
+            "name": "Material",
+            "width": 112,
+            "height": 76
+          },
+          {
+            "name": "Interaction",
+            "width": 112,
+            "height": 76
+          },
+          {
+            "name": "Details",
+            "width": 112,
+            "height": 76
+          }
+        ],
+        "titleOverflow": false,
+        "overflow": false
+      },
+      {
+        "width": 1100,
+        "height": 800,
+        "state": "material",
+        "x": 484,
+        "y": 16,
+        "right": 1084,
+        "bottom": 784,
+        "overflow": false
+      },
+      {
+        "width": 1100,
+        "height": 800,
+        "state": "media",
+        "x": 484,
+        "y": 16,
+        "right": 1084,
+        "bottom": 784,
+        "overflow": false
+      },
+      {
+        "width": 1100,
+        "height": 800,
+        "state": "interaction",
+        "x": 484,
+        "y": 16,
+        "right": 1084,
+        "bottom": 784,
+        "overflow": false
+      },
+      {
+        "width": 1100,
+        "height": 800,
+        "state": "details",
+        "x": 484,
+        "y": 16,
+        "right": 1084,
+        "bottom": 784,
+        "overflow": false
+      },
+      {
+        "width": 1920,
+        "height": 1080,
+        "state": "home",
+        "boxes": [
+          {
+            "selector": "header",
+            "x": 32,
+            "y": 24,
+            "right": 1888,
+            "bottom": 72,
+            "width": 1856,
+            "height": 48,
+            "visible": true
+          },
+          {
+            "selector": "#entry-orb",
+            "x": 1513.1875,
+            "y": 294.96875,
+            "right": 1573.1875,
+            "bottom": 354.96875,
+            "width": 60,
+            "height": 60,
+            "visible": true
+          },
+          {
+            "selector": "#enter-room",
+            "x": 1029.1171875,
+            "y": 838.390625,
+            "right": 1198.0703125,
+            "bottom": 886.390625,
+            "width": 168.953125,
+            "height": 48,
+            "visible": true
+          },
+          {
+            "selector": "#exhibition-title > span .type-ink",
+            "x": 32,
+            "y": 268.59375,
+            "right": 388.4375,
+            "bottom": 392.421875,
+            "width": 356.4375,
+            "height": 123.828125,
+            "visible": true
+          },
+          {
+            "selector": "#exhibition-title > em .type-ink",
+            "x": 32,
+            "y": 403.9375,
+            "right": 574.609375,
+            "bottom": 527.765625,
+            "width": 542.609375,
+            "height": 123.828125,
+            "visible": true
+          },
+          {
+            "selector": ".intent-plate",
+            "x": 32,
+            "y": 562.765625,
+            "right": 684.796875,
+            "bottom": 628.765625,
+            "width": 652.796875,
+            "height": 66,
+            "visible": true
+          },
+          {
+            "selector": ".exhibition-eyebrow",
+            "x": 32,
+            "y": 237.59375,
+            "right": 684.796875,
+            "bottom": 246.59375,
+            "width": 652.796875,
+            "height": 9,
+            "visible": true
+          },
+          {
+            "selector": ".exhibition-footnote",
+            "x": 32,
+            "y": 653.765625,
+            "right": 684.796875,
+            "bottom": 661.765625,
+            "width": 652.796875,
+            "height": 8,
+            "visible": true
+          },
+          {
+            "selector": ".collection-panel",
+            "x": 32,
+            "y": 980,
+            "right": 1888,
+            "bottom": 1056,
+            "width": 1856,
+            "height": 76,
+            "visible": true
+          },
+          {
+            "selector": "#studio-dock",
+            "x": 1776,
+            "y": 378.5,
+            "right": 1888,
+            "bottom": 701.5,
+            "width": 112,
+            "height": 323,
+            "visible": true
+          }
+        ],
+        "overlaps": [],
+        "offscreen": [],
+        "targets": [
+          {
+            "name": "Collection",
+            "width": 135.0625,
+            "height": 44
+          },
+          {
+            "name": "Choose Limestone",
+            "width": 528.546875,
+            "height": 76
+          },
+          {
+            "name": "Choose Nocturne",
+            "width": 303.421875,
+            "height": 76
+          },
+          {
+            "name": "Choose Veil",
+            "width": 303.421875,
+            "height": 76
+          },
+          {
+            "name": "Choose Pantheon",
+            "width": 303.421875,
+            "height": 76
+          },
+          {
+            "name": "Media",
+            "width": 112,
+            "height": 76
+          },
+          {
+            "name": "Material",
+            "width": 112,
+            "height": 76
+          },
+          {
+            "name": "Interaction",
+            "width": 112,
+            "height": 76
+          },
+          {
+            "name": "Details",
+            "width": 112,
+            "height": 76
+          }
+        ],
+        "titleOverflow": false,
+        "overflow": false
+      },
+      {
+        "width": 1920,
+        "height": 1080,
+        "state": "material",
+        "x": 1304,
+        "y": 16,
+        "right": 1904,
+        "bottom": 1064,
+        "overflow": false
+      },
+      {
+        "width": 1920,
+        "height": 1080,
+        "state": "media",
+        "x": 1304,
+        "y": 16,
+        "right": 1904,
+        "bottom": 1064,
+        "overflow": false
+      },
+      {
+        "width": 1920,
+        "height": 1080,
+        "state": "interaction",
+        "x": 1304,
+        "y": 16,
+        "right": 1904,
+        "bottom": 1064,
+        "overflow": false
+      },
+      {
+        "width": 1920,
+        "height": 1080,
+        "state": "details",
+        "x": 1304,
+        "y": 16,
+        "right": 1904,
+        "bottom": 1064,
+        "overflow": false
+      },
+      {
+        "width": 390,
+        "height": 844,
+        "state": "home",
+        "boxes": [
+          {
+            "selector": "header",
+            "x": 20,
+            "y": 16,
+            "right": 370,
+            "bottom": 64,
+            "width": 350,
+            "height": 48,
+            "visible": true
+          },
+          {
+            "selector": "#entry-orb",
+            "x": 2,
+            "y": 271.25,
+            "right": 62,
+            "bottom": 331.25,
+            "width": 60,
+            "height": 60,
+            "visible": true
+          },
+          {
+            "selector": "#enter-room",
+            "x": 121.765625,
+            "y": 531.6875,
+            "right": 268.234375,
+            "bottom": 575.6875,
+            "width": 146.46875,
+            "height": 44,
+            "visible": true
+          },
+          {
+            "selector": "#exhibition-title > span .type-ink",
+            "x": 20,
+            "y": 124,
+            "right": 107.640625,
+            "bottom": 158.703125,
+            "width": 87.640625,
+            "height": 34.703125,
+            "visible": true
+          },
+          {
+            "selector": "#exhibition-title > em .type-ink",
+            "x": 112.75,
+            "y": 124,
+            "right": 245.953125,
+            "bottom": 158.703125,
+            "width": 133.203125,
+            "height": 34.703125,
+            "visible": true
+          },
+          {
+            "selector": ".intent-plate",
+            "x": 20,
+            "y": 170.703125,
+            "right": 370,
+            "bottom": 201.703125,
+            "width": 350,
+            "height": 31,
+            "visible": true
+          },
+          {
+            "selector": ".exhibition-eyebrow",
+            "x": 20,
+            "y": 104,
+            "right": 370,
+            "bottom": 112,
+            "width": 350,
+            "height": 8,
+            "visible": true
+          },
+          {
+            "selector": ".collection-panel",
+            "x": 20,
+            "y": 637,
+            "right": 370,
+            "bottom": 737,
+            "width": 350,
+            "height": 100,
+            "visible": true
+          },
+          {
+            "selector": "#studio-dock",
+            "x": 20,
+            "y": 760,
+            "right": 370,
+            "bottom": 828,
+            "width": 350,
+            "height": 68,
+            "visible": true
+          }
+        ],
+        "overlaps": [],
+        "offscreen": [],
+        "targets": [
+          {
+            "name": "Collection",
+            "width": 114.421875,
+            "height": 44
+          },
+          {
+            "name": "Choose Limestone",
+            "width": 143.546875,
+            "height": 44
+          },
+          {
+            "name": "Choose Nocturne",
+            "width": 65.828125,
+            "height": 44
+          },
+          {
+            "name": "Choose Veil",
+            "width": 65.8125,
+            "height": 44
+          },
+          {
+            "name": "Choose Pantheon",
+            "width": 65.8125,
+            "height": 44
+          },
+          {
+            "name": "Media",
+            "width": 87.75,
+            "height": 68
+          },
+          {
+            "name": "Material",
+            "width": 87.75,
+            "height": 68
+          },
+          {
+            "name": "Interaction",
+            "width": 87.75,
+            "height": 68
+          },
+          {
+            "name": "Details",
+            "width": 86.75,
+            "height": 68
+          }
+        ],
+        "titleOverflow": false,
+        "overflow": false
+      },
+      {
+        "width": 390,
+        "height": 844,
+        "state": "material",
+        "x": 8,
+        "y": 8,
+        "right": 382,
+        "bottom": 836,
+        "overflow": false
+      },
+      {
+        "width": 390,
+        "height": 844,
+        "state": "media",
+        "x": 8,
+        "y": 8,
+        "right": 382,
+        "bottom": 836,
+        "overflow": false
+      },
+      {
+        "width": 390,
+        "height": 844,
+        "state": "interaction",
+        "x": 8,
+        "y": 8,
+        "right": 382,
+        "bottom": 836,
+        "overflow": false
+      },
+      {
+        "width": 390,
+        "height": 844,
+        "state": "details",
+        "x": 8,
+        "y": 8,
+        "right": 382,
+        "bottom": 836,
+        "overflow": false
+      },
+      {
+        "width": 320,
+        "height": 700,
+        "state": "home",
+        "boxes": [
+          {
+            "selector": "header",
+            "x": 20,
+            "y": 16,
+            "right": 300,
+            "bottom": 64,
+            "width": 280,
+            "height": 48,
+            "visible": true
+          },
+          {
+            "selector": "#entry-orb",
+            "x": 2,
+            "y": 220.921875,
+            "right": 62,
+            "bottom": 280.921875,
+            "width": 60,
+            "height": 60,
+            "visible": true
+          },
+          {
+            "selector": "#enter-room",
+            "x": 86.765625,
+            "y": 429.59375,
+            "right": 233.234375,
+            "bottom": 473.59375,
+            "width": 146.46875,
+            "height": 44,
+            "visible": true
+          },
+          {
+            "selector": "#exhibition-title > span .type-ink",
+            "x": 20,
+            "y": 124,
+            "right": 91.890625,
+            "bottom": 152.484375,
+            "width": 71.890625,
+            "height": 28.484375,
+            "visible": true
+          },
+          {
+            "selector": "#exhibition-title > em .type-ink",
+            "x": 96.078125,
+            "y": 124,
+            "right": 205.34375,
+            "bottom": 152.484375,
+            "width": 109.265625,
+            "height": 28.484375,
+            "visible": true
+          },
+          {
+            "selector": ".intent-plate",
+            "x": 20,
+            "y": 164.484375,
+            "right": 300,
+            "bottom": 195.484375,
+            "width": 280,
+            "height": 31,
+            "visible": true
+          },
+          {
+            "selector": ".exhibition-eyebrow",
+            "x": 20,
+            "y": 104,
+            "right": 300,
+            "bottom": 112,
+            "width": 280,
+            "height": 8,
+            "visible": true
+          },
+          {
+            "selector": ".collection-panel",
+            "x": 20,
+            "y": 493,
+            "right": 300,
+            "bottom": 593,
+            "width": 280,
+            "height": 100,
+            "visible": true
+          },
+          {
+            "selector": "#studio-dock",
+            "x": 20,
+            "y": 616,
+            "right": 300,
+            "bottom": 684,
+            "width": 280,
+            "height": 68,
+            "visible": true
+          }
+        ],
+        "overlaps": [],
+        "offscreen": [],
+        "targets": [
+          {
+            "name": "Collection",
+            "width": 114.421875,
+            "height": 44
+          },
+          {
+            "name": "Choose Limestone",
+            "width": 111.71875,
+            "height": 44
+          },
+          {
+            "name": "Choose Nocturne",
+            "width": 53.09375,
+            "height": 44
+          },
+          {
+            "name": "Choose Veil",
+            "width": 53.09375,
+            "height": 44
+          },
+          {
+            "name": "Choose Pantheon",
+            "width": 53.09375,
+            "height": 44
+          },
+          {
+            "name": "Media",
+            "width": 70.25,
+            "height": 68
+          },
+          {
+            "name": "Material",
+            "width": 70.25,
+            "height": 68
+          },
+          {
+            "name": "Interaction",
+            "width": 70.25,
+            "height": 68
+          },
+          {
+            "name": "Details",
+            "width": 69.25,
+            "height": 68
+          }
+        ],
+        "titleOverflow": false,
+        "overflow": false
+      },
+      {
+        "width": 320,
+        "height": 700,
+        "state": "material",
+        "x": 8,
+        "y": 8,
+        "right": 312,
+        "bottom": 692,
+        "overflow": false
+      },
+      {
+        "width": 320,
+        "height": 700,
+        "state": "media",
+        "x": 8,
+        "y": 8,
+        "right": 312,
+        "bottom": 692,
+        "overflow": false
+      },
+      {
+        "width": 320,
+        "height": 700,
+        "state": "interaction",
+        "x": 8,
+        "y": 8,
+        "right": 312,
+        "bottom": 692,
+        "overflow": false
+      },
+      {
+        "width": 320,
+        "height": 700,
+        "state": "details",
+        "x": 8,
+        "y": 8,
+        "right": 312,
+        "bottom": 692,
+        "overflow": false
+      },
+      {
+        "width": 320,
+        "height": 568,
+        "state": "home",
+        "boxes": [
+          {
+            "selector": "header",
+            "x": 20,
+            "y": 16,
+            "right": 300,
+            "bottom": 64,
+            "width": 280,
+            "height": 48,
+            "visible": true
+          },
+          {
+            "selector": "#entry-orb",
+            "x": 2,
+            "y": 141.296875,
+            "right": 62,
+            "bottom": 201.296875,
+            "width": 60,
+            "height": 60,
+            "visible": true
+          },
+          {
+            "selector": "#enter-room",
+            "x": 86.765625,
+            "y": 328.234375,
+            "right": 233.234375,
+            "bottom": 372.234375,
+            "width": 146.46875,
+            "height": 44,
+            "visible": true
+          },
+          {
+            "selector": ".collection-panel",
+            "x": 20,
+            "y": 421,
+            "right": 300,
+            "bottom": 469,
+            "width": 280,
+            "height": 48,
+            "visible": true
+          },
+          {
+            "selector": "#studio-dock",
+            "x": 20,
+            "y": 492,
+            "right": 300,
+            "bottom": 552,
+            "width": 280,
+            "height": 60,
+            "visible": true
+          }
+        ],
+        "overlaps": [],
+        "offscreen": [],
+        "targets": [
+          {
+            "name": "Collection",
+            "width": 114.421875,
+            "height": 44
+          },
+          {
+            "name": "Choose Limestone",
+            "width": 111.71875,
+            "height": 44
+          },
+          {
+            "name": "Choose Nocturne",
+            "width": 53.09375,
+            "height": 44
+          },
+          {
+            "name": "Choose Veil",
+            "width": 53.09375,
+            "height": 44
+          },
+          {
+            "name": "Choose Pantheon",
+            "width": 53.09375,
+            "height": 44
+          },
+          {
+            "name": "Media",
+            "width": 70.25,
+            "height": 60
+          },
+          {
+            "name": "Material",
+            "width": 70.25,
+            "height": 60
+          },
+          {
+            "name": "Interaction",
+            "width": 70.25,
+            "height": 60
+          },
+          {
+            "name": "Details",
+            "width": 69.25,
+            "height": 60
+          }
+        ],
+        "titleOverflow": false,
+        "overflow": false
+      },
+      {
+        "width": 320,
+        "height": 568,
+        "state": "material",
+        "x": 8,
+        "y": 8,
+        "right": 312,
+        "bottom": 560,
+        "overflow": false
+      },
+      {
+        "width": 320,
+        "height": 568,
+        "state": "media",
+        "x": 8,
+        "y": 8,
+        "right": 312,
+        "bottom": 560,
+        "overflow": false
+      },
+      {
+        "width": 320,
+        "height": 568,
+        "state": "interaction",
+        "x": 8,
+        "y": 8,
+        "right": 312,
+        "bottom": 560,
+        "overflow": false
+      },
+      {
+        "width": 320,
+        "height": 568,
+        "state": "details",
+        "x": 8,
+        "y": 8,
+        "right": 312,
+        "bottom": 560,
+        "overflow": false
+      },
+      {
+        "width": 768,
+        "height": 1024,
+        "state": "home",
+        "boxes": [
+          {
+            "selector": "header",
+            "x": 32,
+            "y": 24,
+            "right": 736,
+            "bottom": 72,
+            "width": 704,
+            "height": 48,
+            "visible": true
+          },
+          {
+            "selector": "#entry-orb",
+            "x": 84,
+            "y": 378.796875,
+            "right": 144,
+            "bottom": 438.796875,
+            "width": 60,
+            "height": 60,
+            "visible": true
+          },
+          {
+            "selector": "#enter-room",
+            "x": 299.5234375,
+            "y": 694,
+            "right": 468.4765625,
+            "bottom": 742,
+            "width": 168.953125,
+            "height": 48,
+            "visible": true
+          },
+          {
+            "selector": "#exhibition-title > span .type-ink",
+            "x": 32,
+            "y": 133,
+            "right": 184.078125,
+            "bottom": 194.4375,
+            "width": 152.078125,
+            "height": 61.4375,
+            "visible": true
+          },
+          {
+            "selector": "#exhibition-title > em .type-ink",
+            "x": 192.5,
+            "y": 133,
+            "right": 424,
+            "bottom": 194.4375,
+            "width": 231.5,
+            "height": 61.4375,
+            "visible": true
+          },
+          {
+            "selector": ".intent-plate",
+            "x": 32,
+            "y": 208.4375,
+            "right": 736,
+            "bottom": 238.4375,
+            "width": 704,
+            "height": 30,
+            "visible": true
+          },
+          {
+            "selector": ".exhibition-eyebrow",
+            "x": 32,
+            "y": 112,
+            "right": 736,
+            "bottom": 121,
+            "width": 704,
+            "height": 9,
+            "visible": true
+          },
+          {
+            "selector": ".collection-panel",
+            "x": 32,
+            "y": 924,
+            "right": 736,
+            "bottom": 1000,
+            "width": 704,
+            "height": 76,
+            "visible": true
+          },
+          {
+            "selector": "#studio-dock",
+            "x": 660,
+            "y": 374.5,
+            "right": 748,
+            "bottom": 649.5,
+            "width": 88,
+            "height": 275,
+            "visible": true
+          }
+        ],
+        "overlaps": [],
+        "offscreen": [],
+        "targets": [
+          {
+            "name": "Collection",
+            "width": 135.0625,
+            "height": 44
+          },
+          {
+            "name": "Choose Limestone",
+            "width": 154,
+            "height": 76
+          },
+          {
+            "name": "Choose Nocturne",
+            "width": 92.65625,
+            "height": 76
+          },
+          {
+            "name": "Choose Veil",
+            "width": 92.671875,
+            "height": 76
+          },
+          {
+            "name": "Choose Pantheon",
+            "width": 92.671875,
+            "height": 76
+          },
+          {
+            "name": "Media",
+            "width": 88,
+            "height": 64
+          },
+          {
+            "name": "Material",
+            "width": 88,
+            "height": 64
+          },
+          {
+            "name": "Interaction",
+            "width": 88,
+            "height": 64
+          },
+          {
+            "name": "Details",
+            "width": 88,
+            "height": 64
+          }
+        ],
+        "titleOverflow": false,
+        "overflow": false
+      },
+      {
+        "width": 768,
+        "height": 1024,
+        "state": "material",
+        "x": 152,
+        "y": 16,
+        "right": 752,
+        "bottom": 1008,
+        "overflow": false
+      },
+      {
+        "width": 768,
+        "height": 1024,
+        "state": "media",
+        "x": 152,
+        "y": 16,
+        "right": 752,
+        "bottom": 1008,
+        "overflow": false
+      },
+      {
+        "width": 768,
+        "height": 1024,
+        "state": "interaction",
+        "x": 152,
+        "y": 16,
+        "right": 752,
+        "bottom": 1008,
+        "overflow": false
+      },
+      {
+        "width": 768,
+        "height": 1024,
+        "state": "details",
+        "x": 152,
+        "y": 16,
+        "right": 752,
+        "bottom": 1008,
+        "overflow": false
+      },
+      {
+        "width": 768,
+        "height": 768,
+        "state": "home",
+        "boxes": [
+          {
+            "selector": "header",
+            "x": 32,
+            "y": 24,
+            "right": 736,
+            "bottom": 72,
+            "width": 704,
+            "height": 48,
+            "visible": true
+          },
+          {
+            "selector": "#entry-orb",
+            "x": 132,
+            "y": 271.4375,
+            "right": 192,
+            "bottom": 331.4375,
+            "width": 60,
+            "height": 60,
+            "visible": true
+          },
+          {
+            "selector": "#enter-room",
+            "x": 299.5234375,
+            "y": 518,
+            "right": 468.4765625,
+            "bottom": 566,
+            "width": 168.953125,
+            "height": 48,
+            "visible": true
+          },
+          {
+            "selector": "#exhibition-title > span .type-ink",
+            "x": 32,
+            "y": 133,
+            "right": 184.078125,
+            "bottom": 194.4375,
+            "width": 152.078125,
+            "height": 61.4375,
+            "visible": true
+          },
+          {
+            "selector": "#exhibition-title > em .type-ink",
+            "x": 192.5,
+            "y": 133,
+            "right": 424,
+            "bottom": 194.4375,
+            "width": 231.5,
+            "height": 61.4375,
+            "visible": true
+          },
+          {
+            "selector": ".intent-plate",
+            "x": 32,
+            "y": 208.4375,
+            "right": 736,
+            "bottom": 238.4375,
+            "width": 704,
+            "height": 30,
+            "visible": true
+          },
+          {
+            "selector": ".exhibition-eyebrow",
+            "x": 32,
+            "y": 112,
+            "right": 736,
+            "bottom": 121,
+            "width": 704,
+            "height": 9,
+            "visible": true
+          },
+          {
+            "selector": ".collection-panel",
+            "x": 32,
+            "y": 668,
+            "right": 736,
+            "bottom": 744,
+            "width": 704,
+            "height": 76,
+            "visible": true
+          },
+          {
+            "selector": "#studio-dock",
+            "x": 660,
+            "y": 246.5,
+            "right": 748,
+            "bottom": 521.5,
+            "width": 88,
+            "height": 275,
+            "visible": true
+          }
+        ],
+        "overlaps": [],
+        "offscreen": [],
+        "targets": [
+          {
+            "name": "Collection",
+            "width": 135.0625,
+            "height": 44
+          },
+          {
+            "name": "Choose Limestone",
+            "width": 154,
+            "height": 76
+          },
+          {
+            "name": "Choose Nocturne",
+            "width": 92.65625,
+            "height": 76
+          },
+          {
+            "name": "Choose Veil",
+            "width": 92.671875,
+            "height": 76
+          },
+          {
+            "name": "Choose Pantheon",
+            "width": 92.671875,
+            "height": 76
+          },
+          {
+            "name": "Media",
+            "width": 88,
+            "height": 64
+          },
+          {
+            "name": "Material",
+            "width": 88,
+            "height": 64
+          },
+          {
+            "name": "Interaction",
+            "width": 88,
+            "height": 64
+          },
+          {
+            "name": "Details",
+            "width": 88,
+            "height": 64
+          }
+        ],
+        "titleOverflow": false,
+        "overflow": false
+      },
+      {
+        "width": 768,
+        "height": 768,
+        "state": "material",
+        "x": 152,
+        "y": 16,
+        "right": 752,
+        "bottom": 752,
+        "overflow": false
+      },
+      {
+        "width": 768,
+        "height": 768,
+        "state": "media",
+        "x": 152,
+        "y": 16,
+        "right": 752,
+        "bottom": 752,
+        "overflow": false
+      },
+      {
+        "width": 768,
+        "height": 768,
+        "state": "interaction",
+        "x": 152,
+        "y": 16,
+        "right": 752,
+        "bottom": 752,
+        "overflow": false
+      },
+      {
+        "width": 768,
+        "height": 768,
+        "state": "details",
+        "x": 152,
+        "y": 16,
+        "right": 752,
+        "bottom": 752,
+        "overflow": false
+      },
+      {
+        "width": 1000,
+        "height": 650,
+        "state": "home",
+        "boxes": [
+          {
+            "selector": "header",
+            "x": 32,
+            "y": 24,
+            "right": 968,
+            "bottom": 72,
+            "width": 936,
+            "height": 48,
+            "visible": true
+          },
+          {
+            "selector": "#entry-orb",
+            "x": 292.5,
+            "y": 179.671875,
+            "right": 352.5,
+            "bottom": 239.671875,
+            "width": 60,
+            "height": 60,
+            "visible": true
+          },
+          {
+            "selector": "#enter-room",
+            "x": 495.5234375,
+            "y": 477,
+            "right": 664.4765625,
+            "bottom": 525,
+            "width": 168.953125,
+            "height": 48,
+            "visible": true
+          },
+          {
+            "selector": "#exhibition-title > span .type-ink",
+            "x": 32,
+            "y": 174,
+            "right": 217.65625,
+            "bottom": 238.5,
+            "width": 185.65625,
+            "height": 64.5,
+            "visible": true
+          },
+          {
+            "selector": "#exhibition-title > em .type-ink",
+            "x": 32,
+            "y": 244.5,
+            "right": 314.609375,
+            "bottom": 309,
+            "width": 282.609375,
+            "height": 64.5,
+            "visible": true
+          },
+          {
+            "selector": ".intent-plate",
+            "x": 32,
+            "y": 344,
+            "right": 372,
+            "bottom": 410,
+            "width": 340,
+            "height": 66,
+            "visible": true
+          },
+          {
+            "selector": ".exhibition-eyebrow",
+            "x": 32,
+            "y": 143,
+            "right": 372,
+            "bottom": 152,
+            "width": 340,
+            "height": 9,
+            "visible": true
+          },
+          {
+            "selector": ".exhibition-footnote",
+            "x": 32,
+            "y": 435,
+            "right": 372,
+            "bottom": 443,
+            "width": 340,
+            "height": 8,
+            "visible": true
+          },
+          {
+            "selector": ".collection-panel",
+            "x": 32,
+            "y": 550,
+            "right": 968,
+            "bottom": 626,
+            "width": 936,
+            "height": 76,
+            "visible": true
+          },
+          {
+            "selector": "#studio-dock",
+            "x": 856,
+            "y": 163.5,
+            "right": 968,
+            "bottom": 486.5,
+            "width": 112,
+            "height": 323,
+            "visible": true
+          }
+        ],
+        "overlaps": [],
+        "offscreen": [],
+        "targets": [
+          {
+            "name": "Collection",
+            "width": 135.0625,
+            "height": 44
+          },
+          {
+            "name": "Choose Limestone",
+            "width": 204.25,
+            "height": 76
+          },
+          {
+            "name": "Choose Nocturne",
+            "width": 123.25,
+            "height": 76
+          },
+          {
+            "name": "Choose Veil",
+            "width": 123.25,
+            "height": 76
+          },
+          {
+            "name": "Choose Pantheon",
+            "width": 123.25,
+            "height": 76
+          },
+          {
+            "name": "Media",
+            "width": 112,
+            "height": 76
+          },
+          {
+            "name": "Material",
+            "width": 112,
+            "height": 76
+          },
+          {
+            "name": "Interaction",
+            "width": 112,
+            "height": 76
+          },
+          {
+            "name": "Details",
+            "width": 112,
+            "height": 76
+          }
+        ],
+        "titleOverflow": false,
+        "overflow": false
+      },
+      {
+        "width": 1000,
+        "height": 650,
+        "state": "material",
+        "x": 384,
+        "y": 16,
+        "right": 984,
+        "bottom": 634,
+        "overflow": false
+      },
+      {
+        "width": 1000,
+        "height": 650,
+        "state": "media",
+        "x": 384,
+        "y": 16,
+        "right": 984,
+        "bottom": 634,
+        "overflow": false
+      },
+      {
+        "width": 1000,
+        "height": 650,
+        "state": "interaction",
+        "x": 384,
+        "y": 16,
+        "right": 984,
+        "bottom": 634,
+        "overflow": false
+      },
+      {
+        "width": 1000,
+        "height": 650,
+        "state": "details",
+        "x": 384,
+        "y": 16,
+        "right": 984,
+        "bottom": 634,
+        "overflow": false
+      },
+      {
+        "width": 844,
+        "height": 390,
+        "state": "home",
+        "boxes": [
+          {
+            "selector": "header",
+            "x": 32,
+            "y": 12,
+            "right": 812,
+            "bottom": 60,
+            "width": 780,
+            "height": 48,
+            "visible": true
+          },
+          {
+            "selector": "#entry-orb",
+            "x": 507.796875,
+            "y": 98.890625,
+            "right": 567.796875,
+            "bottom": 158.890625,
+            "width": 60,
+            "height": 60,
+            "visible": true
+          },
+          {
+            "selector": "#enter-room",
+            "x": 337.5234375,
+            "y": 193.59375,
+            "right": 506.4765625,
+            "bottom": 241.59375,
+            "width": 168.953125,
+            "height": 48,
+            "visible": true
+          },
+          {
+            "selector": ".collection-panel",
+            "x": 20,
+            "y": 318,
+            "right": 290,
+            "bottom": 374,
+            "width": 270,
+            "height": 56,
+            "visible": true
+          },
+          {
+            "selector": "#studio-dock",
+            "x": 736,
+            "y": 79,
+            "right": 824,
+            "bottom": 311,
+            "width": 88,
+            "height": 232,
+            "visible": true
+          }
+        ],
+        "overlaps": [],
+        "offscreen": [],
+        "targets": [
+          {
+            "name": "Collection",
+            "width": 135.0625,
+            "height": 44
+          },
+          {
+            "name": "Media",
+            "width": 88,
+            "height": 58
+          },
+          {
+            "name": "Material",
+            "width": 88,
+            "height": 58
+          },
+          {
+            "name": "Interaction",
+            "width": 88,
+            "height": 58
+          },
+          {
+            "name": "Details",
+            "width": 88,
+            "height": 58
+          }
+        ],
+        "titleOverflow": false,
+        "overflow": false
+      },
+      {
+        "width": 844,
+        "height": 390,
+        "state": "material",
+        "x": 228,
+        "y": 16,
+        "right": 828,
+        "bottom": 374,
+        "overflow": false
+      },
+      {
+        "width": 844,
+        "height": 390,
+        "state": "media",
+        "x": 228,
+        "y": 16,
+        "right": 828,
+        "bottom": 374,
+        "overflow": false
+      },
+      {
+        "width": 844,
+        "height": 390,
+        "state": "interaction",
+        "x": 228,
+        "y": 16,
+        "right": 828,
+        "bottom": 374,
+        "overflow": false
+      },
+      {
+        "width": 844,
+        "height": 390,
+        "state": "details",
+        "x": 228,
+        "y": 16,
+        "right": 828,
+        "bottom": 374,
+        "overflow": false
+      }
+    ],
+    "pageErrors": []
+  },
+  "realCapture": {
+    "productionPrefix": "/release/preview/",
+    "scene": "Apartment",
+    "opticalRenderer": "WebGL 2 context explicitly verified",
+    "roomRenderer": "Spark / Gaussian splats / WebGL 2",
+    "nativeSectionEffects": {
+      "owned": 16,
+      "direction": "forward"
+    },
+    "fonts": [
+      {
+        "family": "Geist",
+        "status": "loaded"
+      }
+    ],
+    "purposePreview": "02 / Shape the light.; filled outline",
+    "mobile": "touch scene index and header Collection; trigger focus restored",
+    "entry": "sun enters, strip hides, return restores sun focus",
+    "reducedMotion": "application desktop; system phone",
+    "pageErrors": [],
+    "externalRequests": [],
+    "badResponses": [],
+    "finalCopyReview": "Fresh production mobile courtyard; default sentence preserves spacing when its line break is hidden"
+  },
+  "accessAndPackaging": {
+    "fontFallback": "320px material panel fits with blocked fonts",
+    "forcedColors": {
+      "stencil": {
+        "color": "rgb(0, 0, 0)",
+        "stroke": "0px"
+      },
+      "selection": {
+        "color": "rgba(5, 0, 73, 0.8)",
+        "base": "rgba(255, 255, 255, 0)"
+      }
+    },
+    "portable": {
+      "transport": "HTTP document fixture; file scheme is blocked by managed Chromium policy",
+      "bytes": 61507814,
+      "fonts": [
+        {
+          "family": "Geist",
+          "status": "loaded"
+        }
+      ],
+      "externalRequests": [],
+      "pageErrors": []
+    }
+  },
+  "activeFont": {
+    "family": "Geist variable",
+    "bytes": 29400,
+    "source": "Unmodified Fontsource 5.3.0; SIL OFL 1.1; provenance and hashes in public/fonts/PROVENANCE.json"
+  },
+  "limits": [
+    "Software Chromium and emulated phone; physical-device frame times unmeasured",
+    "Safari and Firefox unverified",
+    "Managed browser blocks file URLs; the portable document is verified as an HTTP fixture with no other application requests",
+    "Execution proxy blocks GitHack; delivery verification compares published GitHub blobs"
+  ],
+  "publication": {
+    "status": "prepared",
+    "branch": "live-preview",
+    "commit": "c103629322b7c7f37173f9399a65beff2421c7dc",
+    "url": "https://rawcdn.githack.com/ejaubashi/vvv/c103629322b7c7f37173f9399a65beff2421c7dc/preview/index.html?room=1&space=apartment&renderer=webgl"
+  }
+}

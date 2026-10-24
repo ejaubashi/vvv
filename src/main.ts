@@ -113,7 +113,7 @@ const systemReduced = matchMedia("(prefers-reduced-motion: reduce)");
 function lensHome(w: number, h: number) {
   const wide = w >= 1000 && h >= 600;
   return {
-    x: wide ? w * 0.7 : w * 0.5,
+    x: wide ? w * 0.58 : w * 0.5,
     y: h * (!wide && h > 680 ? 0.5 : 0.46),
   };
 }
@@ -343,6 +343,7 @@ function tick(now: number) {
       !focus &&
       actions.hidden &&
       (enterPending || entrance.running || !visitActive()),
+    width >= 1000 && height >= 600 ? 160 : width > 600 ? 128 : 0,
   );
   const viewportInset = width < 600 ? 10 : 16;
   if (optical.room > 0)
@@ -686,6 +687,15 @@ function updateRoomChrome() {
   document.body.classList.toggle("has-room", roomEnabled);
   nav.hidden = !roomEnabled || dialog.open;
   const index = roomList.findIndex((r) => r.id === selectedRoom);
+  const sceneIndexNav = $("#scene-index");
+  sceneIndexNav.hidden = !roomEnabled || dialog.open || visitActive();
+  for (const button of sceneIndexNav.querySelectorAll<HTMLButtonElement>(
+    "[data-place]",
+  )) {
+    const selected = button.dataset.place === selectedRoom;
+    if (button.getAttribute("aria-pressed") !== String(selected))
+      button.setAttribute("aria-pressed", String(selected));
+  }
   const caption = `${room.status === "fallback" ? (isCaptureId(room.kind) ? "CAPTURE UNAVAILABLE" : "ILLUSTRATED ROOMS") : studyMode ? "STUDY" : "PLACE"} · 0${index + 1} / 0${roomList.length}`;
   if ($("#room-count").textContent !== caption)
     $("#room-count").textContent = caption;
@@ -786,6 +796,21 @@ $("#capture-retry").addEventListener("click", () => {
     room.captureFailureId ??
       (isCaptureId(selectedRoom) ? selectedRoom : "pantheon"),
   );
+});
+// A direct scene index shares the existing cancelable room-selection lifecycle.
+$("#scene-index").innerHTML = roomList
+  .map((entry, index) => {
+    const image = isCaptureId(entry.id)
+      ? new URL(captureDefinition(entry.id).thumbnail, document.baseURI).href
+      : "";
+    return `<button data-place="${entry.id}" aria-label="Choose ${entry.name}" aria-pressed="${entry.id === selectedRoom}"><span class="scene-choice-number" aria-hidden="true">0${index + 1}</span><span class="scene-choice-name">${entry.name}</span><span class="scene-choice-image" aria-hidden="true" ${image ? `style="background-image:url(${image})"` : ""}></span>${icon("northeast")}</button>`;
+  })
+  .join("");
+$("#scene-index").addEventListener("click", (event) => {
+  const button = (event.target as Element).closest<HTMLButtonElement>(
+    "[data-place]",
+  );
+  if (button) void chooseRoom(button.dataset.place as RoomId);
 });
 $("#previous-room").addEventListener("click", () => nextRoom(-1));
 $("#next-room").addEventListener("click", () => nextRoom(1));

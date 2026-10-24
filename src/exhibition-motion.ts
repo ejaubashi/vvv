@@ -3,7 +3,7 @@ import type { Workspace } from "./state";
 const sections: Workspace[] = ["media", "material", "interaction", "details"];
 const ease = "cubic-bezier(.16,1,.3,1)";
 const pressTargets =
-  ".dock button,[data-panel],#browse-collection,#enter-room,.room-nav>button,.room-preset,.preset,#return-to-lens,#visit-studio,.icon-button";
+  ".dock button,[data-panel],#browse-collection,#enter-room,.room-nav>button,.room-preset,[data-place],.preset,#return-to-lens,#visit-studio,.icon-button";
 
 /** Finite DOM motion, independent of the optical renderer's animation clock. */
 export class ExhibitionMotion {
@@ -53,6 +53,10 @@ export class ExhibitionMotion {
             this.pointerFrame = 0;
             this.hero.style.setProperty("--title-x", `${this.pointer.x * 4}px`);
             this.hero.style.setProperty("--title-y", `${this.pointer.y * 3}px`);
+            this.hero.style.setProperty(
+              "--type-force",
+              String(790 + this.pointer.x * 100),
+            );
             this.hero.style.setProperty(
               "--title-light",
               `${50 + this.pointer.x * 26}%`,
@@ -361,15 +365,18 @@ export class ExhibitionMotion {
   private previewIntent(section: Workspace | null) {
     const intent = document.querySelector<HTMLElement>("#studio-intent")!;
     const purposes: Record<Workspace, string> = {
-      media: "01 / Discover a place.",
-      material: "02 / Shape the light.",
-      interaction: "03 / Find your rhythm.",
-      details: "04 / Behind the surface.",
+      media: "Discover a place.",
+      material: "Shape the light.",
+      interaction: "Find your rhythm.",
+      details: "Behind the surface.",
     };
     this.cancel("intent");
-    intent.textContent = section
+    const index = document.querySelector<HTMLElement>("#intent-index")!;
+    index.textContent = section ? `0${sections.indexOf(section) + 1}` : "↳";
+    this.hero.dataset.preview = section ?? "idle";
+    intent.innerHTML = section
       ? purposes[section]
-      : "Real places. Seen differently.";
+      : "Reality is only <br>the starting point.";
     if (section) intent.dataset.section = section;
     else delete intent.dataset.section;
     this.play(
@@ -408,6 +415,7 @@ export class ExhibitionMotion {
     this.hero.style.setProperty("--title-x", "0px");
     this.hero.style.setProperty("--title-y", "0px");
     this.hero.style.setProperty("--title-light", "50%");
+    this.hero.style.setProperty("--type-force", "790");
   }
 
   setReduced(reduced: boolean) {
