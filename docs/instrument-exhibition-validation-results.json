@@ -1865,9 +1865,12 @@
     "Execution proxy blocks GitHack; delivery verification compares published GitHub blobs"
   ],
   "publication": {
-    "status": "prepared",
+    "status": "published",
     "branch": "live-preview",
     "commit": "c103629322b7c7f37173f9399a65beff2421c7dc",
-    "url": "https://rawcdn.githack.com/ejaubashi/vvv/c103629322b7c7f37173f9399a65beff2421c7dc/preview/index.html?room=1&space=apartment&renderer=webgl"
+    "url": "https://rawcdn.githack.com/ejaubashi/vvv/c103629322b7c7f37173f9399a65beff2421c7dc/preview/index.html?room=1&space=apartment&renderer=webgl",
+    "applicationCommit": "a952ece33e1b807d495082e60483bad427448ae1",
+    "matchingPublishedBlobs": 29,
+    "verification": "GitHub recursive tree matches all 29 reviewed build files and Git blob hashes exactly"
   }
 }
