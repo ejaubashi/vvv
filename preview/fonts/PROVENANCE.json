@@ -40,8 +40,5 @@
     }
   ],
   "modifications": "None. Original Fontsource Latin WOFF2 binaries are self-hosted without changing the font files.",
-  "currentFonts": [
-    "src/assets/fonts/geist-latin.woff2",
-    "src/assets/fonts/instrument-serif-italic-latin.woff2"
-  ]
+  "currentFonts": ["src/assets/fonts/geist-latin.woff2"]
 }
