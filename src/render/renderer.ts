@@ -2,6 +2,7 @@ import { fresnelReflectance, refractedOffset } from "../optics";
 import type { PortalFrame } from "./portal-frame";
 import type { OpticalState } from "../state";
 import { glVertex, glFragment, glBackground, wgsl } from "./shaders";
+import { liquidOutline, SPLASH_DROPS } from "./splash";
 export interface Renderer {
   name: string;
   maxDimension: number;
@@ -42,6 +43,18 @@ function values(
   target[17] = s.lightAngle;
   target[18] = s.room ?? 0;
   target[19] = s.immersion ?? 0;
+  const entry = s.entrance;
+  target[20] = (entry?.x ?? 0) * ratio;
+  target[21] = (entry?.y ?? 0) * ratio;
+  target[22] = (entry?.radius ?? 0) * ratio;
+  target[23] = entry?.stretch ?? 1;
+  target[24] = entry?.angle ?? 0;
+  target[25] = entry?.opacity ?? 0;
+  target[26] = (entry?.rippleRadius ?? 0) * ratio;
+  target[27] = entry?.rippleStrength ?? 0;
+  target[28] = (entry?.impactX ?? 0) * ratio;
+  target[29] = (entry?.impactY ?? 0) * ratio;
+  target[30] = s.splash ?? 0;
   return target;
 }
 /** Expensive optics only cover the object plus a 96 CSS-pixel light/shadow halo. */
@@ -69,9 +82,9 @@ abstract class Base {
   ratio = 1;
   maxDimension = 4096;
   name = "";
-  data = new Float32Array(20);
+  data = new Float32Array(32);
   rect = new Int32Array(4);
-  chunks = Array.from({ length: 5 }, (_, i) =>
+  chunks = Array.from({ length: 8 }, (_, i) =>
     this.data.subarray(i * 4, i * 4 + 4),
   );
   version = -1;
@@ -160,7 +173,7 @@ export class WebGLRenderer extends Base implements Renderer {
     gl.useProgram(this.program);
     gl.uniform1i(gl.getUniformLocation(this.program, "room"), 1);
     gl.activeTexture(gl.TEXTURE0);
-    this.uniforms = ["a", "b", "c", "d", "e"].map((n) =>
+    this.uniforms = ["a", "b", "c", "d", "e", "f", "g", "h"].map((n) =>
       gl.getUniformLocation(this.program, n)!,
     );
     this.canvas.addEventListener(
@@ -295,7 +308,7 @@ export class WebGPURenderer extends Base implements Renderer {
             {
               binding: 0,
               visibility: GPUShaderStage.FRAGMENT,
-              buffer: { type: "uniform", minBindingSize: 80 },
+              buffer: { type: "uniform", minBindingSize: 128 },
             },
             {
               binding: 1,
@@ -333,7 +346,7 @@ export class WebGPURenderer extends Base implements Renderer {
       primitive: { topology: "triangle-list" },
     });
     this.uniform = this.device.createBuffer({
-      size: 80,
+      size: 128,
       usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
     });
     this.sampler = this.device.createSampler({
@@ -461,6 +474,15 @@ export class WebGPURenderer extends Base implements Renderer {
 export class CanvasRenderer extends Base implements Renderer {
   name = "Canvas 2D fallback";
   ctx = this.canvas.getContext("2d", { alpha: false })!;
+  private outlineKey = "";
+  private outline = new Path2D();
+  private rims: {
+    path: Path2D;
+    x: number;
+    y: number;
+    radius: number;
+    bevel: number;
+  }[] = [];
   draw(
     s: OpticalState,
     scene: HTMLCanvasElement,
@@ -471,22 +493,58 @@ export class CanvasRenderer extends Base implements Renderer {
       r = this.ratio;
     c.setTransform(r, 0, 0, r, 0, 0);
     c.drawImage(scene, 0, 0, this.canvas.width / r, this.canvas.height / r);
-    c.save();
-    c.beginPath();
-    c.roundRect(
-      s.x - s.width / 2,
-      s.y - s.height / 2,
-      s.width,
-      s.height,
-      s.round,
+    const outlineKey = `${s.width},${s.height},${s.round},${s.splash ?? 0}`;
+    if (outlineKey !== this.outlineKey) {
+      this.outlineKey = outlineKey;
+      const amount = s.splash ?? 0;
+      const outline = liquidOutline(s.width, s.height, s.round, amount);
+      this.outline = new Path2D(outline);
+      const half = Math.min(s.width, s.height) / 2;
+      // Cache each contour so even the smallest fragment gets a scaled bevel.
+      this.rims = (outline.match(/M[^Z]+Z/g) ?? []).map((part, index) => {
+        const drop = SPLASH_DROPS[index - 1];
+        const radius = index
+          ? Math.min(drop.rx, drop.ry) * half * amount
+          : half;
+        return {
+          path: new Path2D(part),
+          x:
+            s.width / 2 +
+            (index ? (drop.x * (0.75 + 0.25 * amount) * s.width) / 2 : 0),
+          y:
+            s.height / 2 +
+            (index ? (drop.y * (0.75 + 0.25 * amount) * s.height) / 2 : 0),
+          radius,
+          bevel: Math.max(0.8, Math.min(7, radius * 0.065)),
+        };
+      });
+    }
+    const path = new Path2D();
+    path.addPath(
+      this.outline,
+      new DOMMatrix().translate(s.x - s.width / 2, s.y - s.height / 2),
     );
-    c.shadowColor = "rgba(0,0,0,.15)";
-    c.shadowBlur = 24;
-    c.shadowOffsetY = 12;
-    c.fillStyle = "rgba(255,255,255,.08)";
-    c.fill();
-    c.shadowColor = "transparent";
-    c.clip();
+    const material = s.compare
+      ? 0
+      : Math.min(1, Math.sqrt(fresnelReflectance(s.ior, 1)) * 5);
+    const lightX = Math.cos(s.lightAngle),
+      lightY = Math.sin(s.lightAngle);
+    c.save();
+    if (material > 0 && s.immersion < 1) {
+      c.save();
+      c.translate(s.x - s.width / 2, s.y - s.height / 2);
+      for (const rim of this.rims) {
+        const lift = Math.max(1.2, Math.min(14, rim.radius * 0.07));
+        c.shadowColor = `rgba(42,39,34,${material * (1 - s.immersion) * 0.22})`;
+        c.shadowBlur = Math.max(1, Math.min(12, rim.radius * 0.055)) * r;
+        c.shadowOffsetX = -lightX * lift * r;
+        c.shadowOffsetY = -lightY * lift * r;
+        c.fillStyle = "#eeeae1";
+        c.fill(rim.path);
+      }
+      c.restore();
+    }
+    c.clip(path);
     if (!s.compare || (portal && s.room > 0)) {
       const scale = 1 + Math.abs(refractedOffset(0.7, s.ior, s.depth));
       c.translate(s.x, s.y);
@@ -506,29 +564,114 @@ export class CanvasRenderer extends Base implements Renderer {
       }
     }
     c.restore();
-    c.beginPath();
-    c.roundRect(
-      s.x - s.width / 2,
-      s.y - s.height / 2,
-      s.width,
-      s.height,
-      s.round,
-    );
-    const shine = c.createLinearGradient(
-      s.x + (Math.cos(s.lightAngle) * s.width) / 2,
-      s.y + (Math.sin(s.lightAngle) * s.height) / 2,
-      s.x - (Math.cos(s.lightAngle) * s.width) / 2,
-      s.y - (Math.sin(s.lightAngle) * s.height) / 2,
-    );
-    const reflection = 0.4 + fresnelReflectance(s.ior, 0.5) * 2;
-    shine.addColorStop(
-      0,
-      `rgba(255,255,255,${Math.min(0.95, reflection + 0.3)})`,
-    );
-    shine.addColorStop(1, "rgba(255,255,255,.22)");
-    c.strokeStyle = shine;
-    c.lineWidth = 1;
-    c.stroke();
+    if (material > 0) {
+      c.save();
+      c.translate(s.x - s.width / 2, s.y - s.height / 2);
+      for (const rim of this.rims) {
+        c.save();
+        c.clip(rim.path);
+        const span = Math.max(1, rim.radius);
+        const shine = c.createLinearGradient(
+          rim.x + lightX * span,
+          rim.y + lightY * span,
+          rim.x - lightX * span,
+          rim.y - lightY * span,
+        );
+        shine.addColorStop(0, `rgba(255,252,241,${material * 0.85})`);
+        shine.addColorStop(0.4, `rgba(233,242,250,${material * 0.2})`);
+        shine.addColorStop(1, `rgba(47,51,57,${material * 0.3})`);
+        c.strokeStyle = shine;
+        c.lineWidth = rim.bevel * 2;
+        c.stroke(rim.path);
+        c.lineWidth = 1.1;
+        c.strokeStyle = `rgba(255,255,249,${material * 0.48})`;
+        c.stroke(rim.path);
+        c.restore();
+      }
+      c.restore();
+    }
+    const entry = s.entrance;
+    if (entry && entry.rippleStrength > 0) {
+      c.save();
+      c.clip(path);
+      c.beginPath();
+      c.arc(entry.impactX, entry.impactY, entry.rippleRadius, 0, Math.PI * 2);
+      c.lineWidth = 3;
+      c.strokeStyle = `rgba(255,183,77,${entry.rippleStrength * 0.35})`;
+      c.stroke();
+      c.restore();
+    }
+    if (entry && entry.opacity > 0) {
+      c.save();
+      c.globalAlpha = entry.opacity;
+      c.translate(entry.x, entry.y);
+      c.rotate(entry.angle);
+      c.scale(entry.stretch, 1 / Math.sqrt(entry.stretch));
+      const halo = c.createRadialGradient(
+        0,
+        0,
+        entry.radius,
+        0,
+        0,
+        entry.radius * 1.65,
+      );
+      halo.addColorStop(0, "#ffad261e");
+      halo.addColorStop(1, "#ff8a0000");
+      c.fillStyle = halo;
+      c.fillRect(
+        -entry.radius * 1.65,
+        -entry.radius * 1.65,
+        entry.radius * 3.3,
+        entry.radius * 3.3,
+      );
+      c.beginPath();
+      c.arc(0, 0, entry.radius, 0, Math.PI * 2);
+      c.shadowColor = "rgba(74,40,16,.24)";
+      c.shadowBlur = entry.radius * 0.28 * r;
+      c.shadowOffsetX = -lightX * entry.radius * 0.48 * r;
+      c.shadowOffsetY = -lightY * entry.radius * 0.48 * r;
+      c.fillStyle = "#ed8d15";
+      c.fill();
+      c.shadowColor = "transparent";
+      c.clip();
+      const source = portal && s.room > 0 ? portal.canvas : scene;
+      const side = Math.min(source.width, source.height) * 0.22;
+      c.drawImage(
+        source,
+        (source.width - side) / 2,
+        (source.height - side) / 2,
+        side,
+        side,
+        -entry.radius,
+        -entry.radius,
+        entry.radius * 2,
+        entry.radius * 2,
+      );
+      const lx = Math.cos(s.lightAngle - entry.angle) * entry.radius * 0.42;
+      const ly = Math.sin(s.lightAngle - entry.angle) * entry.radius * 0.42;
+      const solar = c.createRadialGradient(lx, ly, 0, 0, 0, entry.radius);
+      solar.addColorStop(0, "#ffcc55dd");
+      solar.addColorStop(0.55, "#ff9b16cf");
+      solar.addColorStop(0.88, "#d95706e8");
+      solar.addColorStop(1, "#ffc46bd9");
+      c.fillStyle = solar;
+      c.fill();
+      const glaze = c.createRadialGradient(
+        lx,
+        ly,
+        0,
+        lx,
+        ly,
+        entry.radius * 0.48,
+      );
+      glaze.addColorStop(0, "#fffcebd9");
+      glaze.addColorStop(0.25, "#fff5d182");
+      glaze.addColorStop(0.65, "#ffeab91c");
+      glaze.addColorStop(1, "#ffe7b000");
+      c.fillStyle = glaze;
+      c.fill();
+      c.restore();
+    }
   }
   dispose() {}
 }

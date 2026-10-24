@@ -1,4 +1,6 @@
 import "./style.css";
+import "./exhibition.css";
+import "./exhibition-motion.css";
 import { mount, icon, range, toggle } from "./ui";
 import {
   defaults,
@@ -11,10 +13,12 @@ import {
 import { Motion } from "./motion";
 import { Gestures } from "./gestures";
 import { WorkspaceTransition } from "./transitions";
+import { ExhibitionMotion } from "./exhibition-motion";
 import { MediaManager } from "./media";
 import { PerformanceMonitor } from "./performance";
 import { PortalRoom } from "./room/room";
 import { visitBounds, RoomViewInputs, type VisitBounds } from "./room/visit";
+import { LensEntrance } from "./room/entrance";
 import { Unravel, UnravelInputs } from "./room/unravel";
 import {
   ROOMS,
@@ -28,6 +32,7 @@ import {
 import { isCaptureId, captureDefinition } from "./room/capture-source";
 import { FrameExport } from "./export";
 import { SceneTexture } from "./render/scene";
+import { liquidOutline } from "./render/splash";
 import {
   createRenderer,
   CanvasRenderer,
@@ -40,6 +45,7 @@ const studyMode =
   viewParams.get("threshold") === "1";
 const roomList = studyMode ? STUDY_ROOMS : ROOMS;
 mount();
+const exhibitionMotion = new ExhibitionMotion();
 document.body.classList.toggle("captured-collection", !studyMode);
 const $ = <T extends HTMLElement = HTMLElement>(selector: string) =>
   document.querySelector<T>(selector)!;
@@ -49,6 +55,7 @@ const lens = $<HTMLButtonElement>("#lens"),
   actions = $("#actions");
 const workspace = new WorkspaceState(),
   motion = new Motion(),
+  entrance = new LensEntrance(),
   unravel = new Unravel(motion),
   media = new MediaManager(),
   monitor = new PerformanceMonitor(),
@@ -97,13 +104,24 @@ let entered = false,
   visitRadius = radius,
   visitView = { x: 0, y: 0 };
 const roomView = $("#room-view"),
-  enterButton = $<HTMLButtonElement>("#enter-room");
+  enterButton = $<HTMLButtonElement>("#enter-room"),
+  orbButton = $<HTMLButtonElement>("#entry-orb");
+let visitTrigger: HTMLButtonElement = enterButton;
 const viewBounds: VisitBounds = { x: 0, y: 0, width: 1, height: 1, round: 1 };
 journey.go(selectedRoom);
 const systemReduced = matchMedia("(prefers-reduced-motion: reduce)");
-let saved = { x: width * 0.5, y: height * 0.46 },
+function lensHome(w: number, h: number) {
+  const wide = w >= 1000 && h >= 600;
+  return {
+    x: wide ? w * 0.58 : w * 0.5,
+    y: h * (!wide && h > 680 ? 0.5 : 0.46),
+  };
+}
+let saved = lensHome(width, height),
   target = { x: width * 0.5, y: height * 0.5, w: 480, h: 500 };
-const transition = new WorkspaceTransition(dialog, content, motion, lens);
+const transition = new WorkspaceTransition(dialog, content, motion, lens, () =>
+  exhibitionMotion.revealPanel(),
+);
 let toastTimer = 0,
   filename = "",
   loading = false;
@@ -148,6 +166,7 @@ function wake() {
 function reduced() {
   motion.reduced = systemReduced.matches || userReduced;
   document.body.classList.toggle("reduced", motion.reduced);
+  exhibitionMotion.setReduced(motion.reduced);
   if (motion.reduced) {
     journey.pause();
     stopUnravel();
@@ -155,13 +174,31 @@ function reduced() {
   wake();
 }
 function resize() {
+  const viewportChanged = width !== innerWidth || height !== innerHeight;
   width = innerWidth;
   height = innerHeight;
+  const exhibitionLayout = width >= 1000 && height >= 600;
   radius = Math.min(
-    roomEnabled ? 180 : 128,
-    width * (roomEnabled ? 0.34 : 0.27),
-    height * (roomEnabled ? 0.24 : 0.18),
+    exhibitionLayout ? (roomEnabled ? 400 : 320) : roomEnabled ? 240 : 160,
+    width * (roomEnabled ? 0.43 : 0.35),
+    height *
+      (exhibitionLayout
+        ? height >= 700
+          ? 0.37
+          : 0.35
+        : roomEnabled
+          ? height <= 600
+            ? 0.22
+            : width >= 600 && height <= 900
+              ? 0.25
+              : 0.27
+          : 0.22),
   );
+  if (viewportChanged && !inspect && !visitActive() && !workspace.active) {
+    saved = lensHome(width, height);
+    motion.x.snap(saved.x);
+    motion.y.snap(saved.y);
+  }
   const ratio =
     Math.min(
       devicePixelRatio || 1,
@@ -206,6 +243,7 @@ function tick(now: number) {
   const living = ambient && !motion.reduced;
   const continuous =
     motion.moving ||
+    entrance.running ||
     unravel.active ||
     room.moving ||
     journey.playing ||
@@ -248,6 +286,13 @@ function tick(now: number) {
       ? 1
       : 0;
   motion.step(dt);
+  if (entrance.running) {
+    if (entrance.step(dt, motion.reduced, motion.portal.x >= 0.95))
+      media.playEntranceCue();
+    motion.immersion.snap(entrance.immersion);
+    if (!entrance.running && entered && viewParams.get("threshold") === "1")
+      void room.openThreshold();
+  }
   unravel.step(dt);
   room.setUnravel(unravel.frame);
   if (reveal < 1) reveal = motion.reduced ? 1 : Math.min(1, reveal + dt * 1.8);
@@ -288,6 +333,18 @@ function tick(now: number) {
   optical.energy = energy;
   optical.room = clamp(motion.portal.x, 0, 1);
   optical.immersion = immersion;
+  optical.splash = (1 - m) * (1 - immersion);
+  optical.entrance = entrance.layout(
+    motion.x.x,
+    motion.y.x,
+    visitActive() ? visitRadius : radius,
+    width,
+    !dialog.open &&
+      !focus &&
+      actions.hidden &&
+      (enterPending || entrance.running || !visitActive()),
+    width >= 1000 && height >= 600 ? 160 : width > 600 ? 128 : 0,
+  );
   const viewportInset = width < 600 ? 10 : 16;
   if (optical.room > 0)
     room.render(
@@ -298,7 +355,7 @@ function tick(now: number) {
       motion.reduced ? 0 : motion.intensity.x,
       depth,
       immersion > 0
-        ? motion.immersion.moving
+        ? entryMoving()
           ? 768
           : Math.max(width, height) *
             Math.min(devicePixelRatio || 1, 1.25) *
@@ -333,6 +390,16 @@ function tick(now: number) {
   renderer.canvas.dataset.roomSwitching = String(room.switching);
   renderer.canvas.dataset.roomBlend = String(room.blend);
   renderer.canvas.dataset.immersion = String(immersion);
+  renderer.canvas.dataset.lensShape = "splash";
+  renderer.canvas.dataset.splash = String(optical.splash);
+  renderer.canvas.dataset.entrance = enterPending
+    ? "waiting"
+    : entered && !entryMoving()
+      ? "inside"
+      : entrance.phase;
+  renderer.canvas.dataset.entranceProgress = String(
+    entrance.elapsed / LensEntrance.duration,
+  );
   renderer.canvas.dataset.threshold = room.thresholdState;
   renderer.canvas.dataset.thresholdProgress = String(room.thresholdProgress);
   renderer.canvas.dataset.unravelMode = String(unravel.enabled);
@@ -341,6 +408,7 @@ function tick(now: number) {
   lens.style.left = `${motion.x.x - radius}px`;
   lens.style.top = `${motion.y.x - radius}px`;
   lens.style.width = lens.style.height = `${radius * 2}px`;
+  lens.style.clipPath = `path("${liquidOutline(radius * 2, radius * 2, radius, 1)}")`;
   lens.style.visibility = dialog.open ? "hidden" : "visible";
   transition.update(m, workspace.active !== null);
   updateRoomChrome();
@@ -361,6 +429,7 @@ function tick(now: number) {
   }
   if (
     motion.moving ||
+    entrance.running ||
     unravel.active ||
     (roomEnabled && !dialog.open && (room.moving || journey.playing)) ||
     media.playing ||
@@ -374,8 +443,13 @@ function tick(now: number) {
 function visitActive() {
   return entered || enterPending || motion.immersion.x > 0;
 }
-async function enterLens() {
+function entryMoving() {
+  return entrance.running || motion.immersion.moving;
+}
+async function enterLens(trigger = enterButton) {
   if (enterPending || entered || dialog.open) return;
+  exhibitionMotion.leaveHero();
+  visitTrigger = trigger;
   const token = ++visitToken;
   enterPending = true;
   restoreVisitFocus = false;
@@ -396,12 +470,20 @@ async function enterLens() {
   if (disposed || token !== visitToken || !enterPending) return;
   enterPending = false;
   entered = true;
-  motion.immersion.target = 1;
-  if (new URLSearchParams(location.search).get("threshold") === "1")
-    void room.openThreshold();
+  if (room.status === "ready") {
+    clearTimeout(toastTimer);
+    $("#toast").classList.remove("visible");
+  }
+  entrance.begin(motion.reduced);
+  if (!entrance.running) {
+    motion.immersion.snap(1);
+    if (viewParams.get("threshold") === "1") void room.openThreshold();
+  }
   wake();
 }
 function returnToLens() {
+  entrance.cancel();
+  media.stopEntranceCue();
   stopUnravel();
   room.closeThreshold();
   ++visitToken;
@@ -423,7 +505,10 @@ function updateVisitChrome() {
     p = clamp(motion.immersion.x, 0, 1);
   document.body.classList.toggle("visiting", active);
   document.body.classList.toggle("visit-expanded", p >= 0.5);
-  document.body.style.setProperty("--visit-progress", String(p));
+  document.body.style.setProperty(
+    "--visit-progress",
+    String(enterPending || entrance.running ? 1 : p),
+  );
   document.body.dataset.visit = enterPending
     ? "loading"
     : entered
@@ -436,16 +521,26 @@ function updateVisitChrome() {
   enterButton.hidden = active || dialog.open || !actions.hidden;
   enterButton.style.left = `${motion.x.x}px`;
   enterButton.style.top = `${motion.y.x + radius - 58}px`;
+  orbButton.hidden = active || dialog.open || !actions.hidden || focus;
+  orbButton.style.left = `${entrance.frame.x}px`;
+  orbButton.style.top = `${entrance.frame.y}px`;
+  const focusMark = $("#lens-focus-mark");
+  focusMark.hidden = active || dialog.open || focus || !actions.hidden;
+  focusMark.style.left = `${motion.x.x}px`;
+  focusMark.style.top = `${motion.y.x}px`;
+  focusMark.style.width = focusMark.style.height = `${radius * 2 + 12}px`;
+  $(".exhibition-copy").inert = active || focus;
   $("#visit-bar").hidden = !active;
   roomView.hidden = !active || dialog.open;
   roomView.inert =
-    !entered || motion.immersion.moving || room.thresholdState === "crossing";
+    !entered || entryMoving() || room.thresholdState === "crossing";
   const thresholdReady =
     entered &&
     !isCaptureId(room.kind) &&
     room.status === "ready" &&
     !room.switching;
-  $("#threshold-tools").hidden = !thresholdReady || dialog.open || studioOpen;
+  $("#threshold-tools").hidden =
+    !thresholdReady || dialog.open || studioOpen || entryMoving();
   const thresholdButton = $<HTMLButtonElement>("#threshold-toggle"),
     crossButton = $<HTMLButtonElement>("#threshold-cross");
   const thresholdOpen =
@@ -459,10 +554,9 @@ function updateVisitChrome() {
           ? "Retry threshold"
           : "Open a threshold";
   thresholdButton.setAttribute("aria-pressed", String(thresholdOpen));
-  thresholdButton.disabled = motion.immersion.moving;
+  thresholdButton.disabled = entryMoving();
   crossButton.hidden = !thresholdOpen;
-  crossButton.disabled =
-    room.thresholdState === "crossing" || motion.immersion.moving;
+  crossButton.disabled = room.thresholdState === "crossing" || entryMoving();
   crossButton.textContent =
     room.thresholdState === "crossing"
       ? "Crossing…"
@@ -486,9 +580,10 @@ function updateVisitChrome() {
     !room.switching;
   if (unravel.enabled && (!captureReady || dialog.open || motion.reduced))
     stopUnravel();
-  $("#unravel-tools").hidden = !captureReady || dialog.open || studioOpen;
+  $("#unravel-tools").hidden =
+    !captureReady || dialog.open || studioOpen || entryMoving();
   const sculptButton = $<HTMLButtonElement>("#unravel-toggle");
-  sculptButton.disabled = motion.reduced || motion.immersion.moving;
+  sculptButton.disabled = motion.reduced || entryMoving();
   sculptButton.setAttribute("aria-pressed", String(unravel.enabled));
   $("#unravel-hint").textContent = motion.reduced
     ? "Available when reduced motion is off. Looking around stays available."
@@ -508,31 +603,35 @@ function updateVisitChrome() {
   dock.hidden = active && !studioOpen;
   $("#visit-studio").setAttribute("aria-expanded", String(studioOpen));
   $<HTMLButtonElement>("#visit-studio").disabled =
-    enterPending || motion.immersion.moving;
+    enterPending || entryMoving();
   $("#visit-hint").textContent = enterPending
     ? "OPENING THE ROOM…"
-    : room.status === "fallback"
-      ? isCaptureId(room.kind)
-        ? "CAPTURE UNAVAILABLE · CHOOSE ANOTHER ROOM"
-        : "ARCHITECTURAL ILLUSTRATION · DRAG TO LOOK AROUND"
-      : unravel.enabled
-        ? "HOLD TO UNRAVEL · RELEASE TO RESTORE"
-        : "DRAG OR USE ARROW KEYS TO LOOK AROUND";
+    : entrance.running
+      ? "THROUGH THE GLASS…"
+      : room.status === "fallback"
+        ? isCaptureId(room.kind)
+          ? "CAPTURE UNAVAILABLE · CHOOSE ANOTHER ROOM"
+          : "ARCHITECTURAL ILLUSTRATION · DRAG TO LOOK AROUND"
+        : unravel.enabled
+          ? "HOLD TO UNRAVEL · RELEASE TO RESTORE"
+          : "DRAG OR USE ARROW KEYS TO LOOK AROUND";
   const nav = $("#room-nav");
   nav.style.opacity = String(Math.abs(2 * p - 1));
   nav.inert =
     active &&
-    (enterPending ||
-      motion.immersion.moving ||
-      room.thresholdState === "crossing");
+    (enterPending || entryMoving() || room.thresholdState === "crossing");
   if (restoreVisitFocus && !active && !dialog.open) {
     restoreVisitFocus = false;
-    enterButton.hidden = false;
-    enterButton.focus({ preventScroll: true });
+    exhibitionMotion.revealHero();
+    visitTrigger.hidden = false;
+    visitTrigger.focus({ preventScroll: true });
   }
 }
 enterButton.addEventListener("click", () => {
   void enterLens();
+});
+orbButton.addEventListener("click", () => {
+  void enterLens(orbButton);
 });
 $("#return-to-lens").addEventListener("click", returnToLens);
 $("#threshold-toggle").addEventListener("click", () => {
@@ -563,8 +662,8 @@ $("#visit-studio").addEventListener("click", () => {
   }
   updateVisitChrome();
 });
-async function startRoom() {
-  if (room.status === "idle") toast("Opening the room…");
+async function startRoom(announce = true) {
+  if (announce && room.status === "idle") toast("Opening the room…");
   await room.init(
     renderer.name !== "WebGPU" ||
       new URLSearchParams(location.search).get("roomRenderer") === "webgl",
@@ -573,7 +672,7 @@ async function startRoom() {
   if (!room.captureError) await room.select(selectedRoom);
   if (room.captureError) selectedRoom = room.kind;
   if (disposed) return;
-  if (roomEnabled)
+  if (roomEnabled && announce)
     toast(
       room.status === "ready"
         ? `${roomDefinition(selectedRoom).name} · move to look around`
@@ -588,7 +687,16 @@ function updateRoomChrome() {
   document.body.classList.toggle("has-room", roomEnabled);
   nav.hidden = !roomEnabled || dialog.open;
   const index = roomList.findIndex((r) => r.id === selectedRoom);
-  const caption = `${room.status === "fallback" ? (isCaptureId(room.kind) ? "CAPTURE UNAVAILABLE" : "ILLUSTRATED ROOMS") : studyMode ? "LIVING ROOMS" : "CAPTURED PLACES"} · 0${index + 1} / 0${roomList.length}`;
+  const sceneIndexNav = $("#scene-index");
+  sceneIndexNav.hidden = !roomEnabled || dialog.open || visitActive();
+  for (const button of sceneIndexNav.querySelectorAll<HTMLButtonElement>(
+    "[data-place]",
+  )) {
+    const selected = button.dataset.place === selectedRoom;
+    if (button.getAttribute("aria-pressed") !== String(selected))
+      button.setAttribute("aria-pressed", String(selected));
+  }
+  const caption = `${room.status === "fallback" ? (isCaptureId(room.kind) ? "CAPTURE UNAVAILABLE" : "ILLUSTRATED ROOMS") : studyMode ? "STUDY" : "PLACE"} · 0${index + 1} / 0${roomList.length}`;
   if ($("#room-count").textContent !== caption)
     $("#room-count").textContent = caption;
   const label = `${roomDefinition(selectedRoom).name}${room.switching || room.status === "loading" ? " · Opening…" : ""}`;
@@ -615,7 +723,7 @@ function updateRoomChrome() {
         : credit.note);
   $("#capture-retry").hidden = !room.captureError;
   if ($("#room-name").textContent !== label)
-    $("#room-name").textContent = label;
+    exhibitionMotion.roomCaption($("#room-name"), label, selectedRoom);
   nav.dataset.playing = String(journey.playing);
   const play = $<HTMLButtonElement>("#journey-play");
   const name = journey.playing
@@ -688,6 +796,21 @@ $("#capture-retry").addEventListener("click", () => {
     room.captureFailureId ??
       (isCaptureId(selectedRoom) ? selectedRoom : "pantheon"),
   );
+});
+// A direct scene index shares the existing cancelable room-selection lifecycle.
+$("#scene-index").innerHTML = roomList
+  .map((entry, index) => {
+    const image = isCaptureId(entry.id)
+      ? new URL(captureDefinition(entry.id).thumbnail, document.baseURI).href
+      : "";
+    return `<button data-place="${entry.id}" aria-label="Choose ${entry.name}" aria-pressed="${entry.id === selectedRoom}"><span class="scene-choice-number" aria-hidden="true">0${index + 1}</span><span class="scene-choice-name">${entry.name}</span><span class="scene-choice-image" aria-hidden="true" ${image ? `style="background-image:url(${image})"` : ""}></span>${icon("northeast")}</button>`;
+  })
+  .join("");
+$("#scene-index").addEventListener("click", (event) => {
+  const button = (event.target as Element).closest<HTMLButtonElement>(
+    "[data-place]",
+  );
+  if (button) void chooseRoom(button.dataset.place as RoomId);
 });
 $("#previous-room").addEventListener("click", () => nextRoom(-1));
 $("#next-room").addEventListener("click", () => nextRoom(1));
@@ -881,6 +1004,7 @@ document.addEventListener("keydown", (e) => {
 });
 function setInspect(value: boolean) {
   inspect = value;
+  document.body.classList.toggle("inspecting", value);
   lens.setAttribute(
     "aria-label",
     value
@@ -890,7 +1014,7 @@ function setInspect(value: boolean) {
   $("#mode-label").textContent = value ? "INSPECTION MODE" : "MOVE TO EXPLORE";
   $("#dock-caption").textContent = value
     ? "DRAG TO FEEL THE MATERIAL"
-    : "A STUDY IN REFRACTION";
+    : "THE STUDIO";
 }
 function title(name: string, description: string, no: number) {
   $("#workspace-title").textContent = name;
@@ -918,6 +1042,7 @@ function openWorkspace(type: Workspace, trigger: HTMLElement) {
 function closeWorkspace() {
   if (!workspace.active) return;
   workspace.close();
+  exhibitionMotion.closePanel();
   transition.close();
   motion.x.target = saved.x;
   motion.y.target = saved.y;
@@ -929,6 +1054,9 @@ dialog.addEventListener("cancel", (e) => {
   closeWorkspace();
 });
 $("#close-workspace").addEventListener("click", closeWorkspace);
+$("#browse-collection").addEventListener("click", (event) =>
+  openWorkspace("media", event.currentTarget as HTMLButtonElement),
+);
 dialog.addEventListener("click", (e) => {
   if (e.target === dialog) {
     const r = dialog.getBoundingClientRect();
@@ -947,6 +1075,16 @@ for (const button of document.querySelectorAll<HTMLButtonElement>(
   button.addEventListener("click", () =>
     openWorkspace(button.dataset.workspace as Workspace, button),
   );
+for (const button of document.querySelectorAll<HTMLButtonElement>(
+  "[data-panel]",
+))
+  button.addEventListener("click", () => {
+    const type = button.dataset.panel as Workspace;
+    workspace.open(type);
+    renderWorkspace(type);
+    dialog.scrollTop = 0;
+    wake();
+  });
 function bindRange(id: string, callback: (value: number) => void, digits = 2) {
   const input = $<HTMLInputElement>("#" + id);
   input.addEventListener("input", () => {
@@ -956,13 +1094,13 @@ function bindRange(id: string, callback: (value: number) => void, digits = 2) {
   });
 }
 function renderWorkspace(type: Workspace) {
+  for (const button of document.querySelectorAll<HTMLButtonElement>(
+    "[data-panel]",
+  ))
+    button.setAttribute("aria-pressed", String(button.dataset.panel === type));
   const body = $("#workspace-body");
   if (type === "material") {
-    title(
-      "Matter, made light.",
-      "A change in material. A different way of seeing.",
-      2,
-    );
+    title("Material", "Shape the glass. Find your own way of seeing.", 2);
     body.innerHTML = `<div class="presets" role="group" aria-label="Material presets">${[
       ["Water", 1.33],
       ["Glass", 1.52],
@@ -974,7 +1112,7 @@ function renderWorkspace(type: Workspace) {
       )
       .join(
         "",
-      )}</div>${range("ior", "Refractive index", 1, 2, 0.01, ior)}${range("roughness", "Surface frost", 0, 1, 0.01, roughness)}<details class="advanced-optics"><summary>Depth & lighting<span>↗</span></summary>${range("depth", "Depth of glass", 0, 2, 0.01, depth)}${range("light-angle", "Light direction", -180, 180, 1, lightAngle)}</details>${toggle("compare", "Original scene", "Temporarily remove the optical distortion.", compare)}${toggle("inspect", "Inspect the lens", "Drag freely. Arrow keys move; Escape exits.", inspect)}<button class="text-button" id="reset-material">${icon("reset")}Reset material & position</button>`;
+      )}</div>${range("ior", "Refractive index", 1, 2, 0.01, ior)}${range("roughness", "Surface frost", 0, 1, 0.01, roughness)}<details class="advanced-optics"><summary>Depth & lighting<span>${icon("arrow")}</span></summary>${range("depth", "Depth of glass", 0, 2, 0.01, depth)}${range("light-angle", "Light direction", -180, 180, 1, lightAngle)}</details>${toggle("compare", "Original scene", "Temporarily remove the optical distortion.", compare)}${toggle("inspect", "Inspect the lens", "Drag freely. Arrow keys move; Escape exits.", inspect)}<button class="text-button" id="reset-material">${icon("reset")}Reset material & position</button>`;
     bindRange("ior", (value) => {
       ior = value;
       updatePresets();
@@ -1010,7 +1148,7 @@ function renderWorkspace(type: Workspace) {
       lightAngle = defaults.lightAngle;
       compare = false;
       setInspect(false);
-      saved = { x: width * 0.5, y: height * 0.46 };
+      saved = lensHome(width, height);
       motion.reset(saved.x, saved.y);
       renderWorkspace("material");
       toast("Material & position reset");
@@ -1019,11 +1157,12 @@ function renderWorkspace(type: Workspace) {
   }
   if (type === "media") {
     title(
-      "A new perspective.",
-      "Bring something of your own into the light.",
+      "Scenes & media",
+      "Choose a place to explore, or bring your own image.",
       1,
     );
-    body.innerHTML = `<div class="stage-gallery" role="group" aria-label="Studio environments">${["Fold", "Sculpture", "Veil", "Room"].map((name, index) => `<button class="stage-preset" data-composition="${index}" aria-pressed="${index === 3 ? roomEnabled : !roomEnabled && composition === index && !media.source}"><span class="stage-mini stage-${index}" aria-hidden="true"></span><span>${name}</span></button>`).join("")}</div><p class="gallery-note">CHOOSE AN ATMOSPHERE, OR BRING YOUR OWN.</p>${roomEnabled ? `<div class="room-note"><span class="badge">${studyMode ? "AUTHORED STUDIES + PANTHEON" : "FOUR CAPTURED PLACES"}</span><p>${studyMode ? "Explore the three authored studies and their spatial thresholds. Pantheon is a separate capture." : "Gaussian-splat scenes with real depth. Each scene downloads only when selected. Play rooms visits all four and may download about 43 MB in total."} Drag or use arrow keys inside the lens to look around.</p></div><div class="room-gallery" role="group" aria-label="Choose a room">${roomList.map((entry) => `<button class="room-preset room-edition-${entry.id}" data-room="${entry.id}" aria-pressed="${selectedRoom === entry.id}"><span class="room-mini" ${isCaptureId(entry.id) ? `style="background-image:url(${new URL(captureDefinition(entry.id).thumbnail, document.baseURI).href})"` : ""} aria-hidden="true"></span><strong>${entry.name}</strong><small>${entry.subtitle}</small></button>`).join("")}</div><p class="room-description">${roomDefinition(selectedRoom).detail}</p><p class="media-note">${isCaptureId(selectedRoom) ? `${captureDefinition(selectedRoom).name} by <a href="${captureDefinition(selectedRoom).source}" target="_blank" rel="noopener">${captureDefinition(selectedRoom).creator}</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>. ${captureDefinition(selectedRoom).note}` : "Authored geometry and lighting."} Small viewpoint movements reveal depth.</p><p class="media-note"><a href="${studyMode ? "?room=1&space=pantheon" : "?room=1&studies=1&space=gallery"}">${studyMode ? "Captured places" : "Authored studies · threshold experiment"}</a></p><div class="journey-controls"><button id="journey-toggle" class="text-button" ${motion.reduced ? "disabled" : ""}>${icon("play")}${journey.playing ? "Pause rooms" : journey.finished ? "Replay rooms" : "Play rooms"}</button><button id="journey-replay" class="text-button" ${motion.reduced ? "disabled" : ""}>${icon("reset")}Start again</button></div><p class="media-note">${motion.reduced ? "Reduced motion is active. Choose any room to explore it at rest." : "14 seconds of viewing in each room. Loading pauses the sequence. Pause anytime; the visit has a final room."}</p>${toggle("room-look", "Look around", "Gentle perspective movement. Reduced motion keeps it still.", roomLook)}` : ""}<label class="drop-zone" id="drop-zone">${icon("upload")}<strong>Drop a file, or browse</strong><small>IMAGE, VIDEO OR AUDIO · UP TO 150 MB</small><input id="file" type="file" accept="image/*,video/*,audio/*" aria-label="Choose a local media file"/></label><div id="media-info"></div><p class="media-note">Your files stay on this device. Visual media is shown in monochrome, with a cover crop that follows the lens.</p><button id="export-frame" class="export-button">${icon("download")}Save this moment<span>PNG ↗</span></button>`;
+    const backdrops = `<div class="stage-gallery" role="group" aria-label="Studio environments">${["Fold", "Sculpture", "Veil", "Room"].map((name, index) => `<button class="stage-preset" data-composition="${index}" aria-pressed="${index === 3 ? roomEnabled : !roomEnabled && composition === index && !media.source}"><span class="stage-mini stage-${index}" aria-hidden="true"></span><span>${name}</span></button>`).join("")}</div><p class="gallery-note">CHOOSE AN ATMOSPHERE, OR BRING YOUR OWN.</p>`;
+    body.innerHTML = `${roomEnabled ? `<div class="room-note"><span class="badge">${studyMode ? "AUTHORED STUDIES + PANTHEON" : "FOUR CAPTURED PLACES"}</span><p>${studyMode ? "Explore the three authored studies and their spatial thresholds. Pantheon is a separate capture." : "Real places, captured in three dimensions."} Drag inside the lens to look around.</p></div><div class="room-gallery" role="group" aria-label="Choose a room">${roomList.map((entry) => `<button class="room-preset room-edition-${entry.id}" data-room="${entry.id}" aria-pressed="${selectedRoom === entry.id}"><span class="room-mini" ${isCaptureId(entry.id) ? `style="background-image:url(${new URL(captureDefinition(entry.id).thumbnail, document.baseURI).href})"` : ""} aria-hidden="true"></span><strong>${entry.name}</strong><small>${entry.subtitle}</small></button>`).join("")}</div><p class="room-description">${roomDefinition(selectedRoom).detail}</p><p class="media-note">${isCaptureId(selectedRoom) ? `${captureDefinition(selectedRoom).name} by <a href="${captureDefinition(selectedRoom).source}" target="_blank" rel="noopener">${captureDefinition(selectedRoom).creator}</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>. ${captureDefinition(selectedRoom).note}` : "Authored geometry and lighting."} Small viewpoint movements reveal depth.</p><p class="media-note"><a href="${studyMode ? "?room=1&space=pantheon" : "?room=1&studies=1&space=gallery"}">${studyMode ? "Captured places" : "Authored studies · threshold experiment"}</a></p><div class="journey-controls"><button id="journey-toggle" class="text-button" ${motion.reduced ? "disabled" : ""}>${icon("play")}${journey.playing ? "Pause rooms" : journey.finished ? "Replay rooms" : "Play rooms"}</button><button id="journey-replay" class="text-button" ${motion.reduced ? "disabled" : ""}>${icon("reset")}Start again</button></div><p class="media-note">${motion.reduced ? "Reduced motion is active. Choose any room to explore it at rest." : "14 seconds in each room. Pause anytime. Each place downloads when selected; all four total about 43 MB."}</p>${toggle("room-look", "Look around", "Gentle perspective movement. Reduced motion keeps it still.", roomLook)}` : ""}<details class="media-sources" ${!roomEnabled || filename ? "open" : ""}><summary>Backdrops & your media<span aria-hidden="true">+</span></summary>${backdrops}<label class="drop-zone" id="drop-zone">${icon("upload")}<strong>Drop a file, or browse</strong><small>IMAGE, VIDEO OR AUDIO · UP TO 150 MB</small><input id="file" type="file" accept="image/*,video/*,audio/*" aria-label="Choose a local media file"/></label><div id="media-info"></div><p class="media-note">Your files stay on this device. Visual media is shown in monochrome, with a cover crop that follows the lens.</p></details><button id="export-frame" class="export-button">${icon("download")}Save this moment<span>PNG</span></button>`;
     for (const button of body.querySelectorAll<HTMLButtonElement>(
       "[data-composition]",
     ))
@@ -1103,7 +1242,7 @@ function renderWorkspace(type: Workspace) {
   }
   if (type === "interaction") {
     title(
-      "A little give.",
+      "Interaction",
       "Fine-tune the relationship between you and the lens.",
       3,
     );
@@ -1131,15 +1270,12 @@ function renderWorkspace(type: Workspace) {
     });
   }
   if (type === "details") {
-    title(
-      "Behind the surface.",
-      "An optical study in a single, continuous object.",
-      4,
-    );
+    title("About FORM", "Light, material, and a different point of view.", 4);
     body.innerHTML = `<div class="detail-row"><span>Active renderer</span><span id="renderer-name"></span></div><div class="detail-row"><span>Measured active frames</span><span id="fps">Collecting…</span></div><div class="detail-row"><span>Render resolution</span><span id="resolution"></span></div><div class="detail-row"><span>Room renderer</span><span id="room-renderer"></span></div><div class="detail-row"><span>Room rendering</span><span id="room-measurement"></span></div><div class="detail-row"><span>Backdrop updates</span><span id="texture-updates"></span></div><div class="detail-row"><span>Quality scale</span><span id="quality"></span></div><p class="details-copy">The lens samples the same scene you see behind it. Snell’s law bends the scene samples through a convex surface profile; optical depth controls their travel. Schlick’s approximation varies reflection with refractive index and viewing angle. Roughness softens both highlights and transmitted detail.</p><p class="details-copy">This is a real-time optical approximation, not physical ray tracing. The light wake is a soft caustic approximation driven by the same spring state as the lens.</p><span class="badge">60 FPS TARGET · 16.7 MS FRAME BUDGET</span>`;
     updateDetails();
   }
   measureDialog();
+  exhibitionMotion.panelRendered(type);
 }
 function updatePresets() {
   for (const button of document.querySelectorAll<HTMLButtonElement>(
@@ -1181,7 +1317,7 @@ function updateMediaUI() {
     info.innerHTML = "";
     return;
   }
-  info.innerHTML = `<div class="file-info" id="filename"></div>${media.player ? `<div class="transport"><button class="play" id="play" aria-label="${media.playing ? "Pause" : "Play"} media">${media.playing ? "Ⅱ" : icon("play")}</button><input id="scrub" type="range" min="0" max="100" value="0" step="0.1" aria-label="Playback position"/><output id="time">0:00 / 0:00</output></div>` : ""}<button id="remove-media" class="text-button">${icon("close")}Remove media</button>`;
+  info.innerHTML = `<div class="file-info" id="filename"></div>${media.player ? `<div class="transport"><button class="play" id="play" aria-label="${media.playing ? "Pause" : "Play"} media">${media.playing ? icon("pause") : icon("play")}</button><input id="scrub" type="range" min="0" max="100" value="0" step="0.1" aria-label="Playback position"/><output id="time">0:00 / 0:00</output></div>` : ""}<button id="remove-media" class="text-button">${icon("close")}Remove media</button>`;
   $("#filename").textContent = filename;
   if (media.player) {
     $("#play").addEventListener("click", () => {
@@ -1217,7 +1353,7 @@ function updateTransport() {
     scrub = $<HTMLInputElement>("#scrub");
   if (!play) return;
   play.setAttribute("aria-label", p.paused ? "Play media" : "Pause media");
-  play.innerHTML = p.paused ? icon("play") : "Ⅱ";
+  play.innerHTML = p.paused ? icon("play") : icon("pause");
   scrub.value = String(
     Number.isFinite(p.duration) && p.duration
       ? (p.currentTime / p.duration) * 100
@@ -1267,7 +1403,7 @@ const viewInputs = new RoomViewInputs(
   () =>
     entered &&
     !dialog.open &&
-    !motion.immersion.moving &&
+    !entryMoving() &&
     !unravel.enabled &&
     room.thresholdState !== "crossing",
   wake,
@@ -1282,7 +1418,7 @@ const unravelInputs = new UnravelInputs(
     room.status === "ready" &&
     !room.switching &&
     !dialog.open &&
-    !motion.immersion.moving,
+    !entryMoving(),
   wake,
 );
 function stopUnravel() {
@@ -1300,6 +1436,7 @@ window.addEventListener(
       motion.reduced ||
       viewInputs.dragging ||
       unravel.enabled ||
+      entrance.running ||
       room.thresholdState === "crossing" ||
       (entered && event.pointerType === "touch")
     )
@@ -1331,6 +1468,7 @@ document.addEventListener("visibilitychange", () => {
   if (document.hidden) {
     stopUnravel();
     room.closeThreshold();
+    media.stopEntranceCue();
     cancelAnimationFrame(frame);
     frame = 0;
     media.player?.pause();
@@ -1347,6 +1485,7 @@ window.addEventListener(
     cancelAnimationFrame(frame);
     clearTimeout(toastTimer);
     gestures.dispose();
+    exhibitionMotion.dispose();
     observer.disconnect();
     media.dispose();
     frameExport.dispose();
@@ -1364,5 +1503,7 @@ renderer = await createRenderer(fallback);
 $("#scene").append(renderer.canvas);
 reduced();
 resize();
+motion.x.snap(saved.x);
+motion.y.snap(saved.y);
 wake();
-if (roomEnabled) void startRoom();
+if (roomEnabled) void startRoom(false);

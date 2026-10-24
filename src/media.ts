@@ -17,6 +17,8 @@ export class MediaManager {
   private data = new Uint8Array(128);
   private oscillator: OscillatorNode | null = null;
   private demoGain: GainNode | null = null;
+  private entranceCue: { oscillator: OscillatorNode; gain: GainNode } | null =
+    null;
   private pendingCancel: (() => void) | null = null;
   demo = false;
   onChange = () => {};
@@ -185,7 +187,43 @@ export class MediaManager {
     this.demo = true;
     this.onChange();
   }
+  playEntranceCue() {
+    // The existing sound switch owns consent and the AudioContext lifecycle.
+    if (!this.demo || this.context?.state !== "running") return;
+    this.stopEntranceCue();
+    const context = this.context,
+      now = context.currentTime;
+    const oscillator = context.createOscillator(),
+      gain = context.createGain();
+    oscillator.type = "sine";
+    oscillator.frequency.setValueAtTime(660, now);
+    oscillator.frequency.exponentialRampToValueAtTime(220, now + 0.65);
+    gain.gain.setValueAtTime(0, now);
+    gain.gain.linearRampToValueAtTime(0.022, now + 0.025);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.7);
+    oscillator.connect(gain);
+    gain.connect(this.analyser!);
+    const cue = { oscillator, gain };
+    this.entranceCue = cue;
+    oscillator.onended = () => {
+      oscillator.disconnect();
+      gain.disconnect();
+      if (this.entranceCue === cue) this.entranceCue = null;
+    };
+    oscillator.start(now);
+    oscillator.stop(now + 0.72);
+  }
+  stopEntranceCue() {
+    if (!this.entranceCue) return;
+    const { oscillator, gain } = this.entranceCue;
+    oscillator.onended = null;
+    oscillator.stop();
+    oscillator.disconnect();
+    gain.disconnect();
+    this.entranceCue = null;
+  }
   stopDemo() {
+    this.stopEntranceCue();
     this.oscillator?.stop();
     this.oscillator?.disconnect();
     this.oscillator = null;

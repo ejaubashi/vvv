@@ -1,0 +1,661 @@
+{
+  "date": "2026-10-23",
+  "sourceBranch": "glass-object-entrance",
+  "typography": {
+    "display": "Instrument Serif",
+    "interface": "Manrope",
+    "selfHostedFontBytes": 67996,
+    "license": "SIL Open Font License 1.1"
+  },
+  "build": {
+    "status": "passed",
+    "files": 29,
+    "bytes": 47199137,
+    "manifest": [
+      {
+        "path": "THIRD-PARTY-LICENSES.txt",
+        "bytes": 12136,
+        "gitBlob": "45c30c014711128032fcc57b9ea1a14fc5b15b89"
+      },
+      {
+        "path": "assets/capture-CsDUnzI9.js",
+        "bytes": 2731097,
+        "gitBlob": "e07153b4cc386396ef47af38781a8e31b17b4425"
+      },
+      {
+        "path": "assets/capture-source-Drn4nOE-.js",
+        "bytes": 594399,
+        "gitBlob": "d61ddeb74f00c3ec8f4858e710ce69e673b245a2"
+      },
+      {
+        "path": "assets/index-Co0WWX-9.css",
+        "bytes": 24467,
+        "gitBlob": "7f5201b93b2dca4c740fda33217d051a17e565a7"
+      },
+      {
+        "path": "assets/index-DyNBMMBq.js",
+        "bytes": 802859,
+        "gitBlob": "9ebec3395026679ba77d221017e82883353a719f"
+      },
+      {
+        "path": "assets/instrument-serif-latin-DnYpCC2O.woff2",
+        "bytes": 21032,
+        "gitBlob": "0ad69719cac6f45ed3057825095b0cdffa7d3c99"
+      },
+      {
+        "path": "assets/instrument-serif-latin-italic-DKMiL14s.woff2",
+        "bytes": 22128,
+        "gitBlob": "197abca2553c84829217223cdbc6efbe2493d645"
+      },
+      {
+        "path": "assets/manrope-latin-DHIcAJRg.woff2",
+        "bytes": 24836,
+        "gitBlob": "71eb731d558046199aa7f985adbf812890a093a1"
+      },
+      {
+        "path": "assets/pantheon-m1QjEi82.webp",
+        "bytes": 24262,
+        "gitBlob": "147d19c908289a384add6faa333716d24a53c5cf"
+      },
+      {
+        "path": "captures/apartment/ATTRIBUTION.txt",
+        "bytes": 745,
+        "gitBlob": "f10f5375e46baff6f9d699dfc34c8337be01ac9d"
+      },
+      {
+        "path": "captures/apartment/PROVENANCE.json",
+        "bytes": 851,
+        "gitBlob": "83b8d6a157091017752d51c4bd979685420513ff"
+      },
+      {
+        "path": "captures/apartment/apartment.sog",
+        "bytes": 8379050,
+        "gitBlob": "543c77c696efe384c0f2cea31efaea5c6a025e73"
+      },
+      {
+        "path": "captures/apartment/thumb.webp",
+        "bytes": 39296,
+        "gitBlob": "fb901d376f687cde18fbbb7c3dbad5ee856c085b"
+      },
+      {
+        "path": "captures/la-night/ATTRIBUTION.txt",
+        "bytes": 1152,
+        "gitBlob": "a8780cf7aeefdec654b4e68fb8bb26870a1f1a99"
+      },
+      {
+        "path": "captures/la-night/PROVENANCE.json",
+        "bytes": 624,
+        "gitBlob": "4376e767c5ff32bec990530b6354ea438a809f19"
+      },
+      {
+        "path": "captures/la-night/la-night.sog",
+        "bytes": 10784806,
+        "gitBlob": "3b373884930f722a2cedaf9272cb5b6a4de0de8e"
+      },
+      {
+        "path": "captures/la-night/thumb.webp",
+        "bytes": 17298,
+        "gitBlob": "b5ea7e1e3d17df9c050545c60154b2e6018e3d9f"
+      },
+      {
+        "path": "captures/pantheon/PROVENANCE.json",
+        "bytes": 686,
+        "gitBlob": "c58ef0514613890f447eb87c1598d44a529fc9e5"
+      },
+      {
+        "path": "captures/pantheon/UPSTREAM-ATTRIBUTION.txt",
+        "bytes": 1166,
+        "gitBlob": "ff5116a48b0681204e4d33d6a8c4735694ca7e83"
+      },
+      {
+        "path": "captures/pantheon/pantheon.sog",
+        "bytes": 10577976,
+        "gitBlob": "d45fa6bd93ee509997a109a39e8f96f2a43165eb"
+      },
+      {
+        "path": "captures/pantheon/thumb.webp",
+        "bytes": 24262,
+        "gitBlob": "147d19c908289a384add6faa333716d24a53c5cf"
+      },
+      {
+        "path": "captures/small-garden/ATTRIBUTION.txt",
+        "bytes": 2134,
+        "gitBlob": "84d32e39eb6fc325a20b4e077d055afbc61bff00"
+      },
+      {
+        "path": "captures/small-garden/PROVENANCE.json",
+        "bytes": 624,
+        "gitBlob": "fc3f4eb70579e8b0383447ee51922d90156e466c"
+      },
+      {
+        "path": "captures/small-garden/small-garden.sog",
+        "bytes": 13081550,
+        "gitBlob": "d8182f404f63e9612ae76bb47668006129030a2c"
+      },
+      {
+        "path": "captures/small-garden/thumb.webp",
+        "bytes": 18270,
+        "gitBlob": "32678de8d8b887e01b43cdf1a49e7434027942da"
+      },
+      {
+        "path": "fonts/PROVENANCE.json",
+        "bytes": 1250,
+        "gitBlob": "b03f73578e2c51e0068ed5980df3b9f4602ec91b"
+      },
+      {
+        "path": "fonts/instrument-serif-OFL.txt",
+        "bytes": 4532,
+        "gitBlob": "a39b7e09b2a12f04fe95fbf9f21a26443f7bef30"
+      },
+      {
+        "path": "fonts/manrope-OFL.txt",
+        "bytes": 4383,
+        "gitBlob": "462280f3e4037df1839fba6cdee11d0980d3f0a9"
+      },
+      {
+        "path": "index.html",
+        "bytes": 1266,
+        "gitBlob": "bcbdfd4ae9731e48862782b287e11474b3f05e17"
+      }
+    ]
+  },
+  "standalone": {
+    "status": "passed",
+    "bytes": 61508570,
+    "fontFacesLoaded": 3,
+    "externalRequests": []
+  },
+  "browserRegression": {
+    "command": "npx playwright test tests/browser/entrance.spec.ts tests/browser/studio.spec.ts tests/browser/visit.spec.ts --grep 'the glass object leads|the object stays touchable|material controls, modal containment|mobile touch, reduced motion, resize|entering coordinates|the entrance presents through WebGPU' --reporter=json",
+    "stats": {
+      "startTime": "2026-10-23T07:40:13.952Z",
+      "duration": 47790.284,
+      "expected": 6,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "errors": []
+  },
+  "layoutReview": {
+    "productionPrefix": "/release/preview/",
+    "fonts": [
+      "Manrope",
+      "Instrument Serif regular",
+      "Instrument Serif italic"
+    ],
+    "fontBytes": 67996,
+    "layoutChecks": [
+      {
+        "label": "desktop lens",
+        "width": 1100,
+        "height": 800,
+        "pageOverflow": false,
+        "overflow": [],
+        "footer": [
+          {
+            "name": "corner-note chrome",
+            "x": 46,
+            "y": 747.0625,
+            "right": 214.484375,
+            "bottom": 761
+          },
+          {
+            "name": "index-note chrome",
+            "x": 887.890625,
+            "y": 714.921875,
+            "right": 1054,
+            "bottom": 764
+          }
+        ],
+        "bodyFont": "Manrope, system-ui, sans-serif",
+        "titleFont": "\"Instrument Serif\", Georgia, serif",
+        "wordmarkFont": "\"Instrument Serif\", Georgia, serif"
+      },
+      {
+        "label": "desktop Material",
+        "width": 1100,
+        "height": 800,
+        "pageOverflow": false,
+        "overflow": [],
+        "footer": [
+          {
+            "name": "corner-note chrome",
+            "x": 46,
+            "y": 747.0625,
+            "right": 214.484375,
+            "bottom": 761
+          },
+          {
+            "name": "index-note chrome",
+            "x": 887.890625,
+            "y": 714.921875,
+            "right": 1054,
+            "bottom": 764
+          }
+        ],
+        "bodyFont": "Manrope, system-ui, sans-serif",
+        "titleFont": "\"Instrument Serif\", Georgia, serif",
+        "wordmarkFont": "\"Instrument Serif\", Georgia, serif"
+      },
+      {
+        "label": "desktop Media",
+        "width": 1100,
+        "height": 800,
+        "pageOverflow": false,
+        "overflow": [],
+        "footer": [
+          {
+            "name": "corner-note chrome",
+            "x": 46,
+            "y": 747.0625,
+            "right": 214.484375,
+            "bottom": 761
+          },
+          {
+            "name": "index-note chrome",
+            "x": 887.890625,
+            "y": 714.921875,
+            "right": 1054,
+            "bottom": 764
+          }
+        ],
+        "bodyFont": "Manrope, system-ui, sans-serif",
+        "titleFont": "\"Instrument Serif\", Georgia, serif",
+        "wordmarkFont": "\"Instrument Serif\", Georgia, serif"
+      },
+      {
+        "label": "desktop Interaction",
+        "width": 1100,
+        "height": 800,
+        "pageOverflow": false,
+        "overflow": [],
+        "footer": [
+          {
+            "name": "corner-note chrome",
+            "x": 46,
+            "y": 747.0625,
+            "right": 214.484375,
+            "bottom": 761
+          },
+          {
+            "name": "index-note chrome",
+            "x": 887.890625,
+            "y": 714.921875,
+            "right": 1054,
+            "bottom": 764
+          }
+        ],
+        "bodyFont": "Manrope, system-ui, sans-serif",
+        "titleFont": "\"Instrument Serif\", Georgia, serif",
+        "wordmarkFont": "\"Instrument Serif\", Georgia, serif"
+      },
+      {
+        "label": "desktop Details",
+        "width": 1100,
+        "height": 800,
+        "pageOverflow": false,
+        "overflow": [],
+        "footer": [
+          {
+            "name": "corner-note chrome",
+            "x": 46,
+            "y": 747.0625,
+            "right": 214.484375,
+            "bottom": 761
+          },
+          {
+            "name": "index-note chrome",
+            "x": 887.890625,
+            "y": 714.921875,
+            "right": 1054,
+            "bottom": 764
+          }
+        ],
+        "bodyFont": "Manrope, system-ui, sans-serif",
+        "titleFont": "\"Instrument Serif\", Georgia, serif",
+        "wordmarkFont": "\"Instrument Serif\", Georgia, serif"
+      },
+      {
+        "label": "desktop paper",
+        "width": 1100,
+        "height": 800,
+        "pageOverflow": false,
+        "overflow": [],
+        "footer": [
+          {
+            "name": "corner-note chrome",
+            "x": 46,
+            "y": 747.0625,
+            "right": 214.484375,
+            "bottom": 761
+          },
+          {
+            "name": "index-note chrome",
+            "x": 887.890625,
+            "y": 714.921875,
+            "right": 1054,
+            "bottom": 764
+          }
+        ],
+        "bodyFont": "Manrope, system-ui, sans-serif",
+        "titleFont": "\"Instrument Serif\", Georgia, serif",
+        "wordmarkFont": "\"Instrument Serif\", Georgia, serif"
+      },
+      {
+        "label": "mobile lens",
+        "width": 390,
+        "height": 844,
+        "pageOverflow": false,
+        "overflow": [],
+        "footer": [],
+        "bodyFont": "Manrope, system-ui, sans-serif",
+        "titleFont": "\"Instrument Serif\", Georgia, serif",
+        "wordmarkFont": "\"Instrument Serif\", Georgia, serif"
+      },
+      {
+        "label": "mobile Material",
+        "width": 390,
+        "height": 844,
+        "pageOverflow": false,
+        "overflow": [],
+        "footer": [],
+        "bodyFont": "Manrope, system-ui, sans-serif",
+        "titleFont": "\"Instrument Serif\", Georgia, serif",
+        "wordmarkFont": "\"Instrument Serif\", Georgia, serif"
+      },
+      {
+        "label": "mobile Media",
+        "width": 390,
+        "height": 844,
+        "pageOverflow": false,
+        "overflow": [],
+        "footer": [],
+        "bodyFont": "Manrope, system-ui, sans-serif",
+        "titleFont": "\"Instrument Serif\", Georgia, serif",
+        "wordmarkFont": "\"Instrument Serif\", Georgia, serif"
+      },
+      {
+        "label": "mobile Interaction",
+        "width": 390,
+        "height": 844,
+        "pageOverflow": false,
+        "overflow": [],
+        "footer": [],
+        "bodyFont": "Manrope, system-ui, sans-serif",
+        "titleFont": "\"Instrument Serif\", Georgia, serif",
+        "wordmarkFont": "\"Instrument Serif\", Georgia, serif"
+      },
+      {
+        "label": "mobile Details",
+        "width": 390,
+        "height": 844,
+        "pageOverflow": false,
+        "overflow": [],
+        "footer": [],
+        "bodyFont": "Manrope, system-ui, sans-serif",
+        "titleFont": "\"Instrument Serif\", Georgia, serif",
+        "wordmarkFont": "\"Instrument Serif\", Georgia, serif"
+      },
+      {
+        "label": "mobile paper",
+        "width": 390,
+        "height": 844,
+        "pageOverflow": false,
+        "overflow": [],
+        "footer": [
+          {
+            "name": "corner-note chrome",
+            "x": 25,
+            "y": 698.0625,
+            "right": 193.484375,
+            "bottom": 712
+          },
+          {
+            "name": "index-note chrome",
+            "x": 227.78125,
+            "y": 671.125,
+            "right": 365,
+            "bottom": 715
+          }
+        ],
+        "bodyFont": "Manrope, system-ui, sans-serif",
+        "titleFont": "\"Instrument Serif\", Georgia, serif",
+        "wordmarkFont": "\"Instrument Serif\", Georgia, serif"
+      },
+      {
+        "label": "narrow lens",
+        "width": 320,
+        "height": 700,
+        "pageOverflow": false,
+        "overflow": [],
+        "footer": [],
+        "bodyFont": "Manrope, system-ui, sans-serif",
+        "titleFont": "\"Instrument Serif\", Georgia, serif",
+        "wordmarkFont": "\"Instrument Serif\", Georgia, serif"
+      },
+      {
+        "label": "narrow Material",
+        "width": 320,
+        "height": 700,
+        "pageOverflow": false,
+        "overflow": [],
+        "footer": [],
+        "bodyFont": "Manrope, system-ui, sans-serif",
+        "titleFont": "\"Instrument Serif\", Georgia, serif",
+        "wordmarkFont": "\"Instrument Serif\", Georgia, serif"
+      },
+      {
+        "label": "narrow Media",
+        "width": 320,
+        "height": 700,
+        "pageOverflow": false,
+        "overflow": [],
+        "footer": [],
+        "bodyFont": "Manrope, system-ui, sans-serif",
+        "titleFont": "\"Instrument Serif\", Georgia, serif",
+        "wordmarkFont": "\"Instrument Serif\", Georgia, serif"
+      },
+      {
+        "label": "narrow Interaction",
+        "width": 320,
+        "height": 700,
+        "pageOverflow": false,
+        "overflow": [],
+        "footer": [],
+        "bodyFont": "Manrope, system-ui, sans-serif",
+        "titleFont": "\"Instrument Serif\", Georgia, serif",
+        "wordmarkFont": "\"Instrument Serif\", Georgia, serif"
+      },
+      {
+        "label": "narrow Details",
+        "width": 320,
+        "height": 700,
+        "pageOverflow": false,
+        "overflow": [],
+        "footer": [],
+        "bodyFont": "Manrope, system-ui, sans-serif",
+        "titleFont": "\"Instrument Serif\", Georgia, serif",
+        "wordmarkFont": "\"Instrument Serif\", Georgia, serif"
+      },
+      {
+        "label": "narrow paper",
+        "width": 320,
+        "height": 700,
+        "pageOverflow": false,
+        "overflow": [],
+        "footer": [
+          {
+            "name": "corner-note chrome",
+            "x": 25,
+            "y": 554.0625,
+            "right": 193.484375,
+            "bottom": 568
+          },
+          {
+            "name": "index-note chrome",
+            "x": 157.78125,
+            "y": 488.125,
+            "right": 295,
+            "bottom": 532
+          }
+        ],
+        "bodyFont": "Manrope, system-ui, sans-serif",
+        "titleFont": "\"Instrument Serif\", Georgia, serif",
+        "wordmarkFont": "\"Instrument Serif\", Georgia, serif"
+      },
+      {
+        "label": "landscape lens",
+        "width": 844,
+        "height": 390,
+        "pageOverflow": false,
+        "overflow": [],
+        "footer": [],
+        "bodyFont": "Manrope, system-ui, sans-serif",
+        "titleFont": "\"Instrument Serif\", Georgia, serif",
+        "wordmarkFont": "\"Instrument Serif\", Georgia, serif"
+      },
+      {
+        "label": "landscape Material",
+        "width": 844,
+        "height": 390,
+        "pageOverflow": false,
+        "overflow": [],
+        "footer": [],
+        "bodyFont": "Manrope, system-ui, sans-serif",
+        "titleFont": "\"Instrument Serif\", Georgia, serif",
+        "wordmarkFont": "\"Instrument Serif\", Georgia, serif"
+      },
+      {
+        "label": "landscape Media",
+        "width": 844,
+        "height": 390,
+        "pageOverflow": false,
+        "overflow": [],
+        "footer": [],
+        "bodyFont": "Manrope, system-ui, sans-serif",
+        "titleFont": "\"Instrument Serif\", Georgia, serif",
+        "wordmarkFont": "\"Instrument Serif\", Georgia, serif"
+      },
+      {
+        "label": "landscape Interaction",
+        "width": 844,
+        "height": 390,
+        "pageOverflow": false,
+        "overflow": [],
+        "footer": [],
+        "bodyFont": "Manrope, system-ui, sans-serif",
+        "titleFont": "\"Instrument Serif\", Georgia, serif",
+        "wordmarkFont": "\"Instrument Serif\", Georgia, serif"
+      },
+      {
+        "label": "landscape Details",
+        "width": 844,
+        "height": 390,
+        "pageOverflow": false,
+        "overflow": [],
+        "footer": [],
+        "bodyFont": "Manrope, system-ui, sans-serif",
+        "titleFont": "\"Instrument Serif\", Georgia, serif",
+        "wordmarkFont": "\"Instrument Serif\", Georgia, serif"
+      },
+      {
+        "label": "landscape paper",
+        "width": 844,
+        "height": 390,
+        "pageOverflow": false,
+        "overflow": [],
+        "footer": [
+          {
+            "name": "corner-note chrome",
+            "x": 46,
+            "y": 337.0625,
+            "right": 214.484375,
+            "bottom": 351
+          },
+          {
+            "name": "index-note chrome",
+            "x": 631.890625,
+            "y": 304.921875,
+            "right": 798,
+            "bottom": 354
+          }
+        ],
+        "bodyFont": "Manrope, system-ui, sans-serif",
+        "titleFont": "\"Instrument Serif\", Georgia, serif",
+        "wordmarkFont": "\"Instrument Serif\", Georgia, serif"
+      },
+      {
+        "label": "font fallback narrow Material",
+        "width": 320,
+        "height": 700,
+        "pageOverflow": false,
+        "overflow": [],
+        "footer": [
+          {
+            "name": "corner-note chrome",
+            "x": 25,
+            "y": 554.0625,
+            "right": 193.984375,
+            "bottom": 568
+          },
+          {
+            "name": "index-note chrome",
+            "x": 142.109375,
+            "y": 488.125,
+            "right": 295,
+            "bottom": 532
+          }
+        ],
+        "bodyFont": "Manrope, system-ui, sans-serif",
+        "titleFont": "\"Instrument Serif\", Georgia, serif",
+        "wordmarkFont": "\"Instrument Serif\", Georgia, serif"
+      }
+    ],
+    "portableFontFacesLoaded": 3,
+    "portableExternalRequests": [],
+    "pageErrors": [],
+    "externalRequests": [],
+    "badResponses": []
+  },
+  "screenshots": [
+    "previews/typography-courtyard.png",
+    "previews/typography-material.png",
+    "previews/typography-mobile.png"
+  ],
+  "publication": {
+    "status": "published",
+    "previewCommit": "7bcf3798114e806976a41a82405e7add2edb5f61",
+    "previewUrl": "https://rawcdn.githack.com/ejaubashi/vvv/7bcf3798114e806976a41a82405e7add2edb5f61/preview/index.html?room=1&space=apartment&renderer=webgl",
+    "matchingRemoteGitBlobs": 29,
+    "deliveryVerification": "GitHub refs and exact file hashes; the execution proxy blocks the CDN endpoint, so this is not a live-CDN browser audit."
+  },
+  "capturedProductionReview": {
+    "productionPrefix": "/release/preview/",
+    "scene": "apartment",
+    "renderer": "webgl",
+    "roomRenderer": "spark",
+    "roomStatus": "ready",
+    "fontFaces": [
+      {
+        "family": "Manrope",
+        "style": "normal",
+        "status": "loaded"
+      },
+      {
+        "family": "Instrument Serif",
+        "style": "normal",
+        "status": "loaded"
+      },
+      {
+        "family": "Instrument Serif",
+        "style": "italic",
+        "status": "loaded"
+      }
+    ],
+    "pageErrors": [],
+    "externalRequests": [],
+    "badResponses": []
+  },
+  "applicationCommit": "02bb3168b12211f8d9376ecd5fedff6602eac905"
+}

@@ -24,6 +24,8 @@ export interface OpticalState {
   energy: number;
   room: number;
   immersion: number;
+  splash?: number;
+  entrance?: import("./room/entrance").EntranceFrame;
 }
 export const defaults = {
   ior: 1.52,

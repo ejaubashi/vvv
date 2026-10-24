@@ -1,6 +1,6 @@
 import type { Motion } from "./motion";
 
-/** The optical surface morphs in the renderer. Text only fades, so it never stretches. */
+/** The renderer morphs the surface; DOM text reveals at its final layout size. */
 export class WorkspaceTransition {
   returnFocus: HTMLElement;
   private focusPending = false;
@@ -9,6 +9,7 @@ export class WorkspaceTransition {
     private content: HTMLElement,
     private motion: Motion,
     fallbackFocus: HTMLElement,
+    private onReveal: () => void = () => {},
   ) {
     this.returnFocus = fallbackFocus;
   }
@@ -30,7 +31,7 @@ export class WorkspaceTransition {
   }
   update(amount: number, active: boolean) {
     if (!this.dialog.open) return;
-    this.dialog.style.background = `rgba(245,246,241,${Math.pow(amount, 3) * 0.88})`;
+    this.dialog.style.background = `rgba(var(--workspace-surface, 245,246,241),${Math.pow(amount, 3) * 0.88})`;
     if (
       active &&
       amount > 0.94 &&
@@ -38,6 +39,7 @@ export class WorkspaceTransition {
     ) {
       this.content.classList.add("revealed");
       this.content.inert = false;
+      this.onReveal();
       if (this.focusPending) {
         this.dialog
           .querySelector<HTMLButtonElement>("#close-workspace")!

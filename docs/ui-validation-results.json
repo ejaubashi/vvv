@@ -1,0 +1,1370 @@
+{
+  "date": "2026-10-23",
+  "sourceBranch": "glass-object-entrance",
+  "design": "Single Manrope hierarchy, grouped collection navigation and credits, visible studio labels, direct in-dialog section switching, larger targets, room-first media gallery, sticky Close, dark entrance action.",
+  "build": {
+    "status": "passed",
+    "files": 26,
+    "bytes": 47146629,
+    "manifest": [
+      {
+        "path": "THIRD-PARTY-LICENSES.txt",
+        "bytes": 7584,
+        "gitBlob": "c11db5fe29b20782cea974087673ea20294280e9"
+      },
+      {
+        "path": "assets/capture-CsDUnzI9.js",
+        "bytes": 2731097,
+        "gitBlob": "e07153b4cc386396ef47af38781a8e31b17b4425"
+      },
+      {
+        "path": "assets/capture-source-Drn4nOE-.js",
+        "bytes": 594399,
+        "gitBlob": "d61ddeb74f00c3ec8f4858e710ce69e673b245a2"
+      },
+      {
+        "path": "assets/index-BEVzSEER.js",
+        "bytes": 803345,
+        "gitBlob": "98a3143b6fb8f33a2b65f7b4eca6d6bc4490333e"
+      },
+      {
+        "path": "assets/index-CZGa32N_.css",
+        "bytes": 24606,
+        "gitBlob": "9204c0ec0c9761ebafd560969d45a4db1b3e0d7b"
+      },
+      {
+        "path": "assets/manrope-latin-DHIcAJRg.woff2",
+        "bytes": 24836,
+        "gitBlob": "71eb731d558046199aa7f985adbf812890a093a1"
+      },
+      {
+        "path": "assets/pantheon-m1QjEi82.webp",
+        "bytes": 24262,
+        "gitBlob": "147d19c908289a384add6faa333716d24a53c5cf"
+      },
+      {
+        "path": "captures/apartment/ATTRIBUTION.txt",
+        "bytes": 745,
+        "gitBlob": "f10f5375e46baff6f9d699dfc34c8337be01ac9d"
+      },
+      {
+        "path": "captures/apartment/PROVENANCE.json",
+        "bytes": 851,
+        "gitBlob": "83b8d6a157091017752d51c4bd979685420513ff"
+      },
+      {
+        "path": "captures/apartment/apartment.sog",
+        "bytes": 8379050,
+        "gitBlob": "543c77c696efe384c0f2cea31efaea5c6a025e73"
+      },
+      {
+        "path": "captures/apartment/thumb.webp",
+        "bytes": 39296,
+        "gitBlob": "fb901d376f687cde18fbbb7c3dbad5ee856c085b"
+      },
+      {
+        "path": "captures/la-night/ATTRIBUTION.txt",
+        "bytes": 1152,
+        "gitBlob": "a8780cf7aeefdec654b4e68fb8bb26870a1f1a99"
+      },
+      {
+        "path": "captures/la-night/PROVENANCE.json",
+        "bytes": 624,
+        "gitBlob": "4376e767c5ff32bec990530b6354ea438a809f19"
+      },
+      {
+        "path": "captures/la-night/la-night.sog",
+        "bytes": 10784806,
+        "gitBlob": "3b373884930f722a2cedaf9272cb5b6a4de0de8e"
+      },
+      {
+        "path": "captures/la-night/thumb.webp",
+        "bytes": 17298,
+        "gitBlob": "b5ea7e1e3d17df9c050545c60154b2e6018e3d9f"
+      },
+      {
+        "path": "captures/pantheon/PROVENANCE.json",
+        "bytes": 686,
+        "gitBlob": "c58ef0514613890f447eb87c1598d44a529fc9e5"
+      },
+      {
+        "path": "captures/pantheon/UPSTREAM-ATTRIBUTION.txt",
+        "bytes": 1166,
+        "gitBlob": "ff5116a48b0681204e4d33d6a8c4735694ca7e83"
+      },
+      {
+        "path": "captures/pantheon/pantheon.sog",
+        "bytes": 10577976,
+        "gitBlob": "d45fa6bd93ee509997a109a39e8f96f2a43165eb"
+      },
+      {
+        "path": "captures/pantheon/thumb.webp",
+        "bytes": 24262,
+        "gitBlob": "147d19c908289a384add6faa333716d24a53c5cf"
+      },
+      {
+        "path": "captures/small-garden/ATTRIBUTION.txt",
+        "bytes": 2134,
+        "gitBlob": "84d32e39eb6fc325a20b4e077d055afbc61bff00"
+      },
+      {
+        "path": "captures/small-garden/PROVENANCE.json",
+        "bytes": 624,
+        "gitBlob": "fc3f4eb70579e8b0383447ee51922d90156e466c"
+      },
+      {
+        "path": "captures/small-garden/small-garden.sog",
+        "bytes": 13081550,
+        "gitBlob": "d8182f404f63e9612ae76bb47668006129030a2c"
+      },
+      {
+        "path": "captures/small-garden/thumb.webp",
+        "bytes": 18270,
+        "gitBlob": "32678de8d8b887e01b43cdf1a49e7434027942da"
+      },
+      {
+        "path": "fonts/PROVENANCE.json",
+        "bytes": 495,
+        "gitBlob": "5d18f41420a33cde38dc33ed076ba65a39948465"
+      },
+      {
+        "path": "fonts/manrope-OFL.txt",
+        "bytes": 4383,
+        "gitBlob": "462280f3e4037df1839fba6cdee11d0980d3f0a9"
+      },
+      {
+        "path": "index.html",
+        "bytes": 1132,
+        "gitBlob": "f88ba0e09bc8fb39d2f2d04fa16d4e5cb53edaba"
+      }
+    ]
+  },
+  "browserRegression": {
+    "command": "npx playwright test tests/browser/entrance.spec.ts tests/browser/studio.spec.ts tests/browser/visit.spec.ts --grep 'the glass object leads|the object stays touchable|material controls, modal containment|mobile touch, reduced motion, resize|entering coordinates|the entrance presents through WebGPU|local images replace|audio playback, seeking|video playback, elapsed|optical depth and light controls persist|art environments replace|lens actions support keyboard|mobile touch and keyboard explore' --reporter=json",
+    "stats": {
+      "startTime": "2026-10-23T08:03:11.899Z",
+      "duration": 85304.718,
+      "expected": 13,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "errors": []
+  },
+  "layoutReview": {
+    "productionPrefix": "/release/preview/",
+    "font": "Manrope variable",
+    "fontBytes": 24836,
+    "layoutChecks": [
+      {
+        "label": "desktop lens",
+        "width": 1100,
+        "height": 800,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 1068,
+            "bottom": 72
+          },
+          {
+            "name": "enter-room",
+            "x": 472.5,
+            "y": 490,
+            "right": 627.5,
+            "bottom": 534
+          },
+          {
+            "name": "collection-panel chrome",
+            "x": 32,
+            "y": 646,
+            "right": 392,
+            "bottom": 768
+          },
+          {
+            "name": "studio-dock",
+            "x": 682,
+            "y": 706,
+            "right": 1068,
+            "bottom": 768
+          }
+        ],
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "desktop workspace material",
+        "width": 1100,
+        "height": 800,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 1068,
+            "bottom": 72
+          },
+          {
+            "name": "studio-dock",
+            "x": 682,
+            "y": 706,
+            "right": 1068,
+            "bottom": 768
+          }
+        ],
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "desktop workspace media",
+        "width": 1100,
+        "height": 800,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 1068,
+            "bottom": 72
+          },
+          {
+            "name": "studio-dock",
+            "x": 682,
+            "y": 706,
+            "right": 1068,
+            "bottom": 768
+          }
+        ],
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "desktop workspace interaction",
+        "width": 1100,
+        "height": 800,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 1068,
+            "bottom": 72
+          },
+          {
+            "name": "studio-dock",
+            "x": 682,
+            "y": 706,
+            "right": 1068,
+            "bottom": 768
+          }
+        ],
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "desktop workspace details",
+        "width": 1100,
+        "height": 800,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 1068,
+            "bottom": 72
+          },
+          {
+            "name": "studio-dock",
+            "x": 682,
+            "y": 706,
+            "right": 1068,
+            "bottom": 768
+          }
+        ],
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "desktop workspace material",
+        "width": 1100,
+        "height": 800,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 1068,
+            "bottom": 72
+          },
+          {
+            "name": "studio-dock",
+            "x": 682,
+            "y": 706,
+            "right": 1068,
+            "bottom": 768
+          }
+        ],
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "desktop paper",
+        "width": 1100,
+        "height": 800,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 1068,
+            "bottom": 72
+          },
+          {
+            "name": "enter-room",
+            "x": 472.5,
+            "y": 438,
+            "right": 627.5,
+            "bottom": 482
+          },
+          {
+            "name": "studio-dock",
+            "x": 682,
+            "y": 706,
+            "right": 1068,
+            "bottom": 768
+          }
+        ],
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "mobile lens",
+        "width": 390,
+        "height": 844,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 24,
+            "right": 370,
+            "bottom": 60
+          },
+          {
+            "name": "enter-room",
+            "x": 117.5,
+            "y": 462.828125,
+            "right": 272.5,
+            "bottom": 506.828125
+          },
+          {
+            "name": "collection-panel chrome",
+            "x": 16,
+            "y": 624,
+            "right": 374,
+            "bottom": 746
+          },
+          {
+            "name": "studio-dock",
+            "x": 16,
+            "y": 758,
+            "right": 374,
+            "bottom": 824
+          }
+        ],
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "mobile workspace material",
+        "width": 390,
+        "height": 844,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 24,
+            "right": 370,
+            "bottom": 60
+          },
+          {
+            "name": "studio-dock",
+            "x": 16,
+            "y": 758,
+            "right": 374,
+            "bottom": 824
+          }
+        ],
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "mobile workspace media",
+        "width": 390,
+        "height": 844,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 24,
+            "right": 370,
+            "bottom": 60
+          },
+          {
+            "name": "studio-dock",
+            "x": 16,
+            "y": 758,
+            "right": 374,
+            "bottom": 824
+          }
+        ],
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "mobile workspace interaction",
+        "width": 390,
+        "height": 844,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 24,
+            "right": 370,
+            "bottom": 60
+          },
+          {
+            "name": "studio-dock",
+            "x": 16,
+            "y": 758,
+            "right": 374,
+            "bottom": 824
+          }
+        ],
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "mobile workspace details",
+        "width": 390,
+        "height": 844,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 24,
+            "right": 370,
+            "bottom": 60
+          },
+          {
+            "name": "studio-dock",
+            "x": 16,
+            "y": 758,
+            "right": 374,
+            "bottom": 824
+          }
+        ],
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "mobile workspace material",
+        "width": 390,
+        "height": 844,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 24,
+            "right": 370,
+            "bottom": 60
+          },
+          {
+            "name": "studio-dock",
+            "x": 16,
+            "y": 758,
+            "right": 374,
+            "bottom": 824
+          }
+        ],
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "mobile paper",
+        "width": 390,
+        "height": 844,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 24,
+            "right": 370,
+            "bottom": 60
+          },
+          {
+            "name": "enter-room",
+            "x": 117.5,
+            "y": 435.53125,
+            "right": 272.5,
+            "bottom": 479.53125
+          },
+          {
+            "name": "studio-dock",
+            "x": 16,
+            "y": 758,
+            "right": 374,
+            "bottom": 824
+          }
+        ],
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "narrow lens",
+        "width": 320,
+        "height": 700,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 24,
+            "right": 300,
+            "bottom": 60
+          },
+          {
+            "name": "enter-room",
+            "x": 82.5,
+            "y": 372.796875,
+            "right": 237.5,
+            "bottom": 416.796875
+          },
+          {
+            "name": "collection-panel chrome",
+            "x": 16,
+            "y": 459.203125,
+            "right": 304,
+            "bottom": 602
+          },
+          {
+            "name": "studio-dock",
+            "x": 16,
+            "y": 614,
+            "right": 304,
+            "bottom": 680
+          }
+        ],
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "narrow workspace material",
+        "width": 320,
+        "height": 700,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 24,
+            "right": 300,
+            "bottom": 60
+          },
+          {
+            "name": "studio-dock",
+            "x": 16,
+            "y": 614,
+            "right": 304,
+            "bottom": 680
+          }
+        ],
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "narrow workspace media",
+        "width": 320,
+        "height": 700,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 24,
+            "right": 300,
+            "bottom": 60
+          },
+          {
+            "name": "studio-dock",
+            "x": 16,
+            "y": 614,
+            "right": 304,
+            "bottom": 680
+          }
+        ],
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "narrow workspace interaction",
+        "width": 320,
+        "height": 700,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 24,
+            "right": 300,
+            "bottom": 60
+          },
+          {
+            "name": "studio-dock",
+            "x": 16,
+            "y": 614,
+            "right": 304,
+            "bottom": 680
+          }
+        ],
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "narrow workspace details",
+        "width": 320,
+        "height": 700,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 24,
+            "right": 300,
+            "bottom": 60
+          },
+          {
+            "name": "studio-dock",
+            "x": 16,
+            "y": 614,
+            "right": 304,
+            "bottom": 680
+          }
+        ],
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "narrow workspace material",
+        "width": 320,
+        "height": 700,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 24,
+            "right": 300,
+            "bottom": 60
+          },
+          {
+            "name": "studio-dock",
+            "x": 16,
+            "y": 614,
+            "right": 304,
+            "bottom": 680
+          }
+        ],
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "narrow paper",
+        "width": 320,
+        "height": 700,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 24,
+            "right": 300,
+            "bottom": 60
+          },
+          {
+            "name": "enter-room",
+            "x": 82.5,
+            "y": 350.390625,
+            "right": 237.5,
+            "bottom": 394.390625
+          },
+          {
+            "name": "studio-dock",
+            "x": 16,
+            "y": 614,
+            "right": 304,
+            "bottom": 680
+          }
+        ],
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "short lens",
+        "width": 320,
+        "height": 568,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 24,
+            "right": 300,
+            "bottom": 60
+          },
+          {
+            "name": "enter-room",
+            "x": 82.5,
+            "y": 312.078125,
+            "right": 237.5,
+            "bottom": 356.078125
+          },
+          {
+            "name": "collection-panel chrome",
+            "x": 16,
+            "y": 361.203125,
+            "right": 304,
+            "bottom": 470
+          },
+          {
+            "name": "studio-dock",
+            "x": 16,
+            "y": 482,
+            "right": 304,
+            "bottom": 548
+          }
+        ],
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "short workspace material",
+        "width": 320,
+        "height": 568,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 24,
+            "right": 300,
+            "bottom": 60
+          },
+          {
+            "name": "studio-dock",
+            "x": 16,
+            "y": 482,
+            "right": 304,
+            "bottom": 548
+          }
+        ],
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "short workspace media",
+        "width": 320,
+        "height": 568,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 24,
+            "right": 300,
+            "bottom": 60
+          },
+          {
+            "name": "studio-dock",
+            "x": 16,
+            "y": 482,
+            "right": 304,
+            "bottom": 548
+          }
+        ],
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "short workspace interaction",
+        "width": 320,
+        "height": 568,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 24,
+            "right": 300,
+            "bottom": 60
+          },
+          {
+            "name": "studio-dock",
+            "x": 16,
+            "y": 482,
+            "right": 304,
+            "bottom": 548
+          }
+        ],
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "short workspace details",
+        "width": 320,
+        "height": 568,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 24,
+            "right": 300,
+            "bottom": 60
+          },
+          {
+            "name": "studio-dock",
+            "x": 16,
+            "y": 482,
+            "right": 304,
+            "bottom": 548
+          }
+        ],
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "short workspace material",
+        "width": 320,
+        "height": 568,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 24,
+            "right": 300,
+            "bottom": 60
+          },
+          {
+            "name": "studio-dock",
+            "x": 16,
+            "y": 482,
+            "right": 304,
+            "bottom": 548
+          }
+        ],
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "short paper",
+        "width": 320,
+        "height": 568,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 24,
+            "right": 300,
+            "bottom": 60
+          },
+          {
+            "name": "enter-room",
+            "x": 82.5,
+            "y": 289.671875,
+            "right": 237.5,
+            "bottom": 333.671875
+          },
+          {
+            "name": "studio-dock",
+            "x": 16,
+            "y": 482,
+            "right": 304,
+            "bottom": 548
+          }
+        ],
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "tablet lens",
+        "width": 768,
+        "height": 1024,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 736,
+            "bottom": 72
+          },
+          {
+            "name": "enter-room",
+            "x": 306.5,
+            "y": 593.03125,
+            "right": 461.5,
+            "bottom": 637.03125
+          },
+          {
+            "name": "collection-panel chrome",
+            "x": 204,
+            "y": 804,
+            "right": 564,
+            "bottom": 926
+          },
+          {
+            "name": "studio-dock",
+            "x": 191,
+            "y": 942,
+            "right": 577,
+            "bottom": 1004
+          }
+        ],
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "tablet workspace material",
+        "width": 768,
+        "height": 1024,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 736,
+            "bottom": 72
+          },
+          {
+            "name": "studio-dock",
+            "x": 191,
+            "y": 942,
+            "right": 577,
+            "bottom": 1004
+          }
+        ],
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "tablet workspace media",
+        "width": 768,
+        "height": 1024,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 736,
+            "bottom": 72
+          },
+          {
+            "name": "studio-dock",
+            "x": 191,
+            "y": 942,
+            "right": 577,
+            "bottom": 1004
+          }
+        ],
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "tablet workspace interaction",
+        "width": 768,
+        "height": 1024,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 736,
+            "bottom": 72
+          },
+          {
+            "name": "studio-dock",
+            "x": 191,
+            "y": 942,
+            "right": 577,
+            "bottom": 1004
+          }
+        ],
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "tablet workspace details",
+        "width": 768,
+        "height": 1024,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 736,
+            "bottom": 72
+          },
+          {
+            "name": "studio-dock",
+            "x": 191,
+            "y": 942,
+            "right": 577,
+            "bottom": 1004
+          }
+        ],
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "tablet workspace material",
+        "width": 768,
+        "height": 1024,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 736,
+            "bottom": 72
+          },
+          {
+            "name": "studio-dock",
+            "x": 191,
+            "y": 942,
+            "right": 577,
+            "bottom": 1004
+          }
+        ],
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "tablet paper",
+        "width": 768,
+        "height": 1024,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 736,
+            "bottom": 72
+          },
+          {
+            "name": "enter-room",
+            "x": 306.5,
+            "y": 541.03125,
+            "right": 461.5,
+            "bottom": 585.03125
+          },
+          {
+            "name": "studio-dock",
+            "x": 191,
+            "y": 942,
+            "right": 577,
+            "bottom": 1004
+          }
+        ],
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "landscape lens",
+        "width": 844,
+        "height": 390,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 812,
+            "bottom": 72
+          },
+          {
+            "name": "enter-room",
+            "x": 344.5,
+            "y": 209.1875,
+            "right": 499.5,
+            "bottom": 253.1875
+          },
+          {
+            "name": "collection-panel chrome",
+            "x": 20,
+            "y": 286,
+            "right": 360,
+            "bottom": 374
+          },
+          {
+            "name": "studio-dock",
+            "x": 502,
+            "y": 312,
+            "right": 824,
+            "bottom": 374
+          }
+        ],
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "landscape workspace material",
+        "width": 844,
+        "height": 390,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 812,
+            "bottom": 72
+          },
+          {
+            "name": "studio-dock",
+            "x": 502,
+            "y": 312,
+            "right": 824,
+            "bottom": 374
+          }
+        ],
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "landscape workspace media",
+        "width": 844,
+        "height": 390,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 812,
+            "bottom": 72
+          },
+          {
+            "name": "studio-dock",
+            "x": 502,
+            "y": 312,
+            "right": 824,
+            "bottom": 374
+          }
+        ],
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "landscape workspace interaction",
+        "width": 844,
+        "height": 390,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 812,
+            "bottom": 72
+          },
+          {
+            "name": "studio-dock",
+            "x": 502,
+            "y": 312,
+            "right": 824,
+            "bottom": 374
+          }
+        ],
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "landscape workspace details",
+        "width": 844,
+        "height": 390,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 812,
+            "bottom": 72
+          },
+          {
+            "name": "studio-dock",
+            "x": 502,
+            "y": 312,
+            "right": 824,
+            "bottom": 374
+          }
+        ],
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "landscape workspace material",
+        "width": 844,
+        "height": 390,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 812,
+            "bottom": 72
+          },
+          {
+            "name": "studio-dock",
+            "x": 502,
+            "y": 312,
+            "right": 824,
+            "bottom": 374
+          }
+        ],
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "landscape paper",
+        "width": 844,
+        "height": 390,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 812,
+            "bottom": 72
+          },
+          {
+            "name": "enter-room",
+            "x": 344.5,
+            "y": 191.59375,
+            "right": 499.5,
+            "bottom": 235.59375
+          },
+          {
+            "name": "studio-dock",
+            "x": 502,
+            "y": 312,
+            "right": 824,
+            "bottom": 374
+          }
+        ],
+        "font": "Manrope, system-ui, sans-serif"
+      },
+      {
+        "label": "font fallback narrow workspace",
+        "width": 320,
+        "height": 700,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 24,
+            "right": 300,
+            "bottom": 60
+          },
+          {
+            "name": "studio-dock",
+            "x": 16,
+            "y": 614,
+            "right": 304,
+            "bottom": 680
+          }
+        ],
+        "font": "Manrope, system-ui, sans-serif"
+      }
+    ],
+    "workspaceSwitching": "passed at every viewport; values persist; Escape restores the original trigger",
+    "portableFontFacesLoaded": 1,
+    "portableExternalRequests": [],
+    "pageErrors": [],
+    "externalRequests": [],
+    "badResponses": []
+  },
+  "standalone": {
+    "status": "passed",
+    "bytes": 61447139,
+    "fontFacesLoaded": 1,
+    "externalRequests": []
+  },
+  "screenshots": [
+    "previews/ui-courtyard.png",
+    "previews/ui-mobile-courtyard.png",
+    "previews/ui-material.png",
+    "previews/ui-mobile-media.png"
+  ],
+  "publication": {
+    "status": "published",
+    "previewCommit": "1ac4e67f10beea62c1ced240ca1addc4643d53f9",
+    "previewUrl": "https://rawcdn.githack.com/ejaubashi/vvv/1ac4e67f10beea62c1ced240ca1addc4643d53f9/preview/index.html?room=1&space=apartment&renderer=webgl",
+    "matchingRemoteGitBlobs": 26,
+    "deliveryVerification": "GitHub refs and exact file hashes; the execution proxy blocks the CDN endpoint, so this is not a live-CDN browser audit."
+  },
+  "capturedProductionReview": {
+    "productionPrefix": "/release/preview/",
+    "scene": "apartment",
+    "renderer": "webgl",
+    "roomRenderer": "spark",
+    "roomStatus": "ready",
+    "fontFaces": [
+      {
+        "family": "Manrope",
+        "style": "normal",
+        "status": "loaded"
+      }
+    ],
+    "pageErrors": [],
+    "externalRequests": [],
+    "badResponses": [],
+    "entryAndReturn": "passed",
+    "sectionSwitchInsideRoom": "passed",
+    "stickyCloseAfterScrolling": "passed",
+    "studioAndOrbFocusRestored": "passed",
+    "screenshots": [
+      "previews/ui-courtyard.png",
+      "previews/ui-mobile-courtyard.png"
+    ]
+  },
+  "applicationCommit": "8e373bb673a826ca0645c095c82264c559b07cdc"
+}

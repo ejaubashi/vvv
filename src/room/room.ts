@@ -618,7 +618,7 @@ export class PortalRoom {
     if (isCaptureId(this.kind)) {
       c.fillStyle = "#ded7c8";
       c.textAlign = "center";
-      c.font = `${Math.max(12, size * 0.025)}px sans-serif`;
+      c.font = `${Math.max(12, size * 0.025)}px "Manrope", system-ui, sans-serif`;
       c.fillText(
         "Capture unavailable · choose another room",
         size / 2,

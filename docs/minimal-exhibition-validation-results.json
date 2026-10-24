@@ -1,0 +1,2170 @@
+{
+  "edition": "Look closer \u2014 minimal exhibition",
+  "date": "2026-10-23",
+  "build": {
+    "typescriptAndVite": "passed",
+    "formatting": "passed",
+    "diffCheck": "passed",
+    "files": 30,
+    "bytes": 47234750,
+    "manifest": [
+      {
+        "path": "THIRD-PARTY-LICENSES.txt",
+        "bytes": 21092,
+        "gitBlob": "4bccb00fa56939a18f8a1d90020adf60e9256e6b"
+      },
+      {
+        "path": "assets/capture-CsDUnzI9.js",
+        "bytes": 2731097,
+        "gitBlob": "e07153b4cc386396ef47af38781a8e31b17b4425"
+      },
+      {
+        "path": "assets/capture-source-Drn4nOE-.js",
+        "bytes": 594399,
+        "gitBlob": "d61ddeb74f00c3ec8f4858e710ce69e673b245a2"
+      },
+      {
+        "path": "assets/geist-latin-BgDaEnEv.woff2",
+        "bytes": 29400,
+        "gitBlob": "991445d78ae619a7378ff219385588c7811c88ab"
+      },
+      {
+        "path": "assets/index-8tgTaMyO.css",
+        "bytes": 36974,
+        "gitBlob": "198eb7d6f4aeaf737a4bbb54b2e262ba4623d517"
+      },
+      {
+        "path": "assets/index-OYUEGBwZ.js",
+        "bytes": 823932,
+        "gitBlob": "9142f8295b79a91234865c9e0744c5250df31d4b"
+      },
+      {
+        "path": "assets/instrument-serif-italic-latin-DKMiL14s.woff2",
+        "bytes": 22128,
+        "gitBlob": "197abca2553c84829217223cdbc6efbe2493d645"
+      },
+      {
+        "path": "assets/pantheon-m1QjEi82.webp",
+        "bytes": 24262,
+        "gitBlob": "147d19c908289a384add6faa333716d24a53c5cf"
+      },
+      {
+        "path": "captures/apartment/ATTRIBUTION.txt",
+        "bytes": 745,
+        "gitBlob": "f10f5375e46baff6f9d699dfc34c8337be01ac9d"
+      },
+      {
+        "path": "captures/apartment/PROVENANCE.json",
+        "bytes": 851,
+        "gitBlob": "83b8d6a157091017752d51c4bd979685420513ff"
+      },
+      {
+        "path": "captures/apartment/apartment.sog",
+        "bytes": 8379050,
+        "gitBlob": "543c77c696efe384c0f2cea31efaea5c6a025e73"
+      },
+      {
+        "path": "captures/apartment/thumb.webp",
+        "bytes": 39296,
+        "gitBlob": "fb901d376f687cde18fbbb7c3dbad5ee856c085b"
+      },
+      {
+        "path": "captures/la-night/ATTRIBUTION.txt",
+        "bytes": 1152,
+        "gitBlob": "a8780cf7aeefdec654b4e68fb8bb26870a1f1a99"
+      },
+      {
+        "path": "captures/la-night/PROVENANCE.json",
+        "bytes": 624,
+        "gitBlob": "4376e767c5ff32bec990530b6354ea438a809f19"
+      },
+      {
+        "path": "captures/la-night/la-night.sog",
+        "bytes": 10784806,
+        "gitBlob": "3b373884930f722a2cedaf9272cb5b6a4de0de8e"
+      },
+      {
+        "path": "captures/la-night/thumb.webp",
+        "bytes": 17298,
+        "gitBlob": "b5ea7e1e3d17df9c050545c60154b2e6018e3d9f"
+      },
+      {
+        "path": "captures/pantheon/PROVENANCE.json",
+        "bytes": 686,
+        "gitBlob": "c58ef0514613890f447eb87c1598d44a529fc9e5"
+      },
+      {
+        "path": "captures/pantheon/UPSTREAM-ATTRIBUTION.txt",
+        "bytes": 1166,
+        "gitBlob": "ff5116a48b0681204e4d33d6a8c4735694ca7e83"
+      },
+      {
+        "path": "captures/pantheon/pantheon.sog",
+        "bytes": 10577976,
+        "gitBlob": "d45fa6bd93ee509997a109a39e8f96f2a43165eb"
+      },
+      {
+        "path": "captures/pantheon/thumb.webp",
+        "bytes": 24262,
+        "gitBlob": "147d19c908289a384add6faa333716d24a53c5cf"
+      },
+      {
+        "path": "captures/small-garden/ATTRIBUTION.txt",
+        "bytes": 2134,
+        "gitBlob": "84d32e39eb6fc325a20b4e077d055afbc61bff00"
+      },
+      {
+        "path": "captures/small-garden/PROVENANCE.json",
+        "bytes": 624,
+        "gitBlob": "fc3f4eb70579e8b0383447ee51922d90156e466c"
+      },
+      {
+        "path": "captures/small-garden/small-garden.sog",
+        "bytes": 13081550,
+        "gitBlob": "d8182f404f63e9612ae76bb47668006129030a2c"
+      },
+      {
+        "path": "captures/small-garden/thumb.webp",
+        "bytes": 18270,
+        "gitBlob": "32678de8d8b887e01b43cdf1a49e7434027942da"
+      },
+      {
+        "path": "fonts/PROVENANCE.json",
+        "bytes": 1882,
+        "gitBlob": "aa91a68fac9f519e4d1632e0fbe75d44b911a809"
+      },
+      {
+        "path": "fonts/geist-OFL.txt",
+        "bytes": 4486,
+        "gitBlob": "98835ac3f04ec0c9484468424c62e1ea2cdae498"
+      },
+      {
+        "path": "fonts/instrument-serif-OFL.txt",
+        "bytes": 4532,
+        "gitBlob": "a39b7e09b2a12f04fe95fbf9f21a26443f7bef30"
+      },
+      {
+        "path": "fonts/manrope-OFL.txt",
+        "bytes": 4383,
+        "gitBlob": "462280f3e4037df1839fba6cdee11d0980d3f0a9"
+      },
+      {
+        "path": "fonts/space-grotesk-OFL.txt",
+        "bytes": 4401,
+        "gitBlob": "d5666d70873cb905b4421d2c0d2e60747aae8573"
+      },
+      {
+        "path": "index.html",
+        "bytes": 1292,
+        "gitBlob": "2368e869a5971326e2754f649bec43d3fc8693e0"
+      }
+    ]
+  },
+  "browserRegression": {
+    "startTime": "2026-10-23T21:13:25.627Z",
+    "duration": 103873.501,
+    "expected": 15,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "finalMotionRecheck": {
+    "startTime": "2026-10-23T21:16:51.772Z",
+    "duration": 26069.318,
+    "expected": 4,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "layoutIsolation": {
+    "context": "Canvas renderer and room illustration fallback; production nested prefix; nine viewports, four sections, two home states, font fallback and forced colors",
+    "productionPrefix": "/release/preview/",
+    "fonts": ["Geist variable", "Instrument Serif italic"],
+    "fontBytes": 51528,
+    "layoutChecks": [
+      {
+        "label": "desktop lens",
+        "width": 1100,
+        "height": 800,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 1068,
+            "bottom": 74
+          },
+          {
+            "name": "enter-room",
+            "x": 698.0859375,
+            "y": 614,
+            "right": 841.9140625,
+            "bottom": 662
+          },
+          {
+            "name": "collection-panel chrome",
+            "x": 32,
+            "y": 681.5,
+            "right": 372,
+            "bottom": 768
+          },
+          {
+            "name": "studio-dock",
+            "x": 728,
+            "y": 694.609375,
+            "right": 1068,
+            "bottom": 768
+          }
+        ],
+        "footprint": {
+          "left": 482.957,
+          "right": 1058.896,
+          "top": 97.582,
+          "bottom": 610.191,
+          "diameter": 592
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "desktop material workspace",
+        "width": 1100,
+        "height": 800,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 1068,
+            "bottom": 74
+          },
+          {
+            "name": "studio-dock",
+            "x": 728,
+            "y": 694.609375,
+            "right": 1068,
+            "bottom": 768
+          }
+        ],
+        "footprint": {
+          "left": 482.957,
+          "right": 1058.896,
+          "top": 97.582,
+          "bottom": 610.191,
+          "diameter": 592
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "desktop media workspace",
+        "width": 1100,
+        "height": 800,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 1068,
+            "bottom": 74
+          },
+          {
+            "name": "studio-dock",
+            "x": 728,
+            "y": 694.609375,
+            "right": 1068,
+            "bottom": 768
+          }
+        ],
+        "footprint": {
+          "left": 482.957,
+          "right": 1058.896,
+          "top": 97.582,
+          "bottom": 610.191,
+          "diameter": 592
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "desktop interaction workspace",
+        "width": 1100,
+        "height": 800,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 1068,
+            "bottom": 74
+          },
+          {
+            "name": "studio-dock",
+            "x": 728,
+            "y": 694.609375,
+            "right": 1068,
+            "bottom": 768
+          }
+        ],
+        "footprint": {
+          "left": 482.957,
+          "right": 1058.896,
+          "top": 97.582,
+          "bottom": 610.191,
+          "diameter": 592
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "desktop details workspace",
+        "width": 1100,
+        "height": 800,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 1068,
+            "bottom": 74
+          },
+          {
+            "name": "studio-dock",
+            "x": 728,
+            "y": 694.609375,
+            "right": 1068,
+            "bottom": 768
+          }
+        ],
+        "footprint": {
+          "left": 482.957,
+          "right": 1058.896,
+          "top": 97.582,
+          "bottom": 610.191,
+          "diameter": 592
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "desktop paper",
+        "width": 1100,
+        "height": 800,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 1068,
+            "bottom": 74
+          },
+          {
+            "name": "enter-room",
+            "x": 698.0859375,
+            "y": 614,
+            "right": 841.9140625,
+            "bottom": 662
+          },
+          {
+            "name": "studio-dock",
+            "x": 728,
+            "y": 694.609375,
+            "right": 1068,
+            "bottom": 768
+          }
+        ],
+        "footprint": {
+          "left": 482.957,
+          "right": 1058.896,
+          "top": 97.582,
+          "bottom": 610.191,
+          "diameter": 592
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "wide lens",
+        "width": 1920,
+        "height": 1080,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 1888,
+            "bottom": 74
+          },
+          {
+            "name": "enter-room",
+            "x": 1272.0859375,
+            "y": 838.390625,
+            "right": 1415.9140625,
+            "bottom": 886.390625
+          },
+          {
+            "name": "collection-panel chrome",
+            "x": 32,
+            "y": 961.5,
+            "right": 372,
+            "bottom": 1048
+          },
+          {
+            "name": "studio-dock",
+            "x": 1548,
+            "y": 974.609375,
+            "right": 1888,
+            "bottom": 1048
+          }
+        ],
+        "footprint": {
+          "left": 956.482625,
+          "right": 1734.0006250000001,
+          "top": 120.9235,
+          "bottom": 812.9455,
+          "diameter": 799.1875
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "wide material workspace",
+        "width": 1920,
+        "height": 1080,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 1888,
+            "bottom": 74
+          },
+          {
+            "name": "studio-dock",
+            "x": 1548,
+            "y": 974.609375,
+            "right": 1888,
+            "bottom": 1048
+          }
+        ],
+        "footprint": {
+          "left": 956.482625,
+          "right": 1734.0006250000001,
+          "top": 120.9235,
+          "bottom": 812.9455,
+          "diameter": 799.1875
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "wide media workspace",
+        "width": 1920,
+        "height": 1080,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 1888,
+            "bottom": 74
+          },
+          {
+            "name": "studio-dock",
+            "x": 1548,
+            "y": 974.609375,
+            "right": 1888,
+            "bottom": 1048
+          }
+        ],
+        "footprint": {
+          "left": 956.482625,
+          "right": 1734.0006250000001,
+          "top": 120.9235,
+          "bottom": 812.9455,
+          "diameter": 799.1875
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "wide interaction workspace",
+        "width": 1920,
+        "height": 1080,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 1888,
+            "bottom": 74
+          },
+          {
+            "name": "studio-dock",
+            "x": 1548,
+            "y": 974.609375,
+            "right": 1888,
+            "bottom": 1048
+          }
+        ],
+        "footprint": {
+          "left": 956.482625,
+          "right": 1734.0006250000001,
+          "top": 120.9235,
+          "bottom": 812.9455,
+          "diameter": 799.1875
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "wide details workspace",
+        "width": 1920,
+        "height": 1080,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 1888,
+            "bottom": 74
+          },
+          {
+            "name": "studio-dock",
+            "x": 1548,
+            "y": 974.609375,
+            "right": 1888,
+            "bottom": 1048
+          }
+        ],
+        "footprint": {
+          "left": 956.482625,
+          "right": 1734.0006250000001,
+          "top": 120.9235,
+          "bottom": 812.9455,
+          "diameter": 799.1875
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "wide paper",
+        "width": 1920,
+        "height": 1080,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 1888,
+            "bottom": 74
+          },
+          {
+            "name": "enter-room",
+            "x": 1272.0859375,
+            "y": 758.796875,
+            "right": 1415.9140625,
+            "bottom": 806.796875
+          },
+          {
+            "name": "studio-dock",
+            "x": 1548,
+            "y": 974.609375,
+            "right": 1888,
+            "bottom": 1048
+          }
+        ],
+        "footprint": {
+          "left": 1033.683,
+          "right": 1656.3200000000002,
+          "top": 195.804875,
+          "bottom": 749.976875,
+          "diameter": 640
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "mobile lens",
+        "width": 390,
+        "height": 844,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 20,
+            "right": 370,
+            "bottom": 64
+          },
+          {
+            "name": "enter-room",
+            "x": 123.0859375,
+            "y": 531.6875,
+            "right": 266.9140625,
+            "bottom": 579.6875
+          },
+          {
+            "name": "collection-panel chrome",
+            "x": 20,
+            "y": 660.25,
+            "right": 370,
+            "bottom": 732
+          },
+          {
+            "name": "studio-dock",
+            "x": 20,
+            "y": 752.609375,
+            "right": 370,
+            "bottom": 824
+          }
+        ],
+        "footprint": {
+          "left": 32.370875,
+          "right": 358.671875,
+          "top": 264.257875,
+          "bottom": 554.6788750000001,
+          "diameter": 335.390625
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "mobile material workspace",
+        "width": 390,
+        "height": 844,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 20,
+            "right": 370,
+            "bottom": 64
+          },
+          {
+            "name": "studio-dock",
+            "x": 20,
+            "y": 752.609375,
+            "right": 370,
+            "bottom": 824
+          }
+        ],
+        "footprint": {
+          "left": 32.370875,
+          "right": 358.671875,
+          "top": 264.257875,
+          "bottom": 554.6788750000001,
+          "diameter": 335.390625
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "mobile media workspace",
+        "width": 390,
+        "height": 844,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 20,
+            "right": 370,
+            "bottom": 64
+          },
+          {
+            "name": "studio-dock",
+            "x": 20,
+            "y": 752.609375,
+            "right": 370,
+            "bottom": 824
+          }
+        ],
+        "footprint": {
+          "left": 32.370875,
+          "right": 358.671875,
+          "top": 264.257875,
+          "bottom": 554.6788750000001,
+          "diameter": 335.390625
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "mobile interaction workspace",
+        "width": 390,
+        "height": 844,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 20,
+            "right": 370,
+            "bottom": 64
+          },
+          {
+            "name": "studio-dock",
+            "x": 20,
+            "y": 752.609375,
+            "right": 370,
+            "bottom": 824
+          }
+        ],
+        "footprint": {
+          "left": 32.370875,
+          "right": 358.671875,
+          "top": 264.257875,
+          "bottom": 554.6788750000001,
+          "diameter": 335.390625
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "mobile details workspace",
+        "width": 390,
+        "height": 844,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 20,
+            "right": 370,
+            "bottom": 64
+          },
+          {
+            "name": "studio-dock",
+            "x": 20,
+            "y": 752.609375,
+            "right": 370,
+            "bottom": 824
+          }
+        ],
+        "footprint": {
+          "left": 32.370875,
+          "right": 358.671875,
+          "top": 264.257875,
+          "bottom": 554.6788750000001,
+          "diameter": 335.390625
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "mobile paper",
+        "width": 390,
+        "height": 844,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 20,
+            "right": 370,
+            "bottom": 64
+          },
+          {
+            "name": "enter-room",
+            "x": 123.0859375,
+            "y": 500.5,
+            "right": 266.9140625,
+            "bottom": 548.5
+          },
+          {
+            "name": "studio-dock",
+            "x": 20,
+            "y": 752.609375,
+            "right": 370,
+            "bottom": 824
+          }
+        ],
+        "footprint": {
+          "left": 62.63,
+          "right": 328.224,
+          "top": 293.608,
+          "bottom": 529.9970000000001,
+          "diameter": 273
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "narrow lens",
+        "width": 320,
+        "height": 700,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 20,
+            "right": 300,
+            "bottom": 64
+          },
+          {
+            "name": "enter-room",
+            "x": 88.0859375,
+            "y": 429.59375,
+            "right": 231.9140625,
+            "bottom": 477.59375
+          },
+          {
+            "name": "collection-panel chrome",
+            "x": 20,
+            "y": 516.25,
+            "right": 300,
+            "bottom": 588
+          },
+          {
+            "name": "studio-dock",
+            "x": 20,
+            "y": 608.609375,
+            "right": 300,
+            "bottom": 680
+          }
+        ],
+        "footprint": {
+          "left": 26.554625,
+          "right": 294.288625,
+          "top": 220.563625,
+          "bottom": 458.857625,
+          "diameter": 275.1875
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "narrow material workspace",
+        "width": 320,
+        "height": 700,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 20,
+            "right": 300,
+            "bottom": 64
+          },
+          {
+            "name": "studio-dock",
+            "x": 20,
+            "y": 608.609375,
+            "right": 300,
+            "bottom": 680
+          }
+        ],
+        "footprint": {
+          "left": 26.554625,
+          "right": 294.288625,
+          "top": 220.563625,
+          "bottom": 458.857625,
+          "diameter": 275.1875
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "narrow media workspace",
+        "width": 320,
+        "height": 700,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 20,
+            "right": 300,
+            "bottom": 64
+          },
+          {
+            "name": "studio-dock",
+            "x": 20,
+            "y": 608.609375,
+            "right": 300,
+            "bottom": 680
+          }
+        ],
+        "footprint": {
+          "left": 26.554625,
+          "right": 294.288625,
+          "top": 220.563625,
+          "bottom": 458.857625,
+          "diameter": 275.1875
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "narrow interaction workspace",
+        "width": 320,
+        "height": 700,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 20,
+            "right": 300,
+            "bottom": 64
+          },
+          {
+            "name": "studio-dock",
+            "x": 20,
+            "y": 608.609375,
+            "right": 300,
+            "bottom": 680
+          }
+        ],
+        "footprint": {
+          "left": 26.554625,
+          "right": 294.288625,
+          "top": 220.563625,
+          "bottom": 458.857625,
+          "diameter": 275.1875
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "narrow details workspace",
+        "width": 320,
+        "height": 700,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 20,
+            "right": 300,
+            "bottom": 64
+          },
+          {
+            "name": "studio-dock",
+            "x": 20,
+            "y": 608.609375,
+            "right": 300,
+            "bottom": 680
+          }
+        ],
+        "footprint": {
+          "left": 26.554625,
+          "right": 294.288625,
+          "top": 220.563625,
+          "bottom": 458.857625,
+          "diameter": 275.1875
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "narrow paper",
+        "width": 320,
+        "height": 700,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 20,
+            "right": 300,
+            "bottom": 64
+          },
+          {
+            "name": "enter-room",
+            "x": 88.0859375,
+            "y": 404,
+            "right": 231.9140625,
+            "bottom": 452
+          },
+          {
+            "name": "studio-dock",
+            "x": 20,
+            "y": 608.609375,
+            "right": 300,
+            "bottom": 680
+          }
+        ],
+        "footprint": {
+          "left": 51.389,
+          "right": 269.312,
+          "top": 244.653,
+          "bottom": 438.613,
+          "diameter": 224
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "short lens",
+        "width": 320,
+        "height": 568,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 20,
+            "right": 300,
+            "bottom": 64
+          },
+          {
+            "name": "enter-room",
+            "x": 88.0859375,
+            "y": 328.234375,
+            "right": 231.9140625,
+            "bottom": 376.234375
+          },
+          {
+            "name": "collection-panel chrome",
+            "x": 20,
+            "y": 396.25,
+            "right": 300,
+            "bottom": 468
+          },
+          {
+            "name": "studio-dock",
+            "x": 20,
+            "y": 476.609375,
+            "right": 300,
+            "bottom": 548
+          }
+        ],
+        "footprint": {
+          "left": 38.81225,
+          "right": 281.95225,
+          "top": 143.7355,
+          "bottom": 360.1395,
+          "diameter": 249.90625
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "short material workspace",
+        "width": 320,
+        "height": 568,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 20,
+            "right": 300,
+            "bottom": 64
+          },
+          {
+            "name": "studio-dock",
+            "x": 20,
+            "y": 476.609375,
+            "right": 300,
+            "bottom": 548
+          }
+        ],
+        "footprint": {
+          "left": 38.81225,
+          "right": 281.95225,
+          "top": 143.7355,
+          "bottom": 360.1395,
+          "diameter": 249.90625
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "short media workspace",
+        "width": 320,
+        "height": 568,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 20,
+            "right": 300,
+            "bottom": 64
+          },
+          {
+            "name": "studio-dock",
+            "x": 20,
+            "y": 476.609375,
+            "right": 300,
+            "bottom": 548
+          }
+        ],
+        "footprint": {
+          "left": 38.81225,
+          "right": 281.95225,
+          "top": 143.7355,
+          "bottom": 360.1395,
+          "diameter": 249.90625
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "short interaction workspace",
+        "width": 320,
+        "height": 568,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 20,
+            "right": 300,
+            "bottom": 64
+          },
+          {
+            "name": "studio-dock",
+            "x": 20,
+            "y": 476.609375,
+            "right": 300,
+            "bottom": 548
+          }
+        ],
+        "footprint": {
+          "left": 38.81225,
+          "right": 281.95225,
+          "top": 143.7355,
+          "bottom": 360.1395,
+          "diameter": 249.90625
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "short details workspace",
+        "width": 320,
+        "height": 568,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 20,
+            "right": 300,
+            "bottom": 64
+          },
+          {
+            "name": "studio-dock",
+            "x": 20,
+            "y": 476.609375,
+            "right": 300,
+            "bottom": 548
+          }
+        ],
+        "footprint": {
+          "left": 38.81225,
+          "right": 281.95225,
+          "top": 143.7355,
+          "bottom": 360.1395,
+          "diameter": 249.90625
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "short paper",
+        "width": 320,
+        "height": 568,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 20,
+            "right": 300,
+            "bottom": 64
+          },
+          {
+            "name": "enter-room",
+            "x": 88.0859375,
+            "y": 315.265625,
+            "right": 231.9140625,
+            "bottom": 363.265625
+          },
+          {
+            "name": "studio-dock",
+            "x": 20,
+            "y": 476.609375,
+            "right": 300,
+            "bottom": 548
+          }
+        ],
+        "footprint": {
+          "left": 51.389,
+          "right": 269.312,
+          "top": 155.918625,
+          "bottom": 349.878625,
+          "diameter": 224
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "tablet lens",
+        "width": 768,
+        "height": 1024,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 736,
+            "bottom": 74
+          },
+          {
+            "name": "enter-room",
+            "x": 312.0859375,
+            "y": 694,
+            "right": 455.9140625,
+            "bottom": 742
+          },
+          {
+            "name": "collection-panel chrome",
+            "x": 32,
+            "y": 905.5,
+            "right": 352,
+            "bottom": 992
+          },
+          {
+            "name": "studio-dock",
+            "x": 416,
+            "y": 918.609375,
+            "right": 736,
+            "bottom": 992
+          }
+        ],
+        "footprint": {
+          "left": 151.262,
+          "right": 618.24,
+          "top": 286.256,
+          "bottom": 701.885,
+          "diameter": 480
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "tablet material workspace",
+        "width": 768,
+        "height": 1024,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 736,
+            "bottom": 74
+          },
+          {
+            "name": "studio-dock",
+            "x": 416,
+            "y": 918.609375,
+            "right": 736,
+            "bottom": 992
+          }
+        ],
+        "footprint": {
+          "left": 151.262,
+          "right": 618.24,
+          "top": 286.256,
+          "bottom": 701.885,
+          "diameter": 480
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "tablet media workspace",
+        "width": 768,
+        "height": 1024,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 736,
+            "bottom": 74
+          },
+          {
+            "name": "studio-dock",
+            "x": 416,
+            "y": 918.609375,
+            "right": 736,
+            "bottom": 992
+          }
+        ],
+        "footprint": {
+          "left": 151.262,
+          "right": 618.24,
+          "top": 286.256,
+          "bottom": 701.885,
+          "diameter": 480
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "tablet interaction workspace",
+        "width": 768,
+        "height": 1024,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 736,
+            "bottom": 74
+          },
+          {
+            "name": "studio-dock",
+            "x": 416,
+            "y": 918.609375,
+            "right": 736,
+            "bottom": 992
+          }
+        ],
+        "footprint": {
+          "left": 151.262,
+          "right": 618.24,
+          "top": 286.256,
+          "bottom": 701.885,
+          "diameter": 480
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "tablet details workspace",
+        "width": 768,
+        "height": 1024,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 736,
+            "bottom": 74
+          },
+          {
+            "name": "studio-dock",
+            "x": 416,
+            "y": 918.609375,
+            "right": 736,
+            "bottom": 992
+          }
+        ],
+        "footprint": {
+          "left": 151.262,
+          "right": 618.24,
+          "top": 286.256,
+          "bottom": 701.885,
+          "diameter": 480
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "tablet paper",
+        "width": 768,
+        "height": 1024,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 736,
+            "bottom": 74
+          },
+          {
+            "name": "enter-room",
+            "x": 312.0859375,
+            "y": 614,
+            "right": 455.9140625,
+            "bottom": 662
+          },
+          {
+            "name": "studio-dock",
+            "x": 416,
+            "y": 918.609375,
+            "right": 736,
+            "bottom": 992
+          }
+        ],
+        "footprint": {
+          "left": 228.841,
+          "right": 540.1600000000001,
+          "top": 361.504,
+          "bottom": 638.5899999999999,
+          "diameter": 320
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "square-tablet lens",
+        "width": 768,
+        "height": 768,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 736,
+            "bottom": 74
+          },
+          {
+            "name": "enter-room",
+            "x": 312.0859375,
+            "y": 518,
+            "right": 455.9140625,
+            "bottom": 566
+          },
+          {
+            "name": "collection-panel chrome",
+            "x": 32,
+            "y": 649.5,
+            "right": 352,
+            "bottom": 736
+          },
+          {
+            "name": "studio-dock",
+            "x": 416,
+            "y": 662.609375,
+            "right": 736,
+            "bottom": 736
+          }
+        ],
+        "footprint": {
+          "left": 197.81,
+          "right": 571.392,
+          "top": 203.405,
+          "bottom": 535.908,
+          "diameter": 384
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "square-tablet material workspace",
+        "width": 768,
+        "height": 768,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 736,
+            "bottom": 74
+          },
+          {
+            "name": "studio-dock",
+            "x": 416,
+            "y": 662.609375,
+            "right": 736,
+            "bottom": 736
+          }
+        ],
+        "footprint": {
+          "left": 197.81,
+          "right": 571.392,
+          "top": 203.405,
+          "bottom": 535.908,
+          "diameter": 384
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "square-tablet media workspace",
+        "width": 768,
+        "height": 768,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 736,
+            "bottom": 74
+          },
+          {
+            "name": "studio-dock",
+            "x": 416,
+            "y": 662.609375,
+            "right": 736,
+            "bottom": 736
+          }
+        ],
+        "footprint": {
+          "left": 197.81,
+          "right": 571.392,
+          "top": 203.405,
+          "bottom": 535.908,
+          "diameter": 384
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "square-tablet interaction workspace",
+        "width": 768,
+        "height": 768,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 736,
+            "bottom": 74
+          },
+          {
+            "name": "studio-dock",
+            "x": 416,
+            "y": 662.609375,
+            "right": 736,
+            "bottom": 736
+          }
+        ],
+        "footprint": {
+          "left": 197.81,
+          "right": 571.392,
+          "top": 203.405,
+          "bottom": 535.908,
+          "diameter": 384
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "square-tablet details workspace",
+        "width": 768,
+        "height": 768,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 736,
+            "bottom": 74
+          },
+          {
+            "name": "studio-dock",
+            "x": 416,
+            "y": 662.609375,
+            "right": 736,
+            "bottom": 736
+          }
+        ],
+        "footprint": {
+          "left": 197.81,
+          "right": 571.392,
+          "top": 203.405,
+          "bottom": 535.908,
+          "diameter": 384
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "square-tablet paper",
+        "width": 768,
+        "height": 768,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 736,
+            "bottom": 74
+          },
+          {
+            "name": "enter-room",
+            "x": 312.0859375,
+            "y": 486,
+            "right": 455.9140625,
+            "bottom": 534
+          },
+          {
+            "name": "studio-dock",
+            "x": 416,
+            "y": 662.609375,
+            "right": 736,
+            "bottom": 736
+          }
+        ],
+        "footprint": {
+          "left": 228.841,
+          "right": 540.1600000000001,
+          "top": 233.504,
+          "bottom": 510.59,
+          "diameter": 320
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "small-desktop lens",
+        "width": 1000,
+        "height": 650,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 968,
+            "bottom": 74
+          },
+          {
+            "name": "enter-room",
+            "x": 628.0859375,
+            "y": 477,
+            "right": 771.9140625,
+            "bottom": 525
+          },
+          {
+            "name": "collection-panel chrome",
+            "x": 32,
+            "y": 531.5,
+            "right": 372,
+            "bottom": 618
+          },
+          {
+            "name": "studio-dock",
+            "x": 628,
+            "y": 544.609375,
+            "right": 968,
+            "bottom": 618
+          }
+        ],
+        "footprint": {
+          "left": 479.384,
+          "right": 922.04,
+          "top": 93.513,
+          "bottom": 487.495,
+          "diameter": 455
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "small-desktop material workspace",
+        "width": 1000,
+        "height": 650,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 968,
+            "bottom": 74
+          },
+          {
+            "name": "studio-dock",
+            "x": 628,
+            "y": 544.609375,
+            "right": 968,
+            "bottom": 618
+          }
+        ],
+        "footprint": {
+          "left": 479.384,
+          "right": 922.04,
+          "top": 93.513,
+          "bottom": 487.495,
+          "diameter": 455
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "small-desktop media workspace",
+        "width": 1000,
+        "height": 650,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 968,
+            "bottom": 74
+          },
+          {
+            "name": "studio-dock",
+            "x": 628,
+            "y": 544.609375,
+            "right": 968,
+            "bottom": 618
+          }
+        ],
+        "footprint": {
+          "left": 479.384,
+          "right": 922.04,
+          "top": 93.513,
+          "bottom": 487.495,
+          "diameter": 455
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "small-desktop interaction workspace",
+        "width": 1000,
+        "height": 650,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 968,
+            "bottom": 74
+          },
+          {
+            "name": "studio-dock",
+            "x": 628,
+            "y": 544.609375,
+            "right": 968,
+            "bottom": 618
+          }
+        ],
+        "footprint": {
+          "left": 479.384,
+          "right": 922.04,
+          "top": 93.513,
+          "bottom": 487.495,
+          "diameter": 455
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "small-desktop details workspace",
+        "width": 1000,
+        "height": 650,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 968,
+            "bottom": 74
+          },
+          {
+            "name": "studio-dock",
+            "x": 628,
+            "y": 544.609375,
+            "right": 968,
+            "bottom": 618
+          }
+        ],
+        "footprint": {
+          "left": 479.384,
+          "right": 922.04,
+          "top": 93.513,
+          "bottom": 487.495,
+          "diameter": 455
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "small-desktop paper",
+        "width": 1000,
+        "height": 650,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 30,
+            "right": 968,
+            "bottom": 74
+          },
+          {
+            "name": "enter-room",
+            "x": 628.0859375,
+            "y": 477,
+            "right": 771.9140625,
+            "bottom": 525
+          },
+          {
+            "name": "studio-dock",
+            "x": 628,
+            "y": 544.609375,
+            "right": 968,
+            "bottom": 618
+          }
+        ],
+        "footprint": {
+          "left": 479.384,
+          "right": 922.04,
+          "top": 93.513,
+          "bottom": 487.495,
+          "diameter": 455
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "landscape lens",
+        "width": 844,
+        "height": 390,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 16,
+            "right": 812,
+            "bottom": 60
+          },
+          {
+            "name": "enter-room",
+            "x": 350.0859375,
+            "y": 193.59375,
+            "right": 493.9140625,
+            "bottom": 241.59375
+          },
+          {
+            "name": "collection-panel chrome",
+            "x": 20,
+            "y": 302.25,
+            "right": 360,
+            "bottom": 374
+          },
+          {
+            "name": "studio-dock",
+            "x": 504,
+            "y": 305.609375,
+            "right": 824,
+            "bottom": 374
+          }
+        ],
+        "footprint": {
+          "left": 338.7835,
+          "right": 505.7285,
+          "top": 85.096,
+          "bottom": 233.684,
+          "diameter": 171.59375
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "landscape material workspace",
+        "width": 844,
+        "height": 390,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 16,
+            "right": 812,
+            "bottom": 60
+          },
+          {
+            "name": "studio-dock",
+            "x": 504,
+            "y": 305.609375,
+            "right": 824,
+            "bottom": 374
+          }
+        ],
+        "footprint": {
+          "left": 338.7835,
+          "right": 505.7285,
+          "top": 85.096,
+          "bottom": 233.684,
+          "diameter": 171.59375
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "landscape media workspace",
+        "width": 844,
+        "height": 390,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 16,
+            "right": 812,
+            "bottom": 60
+          },
+          {
+            "name": "studio-dock",
+            "x": 504,
+            "y": 305.609375,
+            "right": 824,
+            "bottom": 374
+          }
+        ],
+        "footprint": {
+          "left": 338.7835,
+          "right": 505.7285,
+          "top": 85.096,
+          "bottom": 233.684,
+          "diameter": 171.59375
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "landscape interaction workspace",
+        "width": 844,
+        "height": 390,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 16,
+            "right": 812,
+            "bottom": 60
+          },
+          {
+            "name": "studio-dock",
+            "x": 504,
+            "y": 305.609375,
+            "right": 824,
+            "bottom": 374
+          }
+        ],
+        "footprint": {
+          "left": 338.7835,
+          "right": 505.7285,
+          "top": 85.096,
+          "bottom": 233.684,
+          "diameter": 171.59375
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "landscape details workspace",
+        "width": 844,
+        "height": 390,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 16,
+            "right": 812,
+            "bottom": 60
+          },
+          {
+            "name": "studio-dock",
+            "x": 504,
+            "y": 305.609375,
+            "right": 824,
+            "bottom": 374
+          }
+        ],
+        "footprint": {
+          "left": 338.7835,
+          "right": 505.7285,
+          "top": 85.096,
+          "bottom": 233.684,
+          "diameter": 171.59375
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "landscape paper",
+        "width": 844,
+        "height": 390,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 32,
+            "y": 16,
+            "right": 812,
+            "bottom": 60
+          },
+          {
+            "name": "enter-room",
+            "x": 350.0859375,
+            "y": 193.59375,
+            "right": 493.9140625,
+            "bottom": 241.59375
+          },
+          {
+            "name": "studio-dock",
+            "x": 504,
+            "y": 305.609375,
+            "right": 824,
+            "bottom": 374
+          }
+        ],
+        "footprint": {
+          "left": 338.7835,
+          "right": 505.7285,
+          "top": 85.096,
+          "bottom": 233.684,
+          "diameter": 171.59375
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "font fallback narrow workspace",
+        "width": 320,
+        "height": 700,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 20,
+            "right": 300,
+            "bottom": 64
+          },
+          {
+            "name": "studio-dock",
+            "x": 20,
+            "y": 608.609375,
+            "right": 300,
+            "bottom": 680
+          }
+        ],
+        "footprint": {
+          "left": 51.389,
+          "right": 269.312,
+          "top": 244.653,
+          "bottom": 438.613,
+          "diameter": 224
+        },
+        "font": "Geist, system-ui, sans-serif"
+      },
+      {
+        "label": "forced colors phone workspace",
+        "width": 390,
+        "height": 844,
+        "pageOverflow": false,
+        "overflow": [],
+        "boxes": [
+          {
+            "name": "chrome",
+            "x": 20,
+            "y": 20,
+            "right": 370,
+            "bottom": 64
+          },
+          {
+            "name": "studio-dock",
+            "x": 20,
+            "y": 752.609375,
+            "right": 370,
+            "bottom": 824
+          }
+        ],
+        "footprint": {
+          "left": 62.63,
+          "right": 328.224,
+          "top": 293.608,
+          "bottom": 529.9970000000001,
+          "diameter": 273
+        },
+        "font": "Geist, system-ui, sans-serif"
+      }
+    ],
+    "fit": "painted splash stays within viewport; controls do not overlap; circle absent; keyboard-only corner marks work",
+    "portableFontFacesLoaded": 2,
+    "portableExternalRequests": [],
+    "pageErrors": [],
+    "externalRequests": [],
+    "badResponses": []
+  },
+  "realCaptureReview": {
+    "productionPrefix": "/release/preview/",
+    "scene": "apartment",
+    "renderer": "webgl",
+    "roomRenderer": "spark",
+    "roomStatus": "ready",
+    "shape": "one fluid body and six detached droplets; shared room coordinates; merges during entry and returns intact",
+    "collectionShortcut": "header entrance opens Media on desktop and phone and restores trigger focus",
+    "intentPreview": "02 / Shape the light.",
+    "nativeMotion": {
+      "state": "revealing",
+      "effectCount": 13,
+      "direction": "forward"
+    },
+    "applicationReducedMotion": "settles current effects",
+    "mobileReducedMotion": "immediate section changes",
+    "fontFaces": [
+      {
+        "family": "Geist",
+        "style": "normal",
+        "status": "loaded"
+      },
+      {
+        "family": "Instrument Serif",
+        "style": "italic",
+        "status": "loaded"
+      }
+    ],
+    "pageErrors": [],
+    "externalRequests": [],
+    "badResponses": []
+  },
+  "standalone": {
+    "bytes": 61529096,
+    "fontsLoaded": 2,
+    "activeFontBytes": 51528,
+    "externalRequests": []
+  },
+  "limits": [
+    "Software Chromium with emulated phone; physical-device frame time unmeasured",
+    "Safari and Firefox unverified",
+    "Execution proxy blocks live-CDN requests; publication verified through exact GitHub file hashes"
+  ],
+  "publication": {
+    "status": "published",
+    "branch": "live-preview",
+    "commit": "91d68539bd0c92cf9ba6b37775b9977573587275",
+    "url": "https://rawcdn.githack.com/ejaubashi/vvv/91d68539bd0c92cf9ba6b37775b9977573587275/preview/index.html?room=1&space=apartment&renderer=webgl",
+    "applicationCommit": "31a1c4079152c97f460e4fd7129982e1434934a2",
+    "matchingPublishedBlobs": 30,
+    "verification": "GitHub recursive tree contains exactly the 30 reviewed build blobs with identical Git object hashes."
+  }
+}
